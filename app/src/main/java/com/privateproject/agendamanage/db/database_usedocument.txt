@@ -1,0 +1,9 @@
+使用orm来对数据库进行映射：
+    即bean包下面的类对应数据库中的一张表，类中的属性映射表中的字段
+    类的对象映射表中的一条记录，对象的属性中映射字段值
+
+若要对表进行操作：
+1.首先创建db包下面对应的 xxxDao 类对象（如对 Target 表操作，则创建 TargetDao 类对象）
+    注意：创建对象时需要传入context参数，一般使用当前activity类的对象（即this）即可
+        如在 MainActivity 的 onCreate 方法中写入 TargetDao targetDao = new TargetDao(this)
+2.然后使用 xxxDao 对象的相应方法来对数据表进行操作即可

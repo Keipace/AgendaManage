@@ -14,6 +14,6 @@
 .cxx
 
 .idea
-Main/build/
-Main/src/androidTest
-Main/src/test
+app/build/
+app/src/androidTest
+app/src/test

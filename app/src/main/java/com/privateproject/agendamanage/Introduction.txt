@@ -1,0 +1,19 @@
+MainActivity类是应用启动后的主页面
+
+* activity包：存放其他的activity类，若多个activity在功能上属于一类页面，应再在该包下面创建一个子包来存放多个类
+* adapter包：用来存放 adaper 类
+* bean包：用来存放数据表映射的实体类
+* db包：用来存放对数据表进行操作的Dao类
+
+页面中使用的文字、颜色等尽量放入 res/values/strings、res/values/colors 等文件中来引用
+
+命名规范：
+    1.对组件id的命名：页面名_功能_组件类型
+        如登录页面的组件id：login_username_input、login_password_input、login_loginIn_btn
+    2.对Activity类的命名：PagenameActivity
+        如登录页面的Activity：LoginInActivity
+    3.对layout的命名：
+        1）若是 Activity 对应的页面：activity_pagename
+        2）若是包含在其他页面中的部分页面：included_pagename
+        3) 若是 Adapter 中使用的 Item 来源的页面：item_pagename
+    4.对drawable的命名：组件类型_drawableName
