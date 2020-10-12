@@ -17,3 +17,5 @@ MainActivity类是应用启动后的主页面
         2）若是包含在其他页面中的部分页面：included_pagename
         3) 若是 Adapter 中使用的 Item 来源的页面：item_pagename
     4.对drawable的命名：组件类型_drawableName
+    5.对Adapter的命名：PagenameComponentnameAdapter
+    6.strings的命名：pageName_stringName
