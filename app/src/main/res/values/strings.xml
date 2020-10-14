@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Demo</string>
     <string name="btn_string">开始游戏</string>
+
+    <string-array name="main_group">
+        <item>目标区</item>
+        <item>打卡区</item>
+    </string-array>
 </resources>

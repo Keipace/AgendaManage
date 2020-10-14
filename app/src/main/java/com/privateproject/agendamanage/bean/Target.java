@@ -60,6 +60,8 @@ public class Target {
     @DatabaseField(columnName = "time_predo", canBeNull = false)
     private Date timePreDo;
 
+    private Target() {}
+
     // decoration使用默认值“无”
     public Target(String name, Long timeNeed, Date timePlanOver, Date timeDeadLine, Date timeRealOver, int importance, Date timePreDo) {
         this.name = name;

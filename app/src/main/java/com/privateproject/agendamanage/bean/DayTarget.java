@@ -44,16 +44,18 @@ public class DayTarget {
     @DatabaseField(columnName = "frequency", canBeNull = false, defaultValue = "1")
     private int frequency = 1;
     @DatabaseField(columnName = "time_fragment_start", canBeNull = false)
-    private Date timeFragmentStart;
+    private String timeFragmentStart;
     @DatabaseField(columnName = "time_fragment_end", canBeNull = false)
-    private Date timeFragmentEnd;
+    private String timeFragmentEnd;
     @DatabaseField(columnName = "plan_counts", canBeNull = false)
     private int planCounts;
     @DatabaseField(columnName = "done_counts", canBeNull = false)
     private int doneCounts;
 
+    private DayTarget() {}
+
     // decoration使用默认值“无”，frequency使用默认值1
-    public DayTarget(String name, Date timeFragmentStart, Date timeFragmentEnd, int planCounts, int doneCounts) {
+    public DayTarget(String name, String timeFragmentStart, String timeFragmentEnd, int planCounts, int doneCounts) {
         this.name = name;
         this.timeFragmentStart = timeFragmentStart;
         this.timeFragmentEnd = timeFragmentEnd;
@@ -62,7 +64,7 @@ public class DayTarget {
     }
 
     // decoration使用自定义值，frequency使用默认值1
-    public DayTarget(String name, String decoration, Date timeFragmentStart, Date timeFragmentEnd, int planCounts, int doneCounts) {
+    public DayTarget(String name, String decoration, String timeFragmentStart, String timeFragmentEnd, int planCounts, int doneCounts) {
         this.name = name;
         this.decoration = decoration;
         this.timeFragmentStart = timeFragmentStart;
@@ -72,7 +74,7 @@ public class DayTarget {
     }
 
     // decoration使用默认值“无”， frequency使用自定义值
-    public DayTarget(String name, int frequency, Date timeFragmentStart, Date timeFragmentEnd, int planCounts, int doneCounts) {
+    public DayTarget(String name, int frequency, String timeFragmentStart, String timeFragmentEnd, int planCounts, int doneCounts) {
         this.name = name;
         this.frequency = frequency;
         this.timeFragmentStart = timeFragmentStart;
@@ -82,7 +84,7 @@ public class DayTarget {
     }
 
     // decoration使用自定义值， frequency使用自定义值
-    public DayTarget(String name, String decoration, int frequency, Date timeFragmentStart, Date timeFragmentEnd, int planCounts, int doneCounts) {
+    public DayTarget(String name, String decoration, int frequency, String timeFragmentStart, String timeFragmentEnd, int planCounts, int doneCounts) {
         this.name = name;
         this.decoration = decoration;
         this.frequency = frequency;
@@ -120,19 +122,19 @@ public class DayTarget {
         this.frequency = frequency;
     }
 
-    public Date getTimeFragmentStart() {
+    public String getTimeFragmentStart() {
         return timeFragmentStart;
     }
 
-    public void setTimeFragmentStart(Date timeFragmentStart) {
+    public void setTimeFragmentStart(String timeFragmentStart) {
         this.timeFragmentStart = timeFragmentStart;
     }
 
-    public Date getTimeFragmentEnd() {
+    public String getTimeFragmentEnd() {
         return timeFragmentEnd;
     }
 
-    public void setTimeFragmentEnd(Date timeFragmentEnd) {
+    public void setTimeFragmentEnd(String timeFragmentEnd) {
         this.timeFragmentEnd = timeFragmentEnd;
     }
 

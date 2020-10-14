@@ -1,56 +1,46 @@
 package com.privateproject.agendamanage.adapter;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.bean.DayTarget;
 import com.privateproject.agendamanage.bean.Target;
+import com.privateproject.agendamanage.db.DayTargetDao;
+import com.privateproject.agendamanage.db.TargetDao;
+import com.privateproject.agendamanage.server.MainExpandableAdapterServer;
 
-import org.w3c.dom.Text;
-
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainExpandableListViewAdapter extends BaseExpandableListAdapter {
-    private static final String[] groups = {"目标区","打卡区"};
-    private List<Target> targets;
-    private List<DayTarget> dayTargets;
-    private Context context;
+    private final String[] groups;
+    private MainExpandableAdapterServer server;
 
-    public MainExpandableListViewAdapter(Context context, List<Target> targets, List<DayTarget> dayTargets) {
-        this.context = context;
-        this.targets = targets;
-        this.dayTargets = dayTargets;
-    }
-
-    public static String[] getGroups() {
-        return groups;
-    }
-
-    public List<Target> getTargets() {
-        return targets;
-    }
-
-    public void setTargets(List<Target> targets) {
-        this.targets = targets;
-    }
-
-    public List<DayTarget> getDayTargets() {
-        return dayTargets;
-    }
-
-    public void setDayTargets(List<DayTarget> dayTargets) {
-        this.dayTargets = dayTargets;
+    public MainExpandableListViewAdapter(Context context, ExpandableListView expandableListView) {
+        this.groups = context.getResources().getStringArray(R.array.main_group);
+        server = new MainExpandableAdapterServer(context, expandableListView);
     }
 
     @Override
@@ -61,9 +51,9 @@ public class MainExpandableListViewAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
         if(groupPosition==0)
-            return targets.size();
+            return server.getTargetsSize();
         else if(groupPosition==1)
-            return dayTargets.size();
+            return server.getDayTargetsSize();
         else
             throw new IndexOutOfBoundsException("groupPosition异常");
     }
@@ -76,9 +66,9 @@ public class MainExpandableListViewAdapter extends BaseExpandableListAdapter {
     @Override
     public Object getChild(int groupPosition, int childPosition) {
         if(groupPosition==0)
-            return targets.get(childPosition);
+            return server.getTarget(childPosition);
         if(groupPosition==1)
-            return targets.get(childPosition);
+            return server.getDayTarget(childPosition);
         else
             throw new IndexOutOfBoundsException("groupPosition异常");
     }
@@ -98,82 +88,27 @@ public class MainExpandableListViewAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    static class HeadHolder {
-        public ConstraintLayout constraintLayout;
-        public TextView groupView;
-        public Button addBtn;
-
-        public HeadHolder(View itemView) {
-            constraintLayout = itemView.findViewById(R.id.itemMain_header_constraintLayout);
-            groupView = itemView.findViewById(R.id.itemMain_header_planGroup);
-            addBtn = itemView.findViewById(R.id.itemMain_header_add);
-        }
-
-    }
-    static class ContentHolder {
-        public ConstraintLayout constraintLayout;
-        public TextView targetName,planOver,importance;
-        public Button behindOver;
-
-        public ContentHolder(View itemView) {
-            constraintLayout = itemView.findViewById(R.id.itemMain_content_constraintLayout);
-            targetName = itemView.findViewById(R.id.itemMain_content_targetName);
-            planOver = itemView.findViewById(R.id.itemMain_content_planOver);
-            importance = itemView.findViewById(R.id.itemMain_content_importance);
-            behindOver = itemView.findViewById(R.id.itemMain_content_behindOver);
-        }
-
+    @Override
+    public boolean isChildSelectable(int i, int i1) {
+        return true;
     }
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        HeadHolder headholder = null;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_main_header, null);
-            headholder = new HeadHolder(convertView);
-            convertView.setTag(headholder);
-        } else {
-            headholder= (HeadHolder) convertView.getTag();
-        }
-        headholder.groupView.setText(groups[groupPosition]);
-        headholder.addBtn.setTag(groupPosition);
-        headholder.addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int index= (int) v.getTag();
-                Toast.makeText(context,""+index,Toast.LENGTH_SHORT).show();
-            }
-        });
+        convertView = server.getGroupItem(convertView);
+        server.setGroupItemContent(groupPosition, groups);
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        ContentHolder contentholder = null;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_main_content, null);
-            contentholder = new ContentHolder(convertView);
-            convertView.setTag(contentholder);
-        } else {
-            contentholder= (ContentHolder) convertView.getTag();
+        if(groupPosition == 0) {
+            convertView = server.getTargetChildItem(convertView);
+            server.setTargetChildItemContent(childPosition);
+        } else if(groupPosition == 1) {
+            convertView = server.getDayTargetChildItem(convertView);
+            server.setDayTargetChildItemContent(childPosition);
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        contentholder.targetName.setText(targets.get(childPosition).getName());
-        contentholder.planOver.setText(sdf.format(targets.get(childPosition).getTimePlanOver()));
-        contentholder.importance.setText(targets.get(childPosition).getImportance());
-        contentholder.behindOver.setTag(childPosition);
-        contentholder.behindOver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int id = (int) view.getTag();
-                Toast.makeText(context, ""+id, Toast.LENGTH_SHORT).show();
-            }
-        });
         return convertView;
-    }
-
-    @Override
-    public boolean isChildSelectable(int i, int i1) {
-        return true;
     }
 }

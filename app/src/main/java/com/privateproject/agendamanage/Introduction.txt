@@ -4,8 +4,7 @@ MainActivity类是应用启动后的主页面
 * adapter包：用来存放 adaper 类
 * bean包：用来存放数据表映射的实体类
 * db包：用来存放对数据表进行操作的Dao类
-
-页面中使用的文字、颜色等尽量放入 res/values/strings、res/values/colors 等文件中来引用
+* server包：用来存放处理业务流程的类
 
 命名规范：
     1.对组件id的命名：页面名_功能_组件类型
@@ -19,3 +18,5 @@ MainActivity类是应用启动后的主页面
     4.对drawable的命名：组件类型_drawableName
     5.对Adapter的命名：PagenameComponentnameAdapter
     6.strings的命名：pageName_stringName
+
+页面中使用的颜色等尽量放入 res/values/colors 等文件中来引用

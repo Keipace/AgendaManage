@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemMain_content_dayTarget_constraintLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/constraintlayout_goalbg"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:paddingLeft="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/itemMain_content_dayTarget_targetName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="计划名称"
+            android:maxLines="1"
+            android:textSize="@dimen/font_size"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/itemMain_content_dayTarget_targetName"
+            android:id="@+id/itemMain_content_dayTarget_timeFragment"
+            android:maxLines="1"
+            android:layout_marginTop="2dp"
+            android:text="每天执行时间段"/>
+
+        <TextView
+            android:id="@+id/itemMain_content_dayTarget_remainCounts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="剩余次数"
+            android:textColor="@color/swipeoption_blue"
+            app:layout_constraintEnd_toStartOf="@id/itemMain_content_dayTarget_behindOver"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/itemMain_content_dayTarget_behindOver"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            style="?attr/buttonBarButtonStyle"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="提前结束"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
