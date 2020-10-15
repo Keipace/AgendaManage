@@ -1,143 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:orientation="vertical">
-    <ScrollView
+    android:padding="20dp">
+
+    <!--名称 name-->
+    <EditText
+        android:id="@+id/target_name_editText"
+        android:singleLine="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:hint="名称"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!--描述 decoration-->
+    <EditText
+        android:id="@+id/target_decoration_editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="false"
+        android:inputType="textMultiLine"
+        android:maxLines="2"
+        android:minLines="1"
+        android:hint="描述(可选)"
+        android:selectAllOnFocus="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/target_name_editText"/>
+
+    <!--预估所需时间 time_need-->
+    <TextView
+        android:id="@+id/target_time_need_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="预估需要小时数:"
+        android:textSize="@dimen/font_small_size"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/target_time_need_editText"
+        app:layout_constraintTop_toTopOf="@id/target_time_need_editText"
+        app:layout_constraintBottom_toBottomOf="@id/target_time_need_editText"
+        app:layout_constraintHorizontal_weight="1"/>
+    <EditText
+        android:id="@+id/target_time_need_editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:maxLength="6"
+        android:hint="50"
+        app:layout_constraintStart_toEndOf="@id/target_time_need_textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/target_decoration_editText"
+        app:layout_constraintHorizontal_weight="2"/>
+
+    <!--期待完成时间 time_planOver-->
+    <TextView
+        android:id="@+id/target_time_planOver_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="期待完成时间:"
+        android:textSize="@dimen/font_small_size"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/target_time_planOver_editText"
+        app:layout_constraintTop_toTopOf="@id/target_time_planOver_editText"
+        app:layout_constraintBottom_toBottomOf="@id/target_time_planOver_editText"
+        app:layout_constraintHorizontal_weight="1"
+        />
+    <EditText
+        android:id="@+id/target_time_planOver_editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:cursorVisible="false"
+        app:layout_constraintStart_toEndOf="@id/target_time_planOver_textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/target_time_need_editText"
+        app:layout_constraintHorizontal_weight="2"
+        />
+
+    <!--最晚完成时间 time_deadLine-->
+    <TextView
+        android:id="@+id/target_time_deadLine_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="最晚完成时间:"
+        android:textSize="@dimen/font_small_size"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@id/target_time_deadLine_editText"
+        app:layout_constraintTop_toTopOf="@id/target_time_deadLine_editText"
+        app:layout_constraintBottom_toBottomOf="@id/target_time_deadLine_editText"
+        app:layout_constraintHorizontal_weight="1"/>
+
+    <EditText
+        android:id="@+id/target_time_deadLine_editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:cursorVisible="false"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@id/target_time_deadLine_textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/target_time_planOver_editText"/>
+
+    <!--预实施时间 time_preDo-->
+    <TextView
+        android:id="@+id/target_time_preDo_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="预实施时间:"
+        android:textSize="@dimen/font_small_size"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/target_time_preDo_editText"
+        app:layout_constraintTop_toTopOf="@id/target_time_preDo_editText"
+        app:layout_constraintBottom_toBottomOf="@id/target_time_preDo_editText"
+        app:layout_constraintHorizontal_weight="1"
+        />
+    <EditText
+        android:id="@+id/target_time_preDo_editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:cursorVisible="false"
+        app:layout_constraintStart_toEndOf="@id/target_time_preDo_textView"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/target_time_deadLine_editText"/>
+
+    <!--重要性 importance-->
+    <TextView
+        android:id="@+id/target_importance_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="重要性："
+        android:textSize="@dimen/font_small_size"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintEnd_toStartOf="@id/target_importance_radioGroup"
+        app:layout_constraintTop_toTopOf="@id/target_importance_radioGroup"
+        app:layout_constraintBottom_toBottomOf="@id/target_importance_radioGroup"
+        />
+    <RadioGroup
+        app:layout_constraintStart_toEndOf="@id/target_importance_textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/target_time_preDo_editText"
+        app:layout_constraintHorizontal_weight="2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/target_importance_radioGroup"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/target_high_radioButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp">
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="高"
+            android:textSize="@dimen/font_size"
+            android:layout_marginRight="3dp"/>
+        <RadioButton
+            android:id="@+id/target_middle_radioButton"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="中"
+            android:checked="true"
+            android:textSize="@dimen/font_size"
+            android:layout_marginRight="3dp"/>
+        <RadioButton
+            android:id="@+id/target_low_radioButton"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="低"
+            android:textSize="@dimen/font_size"
+            android:layout_marginRight="3dp"/>
+    </RadioGroup>
 
-            <!--名称 name-->
-                <EditText
-                    android:id="@+id/target_name_editText"
-                    android:singleLine="false"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:hint="目标名称"
-                    android:inputType="text" />
-
-
-            <!--  描述 decoration  -->
-                <EditText
-                    android:id="@+id/target_decoration_editText"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:singleLine="false"
-                    android:inputType="textMultiLine"
-                    android:maxLines="2"
-                    android:minLines="1"
-                    android:hint="目标描述"
-                    android:selectAllOnFocus="true" />
-
-
-            <!--  预估所需时间 time_need  -->
-            <TableRow android:paddingStart="12dp"
-                android:paddingLeft="12dp"
-                android:layout_width="350dp">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="预估需要几小时:"
-                    android:textSize="20sp"/>
-                <EditText
-                    android:id="@+id/target_time_need_editText"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="50"/>
-
-            </TableRow>
-            <!--  期待完成时间 time_planOver  -->
-            <TableRow android:paddingStart="12dp"
-                android:paddingLeft="12dp"
-                android:layout_width="350dp">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="期待完成时间:"
-                    android:textSize="20sp"/>
-                <EditText
-                    android:id="@+id/target_time_planOver_editText"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:hint="2020-10-30"
-                    />
-            </TableRow>
-            <!--  最晚完成时间 time_deadLine  -->
-            <TableRow android:paddingStart="12dp"
-                android:paddingLeft="12dp"
-                android:layout_width="350dp">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="最晚完成时间:"
-                    android:textSize="20sp"/>
-                <EditText
-                    android:id="@+id/target_time_deadLine_editText"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:inputType="date"
-                    android:hint="2020-10-30"/>
-            </TableRow>
-            <!--  预实施时间  time_preDo    -->
-            <TableRow android:paddingStart="12dp"
-                android:paddingLeft="12dp"
-                android:layout_width="350dp">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="预实施时间:"
-                    android:textSize="20sp"/>
-                <EditText
-                    android:id="@+id/target_time_preDo_editText"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:inputType="date"
-                    android:hint="2020-10-30"/>
-            </TableRow>
-            <!--  重要性 importance  -->
-            <TableRow android:paddingLeft="12dp"
-                android:layout_width="350dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="重要性："
-                    android:textSize="20sp"/>
-                <RadioGroup
-                    android:id="@+id/target_importance_radioGroup"
-                    android:orientation="horizontal">
-                    <RadioButton
-                        android:id="@+id/target_high_radioButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="高"
-                        android:textSize="17sp"
-                        android:layout_marginRight="3dp"/>
-                    <RadioButton
-                        android:id="@+id/target_middle_radioButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="中"
-                        android:checked="true"
-                        android:textSize="17sp"
-                        android:layout_marginRight="3dp"/>
-                    <RadioButton
-                        android:id="@+id/target_low_radioButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="低"
-                        android:textSize="17sp"
-                        android:layout_marginRight="3dp"/>
-                </RadioGroup>
-            </TableRow>
-        </TableLayout>
-
-    </ScrollView>
-</LinearLayout>
-
+</androidx.constraintlayout.widget.ConstraintLayout>

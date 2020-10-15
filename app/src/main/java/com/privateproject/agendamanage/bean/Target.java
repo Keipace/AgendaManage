@@ -48,7 +48,7 @@ public class Target {
     @DatabaseField(columnName = "decoration", defaultValue = "无")
     private String decoration = "无";
     @DatabaseField(columnName = "time_need", canBeNull = false)
-    private Long timeNeed;
+    private double timeNeed;
     @DatabaseField(columnName = "time_planover", canBeNull = false)
     private Date timePlanOver;
     @DatabaseField(columnName = "time_deadline", canBeNull = false)
@@ -63,7 +63,7 @@ public class Target {
     private Target() {}
 
     // decoration使用默认值“无”
-    public Target(String name, Long timeNeed, Date timePlanOver, Date timeDeadLine, Date timeRealOver, int importance, Date timePreDo) {
+    public Target(String name, double timeNeed, Date timePlanOver, Date timeDeadLine, Date timeRealOver, int importance, Date timePreDo) {
         this.name = name;
         this.timeNeed = timeNeed;
         this.timePlanOver = timePlanOver;
@@ -74,7 +74,7 @@ public class Target {
     }
 
     // decoration使用自定义值
-    public Target(String name, String decoration, Long timeNeed, Date timePlanOver, Date timeDeadLine, Date timeRealOver, int importance, Date timePreDo) {
+    public Target(String name, String decoration, double timeNeed, Date timePlanOver, Date timeDeadLine, Date timeRealOver, int importance, Date timePreDo) {
         this.name = name;
         this.decoration = decoration;
         this.timeNeed = timeNeed;
@@ -105,11 +105,11 @@ public class Target {
         this.decoration = decoration;
     }
 
-    public Long getTimeNeed() {
+    public double getTimeNeed() {
         return timeNeed;
     }
 
-    public void setTimeNeed(Long timeNeed) {
+    public void setTimeNeed(double timeNeed) {
         this.timeNeed = timeNeed;
     }
 

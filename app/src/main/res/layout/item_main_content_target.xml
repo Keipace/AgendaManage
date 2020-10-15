@@ -22,6 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:text="计划名称"
             android:maxLines="1"
+            android:textColor="@color/black"
             android:textSize="@dimen/font_size"
             android:textStyle="bold"
             android:layout_marginTop="5dp"/>
@@ -32,6 +33,7 @@
             app:layout_constraintTop_toBottomOf="@id/itemMain_content_targetName"
             android:id="@+id/itemMain_content_planOver"
             android:maxLines="1"
+            android:textColor="@color/black"
             android:layout_marginTop="2dp"
             android:text="期待完成时间"/>
 

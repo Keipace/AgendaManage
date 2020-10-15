@@ -37,8 +37,10 @@ import java.util.List;
 public class MainExpandableListViewAdapter extends BaseExpandableListAdapter {
     private final String[] groups;
     private MainExpandableAdapterServer server;
+    private Context context;
 
     public MainExpandableListViewAdapter(Context context, ExpandableListView expandableListView) {
+        this.context = context;
         this.groups = context.getResources().getStringArray(R.array.main_group);
         server = new MainExpandableAdapterServer(context, expandableListView);
     }
@@ -102,13 +104,18 @@ public class MainExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        if(groupPosition == 0) {
-            convertView = server.getTargetChildItem(convertView);
-            server.setTargetChildItemContent(childPosition);
-        } else if(groupPosition == 1) {
-            convertView = server.getDayTargetChildItem(convertView);
-            server.setDayTargetChildItemContent(childPosition);
+        try {
+            if(groupPosition == 0) {
+                convertView = server.getTargetChildItem(convertView);
+                server.setTargetChildItemContent(childPosition);
+            } else if(groupPosition == 1) {
+                convertView = server.getDayTargetChildItem(convertView);
+                server.setDayTargetChildItemContent(childPosition);
+            }
+            return convertView;
+        } catch (ClassCastException e) {
+            Toast.makeText(context, "类型转换错误", Toast.LENGTH_SHORT).show();
+            return null;
         }
-        return convertView;
     }
 }

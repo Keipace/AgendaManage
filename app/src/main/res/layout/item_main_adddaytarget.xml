@@ -12,7 +12,7 @@
         android:singleLine="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="打卡名称"
+        android:hint="名称"
         android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -26,19 +26,21 @@
         android:inputType="textMultiLine"
         android:maxLines="2"
         android:minLines="1"
-        android:hint="打卡描述"
+        android:hint="描述(可选)"
         android:selectAllOnFocus="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/daytarget_day_name_editText"/>
 
     <!--频率 frequency-->
     <TextView
-        android:layout_width="120dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/daytarget_frequcecy_textView"
         android:text="频率:"
-        android:textSize="20sp"
+        android:textSize="@dimen/font_small_size"
         android:layout_marginLeft="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/daytarget_frequcecy_editText"
         app:layout_constraintTop_toTopOf="@id/daytarget_frequcecy_editText"
@@ -50,6 +52,8 @@
         android:inputType="number"
         android:hint="x(天一次)"
         android:layout_marginRight="12dp"
+        android:maxLength="6"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toEndOf="@id/daytarget_frequcecy_textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/daytarget_day_decoration_editText"/>
@@ -57,12 +61,14 @@
     <!--每次时间段 timeFragment-->
     <TextView
         android:id="@+id/daytarget_timeFragment_textView"
-        android:layout_width="120dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="每次几小时:"
-        android:textSize="20sp"
+        android:textSize="@dimen/font_small_size"
         android:layout_marginLeft="12dp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintEnd_toStartOf="@id/daytarget_timeFragmentStart_editText"
         app:layout_constraintTop_toTopOf="@id/daytarget_timeFragmentStart_editText"
         app:layout_constraintBottom_toBottomOf="@id/daytarget_timeFragmentStart_editText"
@@ -73,10 +79,15 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:hint="开始时间"
+        android:gravity="center"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:cursorVisible="false"
+        app:layout_constraintVertical_weight="0.95"
         app:layout_constraintStart_toEndOf="@id/daytarget_timeFragment_textView"
         app:layout_constraintEnd_toStartOf="@id/daytarget_timeFragment_textView1"
         app:layout_constraintTop_toBottomOf="@id/daytarget_frequcecy_editText"
-        app:layout_constraintHorizontal_weight="1.5"
+        app:layout_constraintHorizontal_weight="0.95"
         />
 
     <TextView
@@ -86,10 +97,12 @@
         android:text="-"
         android:gravity="center"
         android:textSize="20sp"
+        app:layout_constraintVertical_weight="0.1"
         app:layout_constraintStart_toEndOf="@id/daytarget_timeFragmentStart_editText"
         app:layout_constraintEnd_toStartOf="@id/daytarget_timeFragmentEnd_editText"
-        app:layout_constraintTop_toBottomOf="@id/daytarget_frequcecy_editText"
-        app:layout_constraintHorizontal_weight="0.5"
+        app:layout_constraintTop_toTopOf="@id/daytarget_timeFragmentStart_editText"
+        app:layout_constraintBottom_toBottomOf="@id/daytarget_timeFragmentStart_editText"
+        app:layout_constraintHorizontal_weight="0.1"
         />
 
     <EditText
@@ -98,31 +111,39 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:hint="结束时间"
+        android:focusable="false"
+        android:gravity="center"
+        android:focusableInTouchMode="false"
+        android:cursorVisible="false"
         app:layout_constraintStart_toEndOf="@id/daytarget_timeFragment_textView1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/daytarget_frequcecy_editText"
         android:layout_marginRight="12dp"
-        app:layout_constraintHorizontal_weight="1.5"
+        app:layout_constraintHorizontal_weight="0.95"
         />
 
     <!--目标次数 planCounts-->
     <TextView
-        android:layout_width="120dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="目标总次数:"
         android:layout_marginLeft="12dp"
+        android:textColor="@color/black"
         android:id="@+id/daytarget_planCounts_textView"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/daytarget_planCounts_editText"
         app:layout_constraintTop_toTopOf="@id/daytarget_planCounts_editText"
         app:layout_constraintBottom_toBottomOf="@id/daytarget_planCounts_editText"
-        android:textSize="20sp"/>
+        android:textSize="@dimen/font_small_size"/>
     <EditText
         android:id="@+id/daytarget_planCounts_editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:hint="50"
+        android:maxLength="6"
+        app:layout_constraintHorizontal_weight="2"
         android:layout_marginRight="12dp"
         app:layout_constraintStart_toEndOf="@id/daytarget_planCounts_textView"
         app:layout_constraintEnd_toEndOf="parent"
