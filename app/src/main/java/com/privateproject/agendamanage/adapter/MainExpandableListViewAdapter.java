@@ -28,6 +28,7 @@ import com.privateproject.agendamanage.bean.Target;
 import com.privateproject.agendamanage.db.DayTargetDao;
 import com.privateproject.agendamanage.db.TargetDao;
 import com.privateproject.agendamanage.server.MainExpandableAdapterServer;
+import com.privateproject.agendamanage.utils.ToastUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -114,7 +115,7 @@ public class MainExpandableListViewAdapter extends BaseExpandableListAdapter {
             }
             return convertView;
         } catch (ClassCastException e) {
-            Toast.makeText(context, "类型转换错误", Toast.LENGTH_SHORT).show();
+            ToastUtil.newToast(context, "类型转换错误");
             return null;
         }
     }

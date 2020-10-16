@@ -24,7 +24,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static DatabaseHelper databaseHelper = null;
     private DatabaseHelper(Context context) {
         // 第4个参数表明当前数据库的版本，如果修改数据库版本后，与手机上当前数据库版本不同的话会自动调用onUpgrade方法
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 3);
     }
     public static DatabaseHelper getDatabaseHelper(Context context) {
         context = context.getApplicationContext();

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -23,10 +24,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.bean.DayTarget;
 import com.privateproject.agendamanage.bean.Target;
+import com.privateproject.agendamanage.databinding.ItemMainAdddaytargetBinding;
+import com.privateproject.agendamanage.databinding.ItemMainAddtargetBinding;
 import com.privateproject.agendamanage.db.DayTargetDao;
 import com.privateproject.agendamanage.db.TargetDao;
 import com.privateproject.agendamanage.utils.NumberUtils;
 import com.privateproject.agendamanage.utils.StringUtils;
+import com.privateproject.agendamanage.utils.ToastUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -108,6 +112,7 @@ public class MainExpandableAdapterServer {
         return convertView;
     }
 
+    private boolean isAddDialogShow;
     /* 将数据填充到每个 groupItem 中 */
     public void setGroupItemContent(int groupPosition, String[] groups) {
         headHolder.groupView.setText(groups[groupPosition]);
@@ -116,22 +121,26 @@ public class MainExpandableAdapterServer {
         headHolder.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int index= (int) v.getTag();
-                if(index==0) {
-                    targetView();
-                } else if (index==1) {
-                    daytargetView();
+                if(!isAddDialogShow) {
+                    isAddDialogShow = true;
+                    int index= (int) v.getTag();
+                    if(index==0) {
+                        targetView();
+                    } else if (index==1) {
+                        daytargetView();
+                    }
                 }
             }
         });
 
     }
 
+    private ItemMainAddtargetBinding targetPage;
     //弹出target对话框
     private void targetView() {
         // 加载target.xml界面布局文件
-        View targrtV = LayoutInflater.from(context).inflate(R.layout.item_main_addtarget,null);
-        ConstraintLayout targetForm = (ConstraintLayout) targrtV;
+        targetPage = ItemMainAddtargetBinding.inflate(LayoutInflater.from(context));
+        ConstraintLayout targetForm = targetPage.targetParentConstraintLayout;
         AlertDialog alertDialog = new AlertDialog.Builder(context)
                 // 设置对话框的标题
                 .setTitle("制定目标")
@@ -142,52 +151,76 @@ public class MainExpandableAdapterServer {
                 // 为对话框设置一个“取消”按钮
                 .setNegativeButton("取消", (dialog, which) -> {
                     // 取消登录，不做任何事情
+                    isAddDialogShow = false;
                 })
                 // 创建并显示对话框
                 .create();
         alertDialog.show();
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+        Button tempBtn = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        tempBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tempBtn.setFocusable(true);
+                tempBtn.setFocusableInTouchMode(true);
+                tempBtn.requestFocus();
                 try {
-                    boolean success = convertTargetMessage(targetForm);
+                    boolean success = convertTargetMessage();
                     if(success) {
                         refresh(0);
                         alertDialog.dismiss();
                     } else {
-                        Toast.makeText(context, "请输入完整信息", Toast.LENGTH_SHORT).show();
+                        ToastUtil.newToast(context, "请输入完整信息");
                     }
                 } catch (ParseException e) {
-                    Toast.makeText(context, "添加失败", Toast.LENGTH_SHORT).show();
+                    ToastUtil.newToast(context, "添加失败");
                     alertDialog.dismiss();
                     e.printStackTrace();
                 }
             }
         });
+        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                isAddDialogShow = false;
+            }
+        });
 
-        planOver= targrtV.findViewById(R.id.target_time_planOver_editText);
-        deadLine= targrtV.findViewById(R.id.target_time_deadLine_editText);
-        preDo= targrtV.findViewById(R.id.target_time_preDo_editText);
         //分别设置监听器显示出日历
-        planOver.setOnTouchListener(getOnTouchListener(planOver, 1));
-        deadLine.setOnTouchListener(getOnTouchListener(deadLine, 2));
-        preDo.setOnTouchListener(getOnTouchListener(preDo, 3));
-
-        EditText decoration = targrtV.findViewById(R.id.target_decoration_editText);
-        decoration.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        targetPage.targetTimePlanOverEditText.setOnTouchListener(getOnTouchListener(targetPage.targetTimePlanOverEditText, 1));
+        targetPage.targetTimeDeadLineEditText.setOnTouchListener(getOnTouchListener(targetPage.targetTimeDeadLineEditText, 2));
+        targetPage.targetTimePreDoEditText.setOnTouchListener(getOnTouchListener(targetPage.targetTimePreDoEditText, 3));
+        targetPage.targetNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                targetPage.targetNameEditText.setText(StringUtils.moveSpaceString(targetPage.targetNameEditText.getText().toString()));
+            }
+        });
+        targetPage.targetDecorationEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     // 此处为得到焦点时的处理内容
                 } else {
                     // 此处为失去焦点时的处理内容
-                    decoration.setText(StringUtils.moveSpaceString(decoration.getText().toString()));
+                    targetPage.targetDecorationEditText.setText(StringUtils.moveSpaceString(targetPage.targetDecorationEditText.getText().toString()));
                 }
             }
         });
 
-        EditText timeNeed = targetForm.findViewById(R.id.target_time_need_editText);
-        timeNeed.addTextChangedListener(getTextWatcher(timeNeed));
+        targetPage.targetTimeNeedEditText.addTextChangedListener(getTextWatcher(targetPage.targetTimeNeedEditText));
+        targetPage.targetTimeNeedEditText.setOnFocusChangeListener(getNotZeroFocusChangeListener(targetPage.targetTimeNeedEditText));
+
+    }
+
+    public View.OnFocusChangeListener getNotZeroFocusChangeListener(EditText editText) {
+        return new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(editText.getText().toString().equals("0")) {
+                    editText.setText("");
+                }
+            }
+        };
     }
 
     private TextWatcher getTextWatcher(EditText editText) {
@@ -200,6 +233,7 @@ public class MainExpandableAdapterServer {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String temp = NumberUtils.moveStartZero(s.toString());
+                temp = NumberUtils.onlyOneDecimal(temp);
                 if(!temp.equals(s.toString())) {
                     editText.setText(temp);
                 }
@@ -212,43 +246,34 @@ public class MainExpandableAdapterServer {
         };
     }
 
-    private boolean convertTargetMessage(ConstraintLayout targetForm) throws ParseException {
-        EditText name = targetForm.findViewById(R.id.target_name_editText);
-        EditText decoration = targetForm.findViewById(R.id.target_decoration_editText);
-        EditText timeNeed = targetForm.findViewById(R.id.target_time_need_editText);
-        EditText timePlanOver = targetForm.findViewById(R.id.target_time_planOver_editText);
-        EditText timeDeadLine = targetForm.findViewById(R.id.target_time_deadLine_editText);
-        EditText timeProDo = targetForm.findViewById(R.id.target_time_preDo_editText);
-        RadioGroup importance = targetForm.findViewById(R.id.target_importance_radioGroup);
-
-        if(name.getText().toString().equals("")
-        || timeNeed.getText().toString().equals("")
-        || timePlanOver.getText().toString().equals("")
-        || timeDeadLine.getText().toString().equals("")
-        || timeProDo.getText().toString().equals("")) {
+    private boolean convertTargetMessage() throws ParseException {
+        if(targetPage.targetNameEditText.getText().toString().equals("")
+        || targetPage.targetTimeNeedEditText.getText().toString().equals("")
+        || targetPage.targetTimePlanOverEditText.getText().toString().equals("")
+        || targetPage.targetTimeDeadLineEditText.getText().toString().equals("")
+        || targetPage.targetTimePreDoEditText.getText().toString().equals("")) {
             return false;
         }
 
         int importan = Target.IMPORTANCE_MIDDLE;
-        if (importance.getCheckedRadioButtonId()==R.id.target_high_radioButton)
+        if (targetPage.targetImportanceRadioGroup.getCheckedRadioButtonId()==R.id.target_high_radioButton)
             importan = Target.IMPORTANCE_HIGH;
-        else if(importance.getCheckedRadioButtonId()==R.id.target_low_radioButton)
+        else if(targetPage.targetImportanceRadioGroup.getCheckedRadioButtonId()==R.id.target_low_radioButton)
             importan = Target.IMPORTANCE_LOW;
-        /*String name, String decoration, Long timeNeed, Date timePlanOver, Date timeDeadLine, Date timeRealOver, int importance, Date timePreDo*/
-        Target target = new Target(name.getText().toString(),
-                decoration.getText().toString(),
-                Double.parseDouble(timeNeed.getText().toString()),
-                sdf.parse(timePlanOver.getText().toString()),
-                sdf.parse(timeDeadLine.getText().toString()),
+
+        Target target = new Target(targetPage.targetNameEditText.getText().toString(),
+                targetPage.targetDecorationEditText.getText().toString(),
+                Double.parseDouble(targetPage.targetTimeNeedEditText.getText().toString()),
+                sdf.parse(targetPage.targetTimePlanOverEditText.getText().toString()),
+                sdf.parse(targetPage.targetTimeDeadLineEditText.getText().toString()),
                 sdf.parse("0000-00-00"),
                 importan,
-                sdf.parse(timeProDo.getText().toString()));
+                sdf.parse(targetPage.targetTimePreDoEditText.getText().toString()));
 
         targetDao.addTarget(target);
         return true;
     }
 
-    private EditText planOver,deadLine,preDo;
     /*通过传递的position来判断是哪个日期
     * 1：planOverDate
     * 2：deadLineDate
@@ -268,44 +293,44 @@ public class MainExpandableAdapterServer {
                             temp.set(year, monthOfYear, dayOfMonth);
                             /*temp早于current，返回负数；temp等于current，返回0；temp晚于current，返回正数*/
                             if(temp.compareTo(current)<0) {
-                                Toast.makeText(context, "时间不应早于当前时间", Toast.LENGTH_SHORT).show();
+                                ToastUtil.newToast(context, "时间不应早于当前时间");
                                 return;
                             }
                             String input = year + "-" + (monthOfYear+1 )+ "-" + dayOfMonth;
-                            String deadLineDate = deadLine.getText().toString();
-                            String preDoDate = preDo.getText().toString();
-                            String planOverDate = planOver.getText().toString();
+                            String deadLineDate = targetPage.targetTimeDeadLineEditText.getText().toString();
+                            String preDoDate = targetPage.targetTimePreDoEditText.getText().toString();
+                            String planOverDate = targetPage.targetTimePlanOverEditText.getText().toString();
                             try {
                                 if(position == 1) {
                                     if(!deadLineDate.equals("") && sdf.parse(input).getTime()>sdf.parse(deadLineDate).getTime()) {
-                                        Toast.makeText(context, "期待完成时间不应晚于最晚完成时间", Toast.LENGTH_SHORT).show();
+                                        ToastUtil.newToast(context, "期待完成时间不应晚于最晚完成时间");
                                         return;
                                     }
                                     if(!preDoDate.equals("") && sdf.parse(input).getTime()<sdf.parse(preDoDate).getTime()) {
-                                        Toast.makeText(context, "期待完成时间不应早于预实施时间", Toast.LENGTH_SHORT).show();
+                                        ToastUtil.newToast(context, "期待完成时间不应早于预实施时间");
                                         return;
                                     }
                                 } else if(position == 2) {
                                     if(!planOverDate.equals("") && sdf.parse(input).getTime()<sdf.parse(planOverDate).getTime()) {
-                                        Toast.makeText(context, "最晚完成时间不应早于期待完成时间", Toast.LENGTH_SHORT).show();
+                                        ToastUtil.newToast(context, "最晚完成时间不应早于期待完成时间");
                                         return;
                                     }
                                     if(!preDoDate.equals("") && sdf.parse(input).getTime()<sdf.parse(preDoDate).getTime()) {
-                                        Toast.makeText(context, "最晚完成时间不应早于预实施时间", Toast.LENGTH_SHORT).show();
+                                        ToastUtil.newToast(context, "最晚完成时间不应早于预实施时间");
                                         return;
                                     }
                                 } else if(position == 3) {
                                     if(!planOverDate.equals("") && sdf.parse(input).getTime()>sdf.parse(planOverDate).getTime()) {
-                                        Toast.makeText(context, "预实施时间不应晚于期待完成时间", Toast.LENGTH_SHORT).show();
+                                        ToastUtil.newToast(context, "预实施时间不应晚于期待完成时间");
                                         return;
                                     }
                                     if(!deadLineDate.equals("") && sdf.parse(input).getTime()>sdf.parse(deadLineDate).getTime()) {
-                                        Toast.makeText(context, "预实施时间不应晚于最晚完成时间", Toast.LENGTH_SHORT).show();
+                                        ToastUtil.newToast(context, "预实施时间不应晚于最晚完成时间");
                                         return;
                                     }
                                 }
                             } catch (ParseException e) {
-                                Toast.makeText(context, "日期输入错误",Toast.LENGTH_SHORT).show();
+                                ToastUtil.newToast(context, "日期输入错误");
                                 return;
                             }
                             editText.setText(input);
@@ -319,11 +344,12 @@ public class MainExpandableAdapterServer {
         };
     }
 
+    private ItemMainAdddaytargetBinding dayTargetPage;
     //弹出daytarget对话框
     private void daytargetView() {
         // 加载target.xml界面布局文件
-        View daytargrtV = LayoutInflater.from(context).inflate(R.layout.item_main_adddaytarget, null);
-        ConstraintLayout targetForm = (ConstraintLayout) daytargrtV;
+        dayTargetPage = ItemMainAdddaytargetBinding.inflate(LayoutInflater.from(context));
+        ConstraintLayout targetForm = dayTargetPage.daytargetParentConstraintLayout;
         AlertDialog alertDialog = new AlertDialog.Builder(context)
                 // 设置对话框的标题
                 .setTitle("打卡")
@@ -337,51 +363,63 @@ public class MainExpandableAdapterServer {
                 // 创建并显示对话框
                 .create();
         alertDialog.show();
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+        Button tempBtn = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        tempBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tempBtn.setFocusableInTouchMode(true);
+                tempBtn.setFocusable(true);
+                tempBtn.requestFocus();
                 try {
-                    boolean success = convertDayTargetMessage(daytargrtV);
+                    boolean success = convertDayTargetMessage();
                     if(success) {
                         refresh(1);
                         alertDialog.dismiss();
+                        isAddDialogShow = false;
                     } else {
-                        Toast.makeText(context, "请输入完成信息", Toast.LENGTH_SHORT).show();
+                        ToastUtil.newToast(context, "请输入完成信息");
                     }
                 } catch (ParseException e) {
-                    Toast.makeText(context, "添加失败", Toast.LENGTH_SHORT).show();
+                    ToastUtil.newToast(context, "添加失败");
                     alertDialog.dismiss();
                     e.printStackTrace();
                 }
             }
         });
+        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                isAddDialogShow = false;
+            }
+        });
 
-        timeFragmentStart = daytargrtV.findViewById(R.id.daytarget_timeFragmentStart_editText);
-        timeFragmentEnd = daytargrtV.findViewById(R.id.daytarget_timeFragmentEnd_editText);
-
-        timeFragmentEnd.setOnTouchListener(getOnTimeTouchListener(timeFragmentEnd, false));
-        timeFragmentStart.setOnTouchListener(getOnTimeTouchListener(timeFragmentStart, true));
-
-        EditText decoration = daytargrtV.findViewById(R.id.daytarget_day_decoration_editText);
-        decoration.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        dayTargetPage.daytargetDayDecorationEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     // 此处为得到焦点时的处理内容
                 } else {
                     // 此处为失去焦点时的处理内容
-                    decoration.setText(StringUtils.moveSpaceString(decoration.getText().toString()));
+                    dayTargetPage.daytargetDayDecorationEditText.setText(StringUtils.moveSpaceString(dayTargetPage.daytargetDayDecorationEditText.getText().toString()));
                 }
             }
         });
+        dayTargetPage.daytargetPlanCountsEditText.addTextChangedListener(getTextWatcher(dayTargetPage.daytargetPlanCountsEditText));
+        dayTargetPage.daytargetFrequcecyEditText.addTextChangedListener(getTextWatcher(dayTargetPage.daytargetFrequcecyEditText));
+        EditText tempNameText = dayTargetPage.daytargetDayNameEditText;
+        tempNameText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                tempNameText.setText(StringUtils.moveSpaceString(tempNameText.getText().toString()));
+            }
+        });
+        dayTargetPage.daytargetTimeFragmentStartEditText.setOnTouchListener(getOnTimeTouchListener(dayTargetPage.daytargetTimeFragmentStartEditText, true));
+        dayTargetPage.daytargetTimeFragmentEndEditText.setOnTouchListener(getOnTimeTouchListener(dayTargetPage.daytargetTimeFragmentEndEditText, false));
 
-        EditText planCounts = daytargrtV.findViewById(R.id.daytarget_planCounts_editText);
-        EditText frequency = daytargrtV.findViewById(R.id.daytarget_frequcecy_editText);
-        planCounts.addTextChangedListener(getTextWatcher(planCounts));
-        planCounts.addTextChangedListener(getTextWatcher(frequency));
+        dayTargetPage.daytargetFrequcecyEditText.setOnFocusChangeListener(getNotZeroFocusChangeListener(dayTargetPage.daytargetFrequcecyEditText));
+        dayTargetPage.daytargetPlanCountsEditText.setOnFocusChangeListener(getNotZeroFocusChangeListener(dayTargetPage.daytargetPlanCountsEditText));
     }
 
-    private EditText timeFragmentStart,timeFragmentEnd;
     private View.OnTouchListener getOnTimeTouchListener(EditText editText, boolean isStart) {
         return new View.OnTouchListener() {
             @Override
@@ -394,23 +432,23 @@ public class MainExpandableAdapterServer {
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
                             if(isStart) {
-                                if (!timeFragmentEnd.getText().toString().equals("")) {
-                                    String[] temp = timeFragmentEnd.getText().toString().split(":");
+                                if (!dayTargetPage.daytargetTimeFragmentEndEditText.getText().toString().equals("")) {
+                                    String[] temp = dayTargetPage.daytargetTimeFragmentEndEditText.getText().toString().split(":");
                                     int endHour = Integer.parseInt(temp[0]);
                                     int endMinute = Integer.parseInt(temp[1]);
                                     if(hourOfDay>endHour || (hourOfDay==endHour&&minute>=endMinute) ) {
-                                        Toast.makeText(context, "开始时间必须早于结束时间", Toast.LENGTH_SHORT).show();
+                                        ToastUtil.newToast(context, "开始时间必须早于结束时间");
                                         return;
                                     }
                                 }
                                 editText.setText(formatTimeText(hourOfDay, minute));
                             } else {
-                                if(!timeFragmentStart.getText().toString().equals("")) {
-                                    String[] temp = timeFragmentStart.getText().toString().split(":");
+                                if(!dayTargetPage.daytargetTimeFragmentStartEditText.getText().toString().equals("")) {
+                                    String[] temp = dayTargetPage.daytargetTimeFragmentStartEditText.getText().toString().split(":");
                                     int startHour = Integer.parseInt(temp[0]);
                                     int startMinute = Integer.parseInt(temp[1]);
                                     if(hourOfDay<startHour || (hourOfDay==startHour&&minute<=startMinute)) {
-                                        Toast.makeText(context, "结束时间必须晚于开始时间", Toast.LENGTH_SHORT).show();
+                                        ToastUtil.newToast(context, "结束时间必须晚于开始时间");
                                         return;
                                     }
                                 }
@@ -418,7 +456,7 @@ public class MainExpandableAdapterServer {
                             }
 
                         }
-                    }, calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), true);
+                    }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
                     timePickerDialog.show();
                     return true;
                 }
@@ -447,29 +485,21 @@ public class MainExpandableAdapterServer {
         return temp;
     }
 
-    private boolean convertDayTargetMessage(View daytargrtV) throws ParseException{
+    private boolean convertDayTargetMessage() throws ParseException{
 
-        EditText name = daytargrtV.findViewById(R.id.daytarget_day_name_editText);
-        EditText decoration = daytargrtV.findViewById(R.id.daytarget_day_decoration_editText);
-        EditText frequency = daytargrtV.findViewById(R.id.daytarget_frequcecy_editText);
-        EditText timeFragmentStart = daytargrtV.findViewById(R.id.daytarget_timeFragmentStart_editText);
-        EditText timeFragmentEnd = daytargrtV.findViewById(R.id.daytarget_timeFragmentEnd_editText);
-        EditText planCounts = daytargrtV.findViewById(R.id.daytarget_planCounts_editText);
-
-        if(name.getText().toString().equals("")
-        || frequency.getText().toString().equals("")
-        || timeFragmentStart.getText().toString().equals("")
-        || timeFragmentEnd.getText().toString().equals("")
-        || planCounts.getText().toString().equals(""))
+        if(dayTargetPage.daytargetDayNameEditText.getText().toString().equals("")
+        || dayTargetPage.daytargetFrequcecyEditText.getText().toString().equals("")
+        || dayTargetPage.daytargetTimeFragmentStartEditText.getText().toString().equals("")
+        || dayTargetPage.daytargetTimeFragmentEndEditText.getText().toString().equals("")
+        || dayTargetPage.daytargetPlanCountsEditText.getText().toString().equals(""))
             return false;
 
-        /*String name, String decoration, int frequency, Date timeFragmentStart, Date timeFragmentEnd, int planCounts, int doneCounts*/
-        DayTarget dayTarget = new DayTarget(name.getText().toString(),
-                decoration.getText().toString(),
-                Integer.parseInt(frequency.getText().toString()),
-                timeFragmentStart.getText().toString(),
-                timeFragmentEnd.getText().toString(),
-                Integer.parseInt(planCounts.getText().toString()),
+        DayTarget dayTarget = new DayTarget(dayTargetPage.daytargetDayNameEditText.getText().toString(),
+                dayTargetPage.daytargetDayDecorationEditText.getText().toString(),
+                Integer.parseInt(dayTargetPage.daytargetFrequcecyEditText.getText().toString()),
+                dayTargetPage.daytargetTimeFragmentStartEditText.getText().toString(),
+                dayTargetPage.daytargetTimeFragmentEndEditText.getText().toString(),
+                Integer.parseInt(dayTargetPage.daytargetPlanCountsEditText.getText().toString()),
                 0);
 
         dayTargetDao.addDayTarget(dayTarget);
@@ -502,7 +532,7 @@ public class MainExpandableAdapterServer {
                 Integer id = (Integer) view.getTag();
                 targetDao.deleteTargetById(id);
                 refresh(0);
-                Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+                ToastUtil.newToast(context, "删除成功");
             }
         });
 
@@ -534,7 +564,7 @@ public class MainExpandableAdapterServer {
                 Integer id = (Integer) view.getTag();
                 dayTargetDao.deleteDayTargetById(id);
                 refresh(1);
-                Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+                ToastUtil.newToast(context, "删除成功");
             }
         });
     }
