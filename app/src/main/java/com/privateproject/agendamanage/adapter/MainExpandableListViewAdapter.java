@@ -1,122 +1,149 @@
 package com.privateproject.agendamanage.adapter;
 
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.bean.DayTarget;
 import com.privateproject.agendamanage.bean.Target;
-import com.privateproject.agendamanage.db.DayTargetDao;
-import com.privateproject.agendamanage.db.TargetDao;
-import com.privateproject.agendamanage.server.MainExpandableAdapterServer;
-import com.privateproject.agendamanage.utils.ToastUtil;
+import com.privateproject.agendamanage.server.MainExpandableListFillDataServer;
+import com.privateproject.agendamanage.server.MainExpandableListLoadViewServer;
+import com.privateproject.agendamanage.server.MainExpandableListDBServer;
+import com.privateproject.agendamanage.viewHolder.MainExpandableListViewHolder;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
+/*
+* 1.查询数据库
+* 2.根据回调方法加载每项的页面
+* 3.根据回调方法填充每项的数据*/
 public class MainExpandableListViewAdapter extends BaseExpandableListAdapter {
-    private final String[] groups;
-    private MainExpandableAdapterServer server;
+    /*参数相关*/
     private Context context;
 
+    /*数据相关*/
+    // strings.xml文件中的group数据
+    private final String[] groups;
+    // 查询数据库的server
+    private MainExpandableListDBServer dbServer;
+
+    /*加载页面相关*/
+    // 加载页面的server
+    private MainExpandableListLoadViewServer loadViewServer;
+
+    /*填充页面相关*/
+    // 为页面填充数据
+    private MainExpandableListFillDataServer fillDataServer;
+
+
     public MainExpandableListViewAdapter(Context context, ExpandableListView expandableListView) {
+        // 初始化需要的参数
+        this.dbServer = new MainExpandableListDBServer(context, expandableListView);
+        this.fillDataServer = new MainExpandableListFillDataServer(context);
+        this.loadViewServer = new MainExpandableListLoadViewServer(context);
         this.context = context;
+        // 加载数据
         this.groups = context.getResources().getStringArray(R.array.main_group);
-        server = new MainExpandableAdapterServer(context, expandableListView);
+
     }
 
+    // 回调方法：获取group的数量
     @Override
     public int getGroupCount() {
         return groups.length;
     }
 
+    // 回调方法：根据groupPosition返回children数量
     @Override
     public int getChildrenCount(int groupPosition) {
+        // 目标区children数量
         if(groupPosition==0)
-            return server.getTargetsSize();
+            return dbServer.getTargetSize();
+        // 打卡区children数量
         else if(groupPosition==1)
-            return server.getDayTargetsSize();
+            return dbServer.getDayTargetSize();
         else
             throw new IndexOutOfBoundsException("groupPosition异常");
     }
 
+    // 回调方法：根据groupPosition显示group的视图
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        // 加载视图
+        Object[] temp = loadViewServer.getGroupItem(convertView);
+        convertView = (View)temp[0];
+        // 根据position，填充对应的数据到视图上
+        fillDataServer.setGroupItemContent(groupPosition, groups, (MainExpandableListViewHolder.HeadHolder)temp[1]);
+        return convertView;
+    }
+
+    // 回调方法：根据groupPosition和childPosition显示child的视图到对应的group中
+    @Override
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        // 目标区的child视图
+        if(groupPosition == 0) {
+            // 加载视图
+            Object[] temp = loadViewServer.getTargetChildItem(convertView);
+            convertView = (View)temp[0];
+            // 根据position，填充对应数据到视图上
+            fillDataServer.setTargetChildItemContent(childPosition, dbServer.getTargets(), (MainExpandableListViewHolder.ContentHolder)temp[1]);
+        // 打卡区的child视图
+        } else if(groupPosition == 1) {
+            // 加载视图
+            Object[] temp = loadViewServer.getDayTargetChildItem(convertView);
+            convertView = (View)temp[0];
+            // 根据position，填充对应数据到视图上
+            fillDataServer.setDayTargetChildItemContent(childPosition, dbServer.getDayTargets(), (MainExpandableListViewHolder.ContentHolderDayTarget)temp[1]);
+        }
+        return convertView;
+    }
+
+
+    /*以下方法没有用到*/
+
+    // （没用到）回调方法：根据groupPosition获取group数据
     @Override
     public Object getGroup(int groupPosition) {
         return groups[groupPosition];
     }
 
+    // （没用到）回调方法：根据groupPosition和childPosition，获取children数据
     @Override
     public Object getChild(int groupPosition, int childPosition) {
         if(groupPosition==0)
-            return server.getTarget(childPosition);
+            return dbServer.getTargets().get(childPosition);
         if(groupPosition==1)
-            return server.getDayTarget(childPosition);
+            return dbServer.getDayTargets().get(childPosition);
         else
             throw new IndexOutOfBoundsException("groupPosition异常");
     }
 
+    // （没用到）回调方法：根据groupPosition返回groupId
     @Override
     public long getGroupId(int groupPosition) {
         return groupPosition;
     }
 
+    // （没用到）回调方法：根据groupPosition和childPosition返回childId
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         return childPosition;
     }
 
+    // （没用到）回调方法
     @Override
     public boolean hasStableIds() {
         return true;
     }
 
+    // （没用到）回调方法
     @Override
     public boolean isChildSelectable(int i, int i1) {
         return true;
     }
 
-    @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        convertView = server.getGroupItem(convertView);
-        server.setGroupItemContent(groupPosition, groups);
-        return convertView;
-    }
 
-    @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        try {
-            if(groupPosition == 0) {
-                convertView = server.getTargetChildItem(convertView);
-                server.setTargetChildItemContent(childPosition);
-            } else if(groupPosition == 1) {
-                convertView = server.getDayTargetChildItem(convertView);
-                server.setDayTargetChildItemContent(childPosition);
-            }
-            return convertView;
-        } catch (ClassCastException e) {
-            ToastUtil.newToast(context, "类型转换错误");
-            return null;
-        }
-    }
 }

@@ -25,10 +25,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // 初始化页面
         super.onCreate(savedInstanceState);
         pageXml = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(pageXml.getRoot());
 
+        // 设置adapter，加载list数据并显示到list中
         adapter = new MainExpandableListViewAdapter(this, pageXml.mainTargetListExpandableListView);
         pageXml.mainTargetListExpandableListView.setAdapter(adapter);
     }

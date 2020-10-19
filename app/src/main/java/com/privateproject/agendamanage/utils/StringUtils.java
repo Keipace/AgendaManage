@@ -5,17 +5,17 @@ import java.util.regex.Pattern;
 
 public class StringUtils {
 
-    /*
-    * 去除字符串两端的空白字符
-    * 若字符串是换行、空格、tab等空白字符组成时，返回"" */
+    /**/
     public static String moveSpaceString(String string) {
         String result;
+        // 如果字符串是有空白字符（换行、空格、tab）组成，则直接替换成 ""
         Pattern pattern = Pattern.compile("^\\s$");
         Matcher matcher = pattern.matcher(string);
         result = matcher.replaceAll("");
         if(result.equals("")) {
             return "";
         }
+        // 如果字符串两边有空白字符，则去除两边的空白字符
         string = string.trim();
         return string;
     }

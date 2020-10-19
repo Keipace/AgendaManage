@@ -5,4 +5,7 @@
         <item>目标区</item>
         <item>打卡区</item>
     </string-array>
+
+    <item name="tag_first" type="id"></item>
+    <item name="tag_second" type="id"></item>
 </resources>

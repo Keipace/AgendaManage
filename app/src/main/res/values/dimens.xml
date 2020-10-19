@@ -3,5 +3,6 @@
     <dimen name="font_size">16sp</dimen>
     <dimen name="font_small_size">12sp</dimen>
     <dimen name="page_padding">20dp</dimen>
-
+    <dimen name="editText_padding">5dp</dimen>
+    <dimen name="plain_page_padding">12dp</dimen>
 </resources>
