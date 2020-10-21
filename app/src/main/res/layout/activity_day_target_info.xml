@@ -1,9 +1,269 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.DayTargetInfoActivity">
+    android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        tools:context=".activity.DayTargetInfoActivity">
+
+        <!--id 自动生成，自增，唯一并且不能为空
+            name 不能为空
+            decoration 默认值为“无”
+            frequency 默认值为1
+            timeFragmentStart 不能为空
+            timeFragmentEnd 不能为空
+            planCounts 不能为空
+            doneCounts 不能为空
+            remainCounts 经计算获取-->
+
+        <!--id 标识-->
+        <TextView
+            android:id="@+id/DaytargetInfo_id_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <!--   name 名称     -->
+        <TextView
+            android:id="@+id/DaytargetInfo_name_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="名称："
+            android:textSize="@dimen/font_size"
+            android:textColor="@color/black"/>
+        <EditText
+            android:id="@+id/DaytargetInfo_name_editView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_name_textView"
+            android:singleLine="true"
+            android:maxLength="12"
+            android:inputType="text"
+            android:editable="false"
+            android:padding="@dimen/editText_padding"
+            android:textIsSelectable="true"
+            android:textSize="@dimen/font_size"
+            android:hint="名称"/>
+
+        <!--decoration 描述-->
+        <TextView
+            android:id="@+id/DaytargetInfo_decoration_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_name_editView"
+            android:text="描述："
+            android:textSize="@dimen/font_size"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"/>
+        <EditText
+            android:id="@+id/DaytargetInfo_decoration_editView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:minLines="1"
+            android:singleLine="false"
+            android:textSize="@dimen/font_size"
+            android:padding="@dimen/editText_padding"
+            android:selectAllOnFocus="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_decoration_textView"
+            android:text="背作文，练习口语每天背单元单词，背作文，练习口语每天背单元单词，背作文，练习口语"/>
+
+
+        <!--frequency 默认值为1-->
+        <TextView
+            android:id="@+id/DaytargetInfo_frequency_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_decoration_editView"
+            android:text="频率(天一次)："
+            android:textSize="@dimen/font_size"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"/>
+        <EditText
+            android:id="@+id/DaytargetInfo_frequency_editView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_frequency_textView"
+            android:textIsSelectable="true"
+            android:editable="false"
+            android:padding="@dimen/editText_padding"
+            android:maxLength="6"
+            android:textSize="@dimen/font_size"
+            android:inputType="number"/>
+
+        <!--timeFragmentStrat 每天开始时间-->
+        <TextView
+            android:id="@+id/DaytargetInfo_timeFragmentStart_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_frequency_editView"
+            android:text="每天开始时间："
+            android:textSize="@dimen/font_size"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"/>
+        <EditText
+            android:id="@+id/DaytargetInfo_timeFragmentStart_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="07:00"
+            android:editable="false"
+            android:padding="@dimen/editText_padding"
+            android:textSize="@dimen/font_size"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:cursorVisible="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_timeFragmentStart_textView"
+            />
+
+        <!--timeFragmentEnd 每天结束时间-->
+        <TextView
+            android:id="@+id/DaytargetInfo_timeFragmentEnd_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_timeFragmentStart_editText"
+            android:text="每天结束时间："
+            android:textSize="@dimen/font_size"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"/>
+        <EditText
+            android:id="@+id/DaytargetInfo_timeFragmentEnd_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="08:00"
+            android:editable="false"
+            android:padding="@dimen/editText_padding"
+            android:textSize="@dimen/font_size"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:cursorVisible="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_timeFragmentEnd_textView"
+            />
+
+        <!--planCounts 目标总次数-->
+        <TextView
+            android:id="@+id/DaytargetInfo_planCounts_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_timeFragmentEnd_editText"
+            android:text="目标总次数："
+            android:textSize="@dimen/font_size"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"/>
+        <EditText
+            android:id="@+id/DaytargetInfo_planCounts_editView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_planCounts_textView"
+            android:editable="false"
+            android:textIsSelectable="true"
+            android:padding="@dimen/editText_padding"
+            android:textSize="@dimen/font_size"
+            android:maxLength="6"
+            android:inputType="number"
+            android:text="50"/>
+
+        <!--doneCounts 已完成次数-->
+        <TextView
+            android:id="@+id/DaytargetInfo_doneCounts_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_planCounts_editView"
+            android:text="已完成次数："
+            android:textSize="@dimen/font_size"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"/>
+        <EditText
+            android:id="@+id/DaytargetInfo_doneCounts_editView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_doneCounts_textView"
+            android:editable="false"
+            android:textIsSelectable="true"
+            android:padding="@dimen/editText_padding"
+            android:textSize="@dimen/font_size"
+            android:inputType="number"
+            android:text="10"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:cursorVisible="false"/>
+
+        <!--remainCounts 剩余次数-->
+        <TextView
+            android:id="@+id/DaytargetInfo_remainCounts_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_doneCounts_editView"
+            android:text="剩余次数："
+            android:textSize="@dimen/font_size"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"/>
+        <EditText
+            android:id="@+id/DaytargetInfo_remianCounts_editView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_remainCounts_textView"
+            android:editable="false"
+            android:textIsSelectable="true"
+            android:padding="@dimen/editText_padding"
+            android:textSize="@dimen/font_size"
+            android:inputType="number"
+            android:text="40"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:cursorVisible="false"/>
+
+        <Button
+            android:id="@+id/DaytargetInfo_back_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_remianCounts_editView"
+            android:textSize="16sp"
+            android:text="返回"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/constraintlayout_goalbg"/>
+        <Button
+            android:id="@+id/DaytargetInfo_edit_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_remianCounts_editView"
+            android:textSize="16sp"
+            android:text="编辑"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/constraintlayout_goalbg"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -1,7 +1,14 @@
 package com.privateproject.agendamanage.utils;
 
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.text.InputType;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TimePicker;
+
+import java.util.Calendar;
 
 public class ComponentUtil {
 
@@ -10,7 +17,7 @@ public class ComponentUtil {
         editText.setFocusable(enable);
         editText.setFocusableInTouchMode(enable);
         editText.setLongClickable(enable);
-        editText.setInputType(enable? InputType.TYPE_CLASS_TEXT:InputType.TYPE_NULL);
     }
+
 
 }
