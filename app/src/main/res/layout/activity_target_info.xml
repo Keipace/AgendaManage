@@ -35,7 +35,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:text="名称："
             android:textSize="@dimen/font_size"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
         <EditText
             android:id="@+id/targetInfo_name_editView"
             android:layout_width="match_parent"
@@ -44,9 +44,11 @@
             app:layout_constraintTop_toBottomOf="@id/targetInfo_name_textView"
             android:editable="false"
             android:padding="@dimen/editText_padding"
-            android:textIsSelectable="true"
+            android:inputType="text"
+            android:maxLength="12"
             android:textSize="@dimen/font_size"
-            android:text="背英语六级单词"/>
+            android:text="背英语六级单词"
+            android:singleLine="false"/>
 
         <!--decoration 描述-->
         <TextView
@@ -63,10 +65,11 @@
             android:id="@+id/targetInfo_decoration_editView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:selectAllOnFocus="true"
             android:inputType="textMultiLine"
+            android:singleLine="false"
             android:maxLines="3"
             android:minLines="1"
-            android:singleLine="false"
             android:textSize="@dimen/font_size"
             android:padding="@dimen/editText_padding"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,6 +97,7 @@
             android:padding="@dimen/editText_padding"
             android:textSize="@dimen/font_size"
             android:inputType="number"
+            android:maxLength="6"
             android:text="50"/>
         <!--timePlanOver 期待完成时间-->
         <TextView
@@ -113,6 +117,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/targetInfo_timePlanOver_textView"
             android:editable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:cursorVisible="false"
             android:textIsSelectable="true"
             android:padding="@dimen/editText_padding"
             android:textSize="@dimen/font_size"
@@ -136,6 +143,10 @@
             app:layout_constraintTop_toBottomOf="@id/targetInfo_timeDeadLine_textView"
             android:editable="false"
             android:textIsSelectable="true"
+            android:inputType="date"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:cursorVisible="false"
             android:padding="@dimen/editText_padding"
             android:textSize="@dimen/font_size"
             android:text="2020-10-10"/>
@@ -158,6 +169,10 @@
             app:layout_constraintTop_toBottomOf="@id/targetInfo_timePreDo_textView"
             android:editable="false"
             android:textIsSelectable="true"
+            android:inputType="date"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:cursorVisible="false"
             android:padding="@dimen/editText_padding"
             android:textSize="@dimen/font_size"
             android:text="2020-02-03"/>
@@ -180,6 +195,10 @@
             app:layout_constraintTop_toBottomOf="@id/targetInfo_timeRealOver_textView"
             android:editable="false"
             android:textIsSelectable="true"
+            android:inputType="date"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:cursorVisible="false"
             android:padding="@dimen/editText_padding"
             android:textSize="@dimen/font_size"
             android:text="现在还没完成呢"/>
