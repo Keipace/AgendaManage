@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import com.privateproject.agendamanage.databinding.ItemMainAddtargetBinding;
+import com.privateproject.agendamanage.utils.ComponentUtil;
 import com.privateproject.agendamanage.utils.TargetUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
 import java.text.ParseException;
@@ -47,7 +48,7 @@ public class TargetInputPageServer {
             @Override
             public void onClick(View v) {
                 // 将焦点获取到确定按钮上
-                TargetUtil.setFocusOnButton(tempBtn);
+                ComponentUtil.ButtonRequestFocus(tempBtn);
                 try {
                     // 将target添加页面中用户输入的信息存到数据库
                     boolean success = convertTargetMessage();
@@ -77,22 +78,9 @@ public class TargetInputPageServer {
         });
 
         //给target添加弹出框的期待完成时间、最晚完成时间、预实施时间编辑框设置日历选择器
-//        Context context, EditText planOverDate, EditText deadLineDate, EditText preDoDate, int position
-        targetPage.targetTimePlanOverEditText.setOnTouchListener(
-                TargetUtil.getOnTouchListener(context,targetPage.targetTimePlanOverEditText, targetPage.targetTimeDeadLineEditText,targetPage.targetTimePreDoEditText,1));
-        targetPage.targetTimeDeadLineEditText.setOnTouchListener(
-                TargetUtil.getOnTouchListener(context,targetPage.targetTimePlanOverEditText, targetPage.targetTimeDeadLineEditText,targetPage.targetTimePreDoEditText, 2));
-        targetPage.targetTimePreDoEditText.setOnTouchListener(
-                TargetUtil.getOnTouchListener(context,targetPage.targetTimePlanOverEditText, targetPage.targetTimeDeadLineEditText,targetPage.targetTimePreDoEditText, 3));
-        // target添加弹出框的“名称”不能为空，当焦点发生变化时触发监听器
-        targetPage.targetNameEditText.setOnFocusChangeListener(TargetUtil.getNameOnFocusChangeListener(targetPage.targetNameEditText));
-        // target添加弹出框的“描述”不能为空，当焦点发生变化时触发监听器
-        targetPage.targetDecorationEditText.setOnFocusChangeListener(TargetUtil.getDecorationOnFocusChangeListener(targetPage.targetDecorationEditText));
-        // 设置“所需小时数”的格式，当文本改变时检查开头的0和小数位数
-        targetPage.targetTimeNeedEditText.addTextChangedListener(TargetUtil.getTextWatcher(targetPage.targetTimeNeedEditText));
-        // 检测是否为0、最后一位是否是小数点
-        targetPage.targetTimeNeedEditText.setOnFocusChangeListener(TargetUtil.getNotZeroFocusChangeListener(targetPage.targetTimeNeedEditText));
-
+        TargetUtil.setPreDoPlanDeadLineTimeEditText(context,targetPage.targetTimePlanOverEditText, targetPage.targetTimeDeadLineEditText, targetPage.targetTimePreDoEditText);
+       //给target添加弹出框的期待完成时间、最晚完成时间、预实施时间编辑框设置约束
+        TargetUtil.setTargetConstraint(targetPage.targetTimeNeedEditText, targetPage.targetNameEditText, targetPage.targetDecorationEditText);
     }
 
 

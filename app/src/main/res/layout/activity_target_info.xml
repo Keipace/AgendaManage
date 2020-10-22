@@ -18,14 +18,6 @@
             #   importance 重要性
             timePreDo 预实施时间-->
 
-        <!--id 标识-->
-        <TextView
-            android:id="@+id/targetInfo_id_textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
         <!--   name 名称     -->
         <TextView
             android:id="@+id/targetInfo_name_textView"
@@ -96,7 +88,7 @@
             android:textIsSelectable="true"
             android:padding="@dimen/editText_padding"
             android:textSize="@dimen/font_size"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:maxLength="6"
             android:text="50"/>
         <!--timePlanOver 期待完成时间-->
