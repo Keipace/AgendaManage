@@ -23,6 +23,7 @@ import java.text.ParseException;
 public class DayTargetInfoActivity extends AppCompatActivity {
     private InfoPageServer infoPageServer;
     private ActivityDayTargetInfoBinding pageBinding;
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +31,24 @@ public class DayTargetInfoActivity extends AppCompatActivity {
         pageBinding = ActivityDayTargetInfoBinding.inflate(LayoutInflater.from(this));
         setContentView(pageBinding.getRoot());
         this.infoPageServer = new InfoPageServer(this,pageBinding);
-
-        int id = getIntent().getIntExtra("id", -1);
-        if (!infoPageServer.setDayTargetInfoPageContent(id)) {
+        // 获取传送过来的id参数，默认值为-1（即传送失败时为-1）
+        this.id = getIntent().getIntExtra("id", -1);
+        if(id==-1) {// id传送失败
+            // 跳转回主页面
             Intent intent = new Intent(this, MainActivity.class);
             ToastUtil.newToast(this, "打开页面失败");
             startActivity(intent);
+            // 销毁activity
+            finish();
         }
-        infoPageServer.inputDayEditable(false);
     }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 根据id来设置页面内容
+        infoPageServer.setDayTargetInfoPageContent(this.id);
+        // 设置页面不可编辑状态
+        infoPageServer.inputDayEditable(false);
+    }
 }

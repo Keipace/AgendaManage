@@ -12,8 +12,13 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 public class DayTargetUtil {
+
+    public static void setTimeStartToEnd(Context context, EditText startTimeEditText, EditText endTimeEditText) {
+        startTimeEditText.setOnTouchListener(getOnTimeTouchListener(context, startTimeEditText, endTimeEditText, true));
+        endTimeEditText.setOnTouchListener(getOnTimeTouchListener(context, startTimeEditText, endTimeEditText, false));
+    }
     // 返回OnTouchListener，触摸时弹出时间选择框，选择一天的某个时间点
-    public static View.OnTouchListener getOnTimeTouchListener(Context context, EditText startEditText, EditText endEditText, boolean isStart) {
+    private static View.OnTouchListener getOnTimeTouchListener(Context context, EditText startEditText, EditText endEditText, boolean isStart) {
         return new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -130,5 +135,34 @@ public class DayTargetUtil {
         };
     }
 
+    public static void setDayTargetConstraint(EditText nameEditText, EditText decorationEditText, EditText planCountsEditText, EditText frequencyEditText) {
+        // DayTarget详情页的“名称”不能为空，当焦点发生变化时触发监听器
+        nameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                nameEditText.setText(StringUtils.moveSpaceString(nameEditText.getText().toString()));
+            }
+        });
+        // DayTarget详情页的“描述”不能为空，当焦点发生变化时触发监听器
+        decorationEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    // 此处为得到焦点时的处理内容
+                } else {
+                    // 此处为失去焦点时的处理内容
+                    decorationEditText.setText(StringUtils.moveSpaceString(decorationEditText.getText().toString()));
+                }
+            }
+        });
+        // 计划完成次数，输入的时候处理开头的0和只允许一位小数；失去焦点时处理只输入一个0和结尾是小数点的问题
+        planCountsEditText.addTextChangedListener(getTextWatcher(planCountsEditText));
+        planCountsEditText.setOnFocusChangeListener(getNotZeroFocusChangeListener(planCountsEditText));
+
+        // 频率，输入的时候处理开头的0和只允许一位小数；失去焦点时处理只输入一个0和结尾是小数点的问题
+        frequencyEditText.addTextChangedListener(getTextWatcher(frequencyEditText));
+        frequencyEditText.setOnFocusChangeListener(getNotZeroFocusChangeListener(frequencyEditText));
+
+    }
 
 }
