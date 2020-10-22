@@ -3,7 +3,9 @@ package com.privateproject.agendamanage.bean;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /*
 DayTarget:
@@ -167,4 +169,5 @@ public class DayTarget {
                 ", doneCounts=" + doneCounts +
                 '}';
     }
+
 }
