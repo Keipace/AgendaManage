@@ -1,22 +1,13 @@
 package com.privateproject.agendamanage;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ExpandableListView;
-
 import com.privateproject.agendamanage.adapter.MainExpandableListViewAdapter;
 import com.privateproject.agendamanage.bean.DayTarget;
 import com.privateproject.agendamanage.bean.Target;
 import com.privateproject.agendamanage.databinding.ActivityMainBinding;
 import com.privateproject.agendamanage.db.DayTargetDao;
 import com.privateproject.agendamanage.db.TargetDao;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +16,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Target target = new Target("test");
+        TargetDao targetDao = new TargetDao(this);
+        targetDao.addTarget(target);
+        DayTarget dayTarget = new DayTarget("test");
+        DayTargetDao dayTargetDao = new DayTargetDao(this);
+        dayTargetDao.addDayTarget(dayTarget);
+
         // 初始化页面
         super.onCreate(savedInstanceState);
         pageXml = ActivityMainBinding.inflate(getLayoutInflater());
@@ -33,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         // 设置adapter，加载list数据并显示到list中
         adapter = new MainExpandableListViewAdapter(this, pageXml.mainTargetListExpandableListView);
         pageXml.mainTargetListExpandableListView.setAdapter(adapter);
+
     }
 
 }

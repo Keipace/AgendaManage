@@ -2,7 +2,9 @@ package com.privateproject.agendamanage.bean;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.privateproject.agendamanage.utils.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /*
@@ -29,6 +31,11 @@ public class Target {
     public static final int IMPORTANCE_HIGH = 1;
     public static final int IMPORTANCE_MIDDLE = 2;
     public static final int IMPORTANCE_LOW = 3;
+
+    public static final String DEFAULT_DECORATION = "无";
+    public static final double DEFAULT_TIMENEED = -1.0d;
+    public static final int DEFAULT_IMPORTANCE = -1;
+
     /*
     Target:
         id 自动生成，自增，唯一并且不能为空
@@ -45,22 +52,30 @@ public class Target {
     private Integer id;
     @DatabaseField(columnName = "name", canBeNull = false)
     private String name;
-    @DatabaseField(columnName = "decoration", defaultValue = "无")
-    private String decoration = "无";
+    @DatabaseField(columnName = "decoration")
+    private String decoration;
     @DatabaseField(columnName = "time_need", canBeNull = false)
     private double timeNeed;
-    @DatabaseField(columnName = "time_planover", canBeNull = false)
+    @DatabaseField(columnName = "time_planover")
     private Date timePlanOver;
-    @DatabaseField(columnName = "time_deadline", canBeNull = false)
+    @DatabaseField(columnName = "time_deadline")
     private Date timeDeadLine;
-    @DatabaseField(columnName = "time_realover", canBeNull = false)
+    @DatabaseField(columnName = "time_realover")
     private Date timeRealOver;
     @DatabaseField(columnName = "importance", canBeNull = false)
     private int importance;
-    @DatabaseField(columnName = "time_predo", canBeNull = false)
+    @DatabaseField(columnName = "time_predo")
     private Date timePreDo;
 
     private Target() {}
+
+    // 只有name初始化
+    public Target(String name) {
+        this.name = name;
+        this.decoration = DEFAULT_DECORATION;
+        this.timeNeed = DEFAULT_TIMENEED;
+        this.importance = DEFAULT_IMPORTANCE;
+    }
 
     // decoration使用默认值“无”
     public Target(String name, double timeNeed, Date timePlanOver, Date timeDeadLine, Date timeRealOver, int importance, Date timePreDo) {
@@ -71,6 +86,7 @@ public class Target {
         this.timeRealOver = timeRealOver;
         this.importance = importance;
         this.timePreDo = timePreDo;
+        this.decoration = DEFAULT_DECORATION;
     }
 
     // decoration使用自定义值

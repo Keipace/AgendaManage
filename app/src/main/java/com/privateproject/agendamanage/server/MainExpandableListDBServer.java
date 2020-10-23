@@ -30,7 +30,6 @@ public class MainExpandableListDBServer {
         this.targetDao = new TargetDao(context);
         this.dayTargetDao = new DayTargetDao(context);
         sdf = new SimpleDateFormat("yyyy-MM-dd");
-        this.expandableListView = expandableListView;
         // 加载数据
         this.targets = targetDao.selectAll();
         this.dayTargets = dayTargetDao.selectAll();

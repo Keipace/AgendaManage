@@ -2,6 +2,7 @@ package com.privateproject.agendamanage.bean;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.privateproject.agendamanage.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +27,13 @@ DayTarget:
 */
 @DatabaseTable(tableName = "day_target")
 public class DayTarget {
+    public static final String DEFAULT_DECORATION = "无";
+    public static final int DEFAULT_FREQUENCY = 1;
+    public static final String DEFAULT_TIMEFRAGMENTSTART = "-1";
+    public static final String DEFAULT_TIMEFRAGMENTEND = "-1";
+    public static final int DEFAULT_PLANCOUNTS = -1;
+    public static final int DEFAULT_DONECOUNTS = -1;
+
     /*
     DayTarget:
         id 自动生成，自增，唯一并且不能为空
@@ -41,10 +49,10 @@ public class DayTarget {
     private Integer id;
     @DatabaseField(columnName = "name", canBeNull = false)
     private String name;
-    @DatabaseField(columnName = "decoration", defaultValue = "无")
-    private String decoration = "无";
-    @DatabaseField(columnName = "frequency", canBeNull = false, defaultValue = "1")
-    private int frequency = 1;
+    @DatabaseField(columnName = "decoration", canBeNull = false)
+    private String decoration;
+    @DatabaseField(columnName = "frequency", canBeNull = false)
+    private int frequency;
     @DatabaseField(columnName = "time_fragment_start", canBeNull = false)
     private String timeFragmentStart;
     @DatabaseField(columnName = "time_fragment_end", canBeNull = false)
@@ -56,6 +64,17 @@ public class DayTarget {
 
     private DayTarget() {}
 
+    /*只有name的初始化*/
+    public DayTarget(String name) {
+        this.name = name;
+        this.timeFragmentStart = DEFAULT_TIMEFRAGMENTSTART;
+        this.timeFragmentEnd = DEFAULT_TIMEFRAGMENTEND;
+        this.planCounts = DEFAULT_PLANCOUNTS;
+        this.doneCounts = DEFAULT_DONECOUNTS;
+        this.decoration = DEFAULT_DECORATION;
+        this.frequency = DEFAULT_FREQUENCY;
+    }
+
     // decoration使用默认值“无”，frequency使用默认值1
     public DayTarget(String name, String timeFragmentStart, String timeFragmentEnd, int planCounts, int doneCounts) {
         this.name = name;
@@ -63,6 +82,8 @@ public class DayTarget {
         this.timeFragmentEnd = timeFragmentEnd;
         this.planCounts = planCounts;
         this.doneCounts = doneCounts;
+        this.decoration = DEFAULT_DECORATION;
+        this.frequency = DEFAULT_FREQUENCY;
     }
 
     // decoration使用自定义值，frequency使用默认值1
@@ -73,6 +94,7 @@ public class DayTarget {
         this.timeFragmentEnd = timeFragmentEnd;
         this.planCounts = planCounts;
         this.doneCounts = doneCounts;
+        this.frequency = DEFAULT_FREQUENCY;
     }
 
     // decoration使用默认值“无”， frequency使用自定义值
@@ -83,6 +105,7 @@ public class DayTarget {
         this.timeFragmentEnd = timeFragmentEnd;
         this.planCounts = planCounts;
         this.doneCounts = doneCounts;
+        this.decoration = DEFAULT_DECORATION;
     }
 
     // decoration使用自定义值， frequency使用自定义值
