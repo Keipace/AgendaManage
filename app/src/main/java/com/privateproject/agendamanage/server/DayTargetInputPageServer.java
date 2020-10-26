@@ -78,22 +78,14 @@ public class DayTargetInputPageServer {
             }
         });
 
-        DayTargetUtil.setDayTargetConstraint(dayTargetPage.daytargetDayNameEditText,
-                dayTargetPage.daytargetDayDecorationEditText,
-                dayTargetPage.daytargetPlanCountsEditText,
-                dayTargetPage.daytargetFrequcecyEditText);
+        DayTargetUtil.setDayTargetConstraint(dayTargetPage.daytargetDayNameEditText, dayTargetPage.daytargetDayDecorationEditText,null,null);
         // 开始时间和结束时间，点击时弹出选择时间的提示框
-        DayTargetUtil.setTimeStartToEnd(context, dayTargetPage.daytargetTimeFragmentStartEditText, dayTargetPage.daytargetTimeFragmentEndEditText);
     }
     // 将页面中用户输入的数据存到数据库中
     // 如果必要项没有输入则返回false，否则返回true
     private boolean convertDayTargetMessage() throws ParseException{
         // 判断必要项是否有空的
-        if(dayTargetPage.daytargetDayNameEditText.getText().toString().equals("")
-                || dayTargetPage.daytargetFrequcecyEditText.getText().toString().equals("")
-                || dayTargetPage.daytargetTimeFragmentStartEditText.getText().toString().equals("")
-                || dayTargetPage.daytargetTimeFragmentEndEditText.getText().toString().equals("")
-                || dayTargetPage.daytargetPlanCountsEditText.getText().toString().equals(""))
+        if(dayTargetPage.daytargetDayNameEditText.getText().toString().equals(""))
             return false;
 
         // 将target添加页面中用户输入的信息存到数据库

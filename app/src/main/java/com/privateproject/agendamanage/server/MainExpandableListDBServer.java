@@ -86,11 +86,11 @@ public class MainExpandableListDBServer {
         // 将用户输入的信息包装成DayTarget对象
         DayTarget dayTarget = new DayTarget(dayTargetPage.daytargetDayNameEditText.getText().toString(),
                 dayTargetPage.daytargetDayDecorationEditText.getText().toString(),
-                Integer.parseInt(dayTargetPage.daytargetFrequcecyEditText.getText().toString()),
-                dayTargetPage.daytargetTimeFragmentStartEditText.getText().toString(),
-                dayTargetPage.daytargetTimeFragmentEndEditText.getText().toString(),
-                Integer.parseInt(dayTargetPage.daytargetPlanCountsEditText.getText().toString()),
-                0);
+                DayTarget.DEFAULT_FREQUENCY,
+                DayTarget.DEFAULT_TIMEFRAGMENTSTART,
+                DayTarget.DEFAULT_TIMEFRAGMENTEND,
+                DayTarget.DEFAULT_PLANCOUNTS,
+                DayTarget.DEFAULT_DONECOUNTS);
         // 将DayTarget对象插入表中
         dayTargetDao.addDayTarget(dayTarget);
     }

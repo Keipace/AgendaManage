@@ -109,11 +109,9 @@ public class MainExpandableListFillDataServer {
         // 获取“开始时间”和“结束时间”，变成“hh:mm——hh:mm”格式，并填充到每一项的 时间 textView中
         String startTime = dayTargets.get(childPosition).getTimeFragmentStart();
         String endTime = dayTargets.get(childPosition).getTimeFragmentEnd();
-        contentHolderDayTarget.timeFragment.setText(startTime+"——"+endTime);
         // 获取“计划完成次数”和“已完成次数”，计算出剩余次数并填充到每一项的 剩余次数 textView中
         int allCounts = dayTargets.get(childPosition).getPlanCounts();
         int doneCounts = dayTargets.get(childPosition).getDoneCounts();
-        contentHolderDayTarget.remainCounts.setText(allCounts-doneCounts+"");
         // “提前结束”按钮，按钮中存储着该项数据的id，按钮点击时删除该项
         contentHolderDayTarget.behindOver.setTag(dayTargets.get(childPosition).getId());
         contentHolderDayTarget.behindOver.setOnClickListener(new View.OnClickListener() {

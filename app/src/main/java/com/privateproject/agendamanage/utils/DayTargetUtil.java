@@ -155,13 +155,13 @@ public class DayTargetUtil {
                 }
             }
         });
-        // 计划完成次数，输入的时候处理开头的0和只允许一位小数；失去焦点时处理只输入一个0和结尾是小数点的问题
-        planCountsEditText.addTextChangedListener(getTextWatcher(planCountsEditText));
-        planCountsEditText.setOnFocusChangeListener(getNotZeroFocusChangeListener(planCountsEditText));
-
-        // 频率，输入的时候处理开头的0和只允许一位小数；失去焦点时处理只输入一个0和结尾是小数点的问题
-        frequencyEditText.addTextChangedListener(getTextWatcher(frequencyEditText));
-        frequencyEditText.setOnFocusChangeListener(getNotZeroFocusChangeListener(frequencyEditText));
+//        // 计划完成次数，输入的时候处理开头的0和只允许一位小数；失去焦点时处理只输入一个0和结尾是小数点的问题
+//        planCountsEditText.addTextChangedListener(getTextWatcher(planCountsEditText));
+//        planCountsEditText.setOnFocusChangeListener(getNotZeroFocusChangeListener(planCountsEditText));
+//
+//        // 频率，输入的时候处理开头的0和只允许一位小数；失去焦点时处理只输入一个0和结尾是小数点的问题
+//        frequencyEditText.addTextChangedListener(getTextWatcher(frequencyEditText));
+//        frequencyEditText.setOnFocusChangeListener(getNotZeroFocusChangeListener(frequencyEditText));
 
     }
 

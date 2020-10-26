@@ -153,25 +153,66 @@ public class InfoPageServer {
     // 获取页面输入的信息并包装为DayTarget对象
     public DayTarget getInput(DayTarget dayTarget){
         dayTarget.setName(this.dayTargetpageBinding.DaytargetInfoNameEditView.getText().toString());
-        dayTarget.setDecoration(this.dayTargetpageBinding.DaytargetInfoDecorationEditView.getText().toString());
-        dayTarget.setFrequency(Integer.parseInt(this.dayTargetpageBinding.DaytargetInfoFrequencyEditView.getText().toString()));
-        dayTarget.setTimeFragmentStart(this.dayTargetpageBinding.DaytargetInfoTimeFragmentStartEditText.getText().toString());
-        dayTarget.setTimeFragmentEnd(this.dayTargetpageBinding.DaytargetInfoTimeFragmentEndEditText.getText().toString());
-        dayTarget.setPlanCounts(Integer.parseInt(this.dayTargetpageBinding.DaytargetInfoPlanCountsEditView.getText().toString()));
-        dayTarget.setDoneCounts(Integer.parseInt(this.dayTargetpageBinding.DaytargetInfoDoneCountsEditView.getText().toString()));
+
+        String decoration = this.dayTargetpageBinding.DaytargetInfoDecorationEditView.getText().toString();
+        if (decoration.equals(""))
+            dayTarget.setDecoration(DayTarget.DEFAULT_DECORATION);
+        else dayTarget.setDecoration(decoration);
+
+        if (this.dayTargetpageBinding.DaytargetInfoFrequencyEditView.getText().toString().equals(""))
+            dayTarget.setFrequency(DayTarget.DEFAULT_FREQUENCY);
+        else dayTarget.setFrequency(Integer.parseInt(this.dayTargetpageBinding.DaytargetInfoFrequencyEditView.getText().toString()));
+
+        if (this.dayTargetpageBinding.DaytargetInfoTimeFragmentStartEditText.getText().toString().equals(""))
+            dayTarget.setTimeFragmentStart(DayTarget.DEFAULT_TIMEFRAGMENTSTART);
+        else dayTarget.setTimeFragmentStart(this.dayTargetpageBinding.DaytargetInfoTimeFragmentStartEditText.getText().toString());
+
+        if (this.dayTargetpageBinding.DaytargetInfoTimeFragmentEndEditText.getText().toString().equals(""))
+            dayTarget.setTimeFragmentEnd(DayTarget.DEFAULT_TIMEFRAGMENTEND);
+        else dayTarget.setTimeFragmentEnd(this.dayTargetpageBinding.DaytargetInfoTimeFragmentEndEditText.getText().toString());
+
+        if (this.dayTargetpageBinding.DaytargetInfoPlanCountsEditView.getText().toString().equals(""))
+            dayTarget.setPlanCounts(DayTarget.DEFAULT_PLANCOUNTS);
+        else dayTarget.setPlanCounts(Integer.parseInt(this.dayTargetpageBinding.DaytargetInfoPlanCountsEditView.getText().toString()));
+
+        if (this.dayTargetpageBinding.DaytargetInfoDoneCountsEditView.getText().toString().equals(""))
+            dayTarget.setDoneCounts(DayTarget.DEFAULT_DONECOUNTS);
+        else dayTarget.setDoneCounts(Integer.parseInt(this.dayTargetpageBinding.DaytargetInfoDoneCountsEditView.getText().toString()));
+
         return dayTarget;
     }
 
     // 将dayTarget的信息显示到dayTarget详情页
     public void showDayTarget(DayTarget dayTarget) {
         this.dayTargetpageBinding.DaytargetInfoNameEditView.setText(dayTarget.getName());
-        this.dayTargetpageBinding.DaytargetInfoDecorationEditView.setText(dayTarget.getDecoration());
-        this.dayTargetpageBinding.DaytargetInfoFrequencyEditView.setText(""+dayTarget.getFrequency());
-        this.dayTargetpageBinding.DaytargetInfoTimeFragmentStartEditText.setText(dayTarget.getTimeFragmentStart());
-        this.dayTargetpageBinding.DaytargetInfoTimeFragmentEndEditText.setText(dayTarget.getTimeFragmentEnd());
-        this.dayTargetpageBinding.DaytargetInfoPlanCountsEditView.setText(""+dayTarget.getPlanCounts());
-        this.dayTargetpageBinding.DaytargetInfoDoneCountsEditView.setText(""+dayTarget.getDoneCounts());
-        this.dayTargetpageBinding.DaytargetInfoRemianCountsEditView.setText(""+(dayTarget.getPlanCounts()-dayTarget.getDoneCounts()));
+        if (dayTarget.getDecoration().equals(DayTarget.DEFAULT_DECORATION))
+            this.dayTargetpageBinding.DaytargetInfoDecorationEditView.setText("");
+        else this.dayTargetpageBinding.DaytargetInfoDecorationEditView.setText(dayTarget.getDecoration());
+
+        if (dayTarget.getFrequency() == DayTarget.DEFAULT_FREQUENCY)
+            this.dayTargetpageBinding.DaytargetInfoFrequencyEditView.setText("");
+        else this.dayTargetpageBinding.DaytargetInfoFrequencyEditView.setText(""+dayTarget.getFrequency());
+
+        if (dayTarget.getTimeFragmentStart().equals(DayTarget.DEFAULT_TIMEFRAGMENTSTART))
+            this.dayTargetpageBinding.DaytargetInfoTimeFragmentStartEditText.setText("");
+        else this.dayTargetpageBinding.DaytargetInfoTimeFragmentStartEditText.setText(dayTarget.getTimeFragmentStart());
+
+        if (dayTarget.getTimeFragmentEnd().equals(DayTarget.DEFAULT_TIMEFRAGMENTEND))
+            this.dayTargetpageBinding.DaytargetInfoTimeFragmentEndEditText.setText("");
+        else this.dayTargetpageBinding.DaytargetInfoTimeFragmentEndEditText.setText(dayTarget.getTimeFragmentEnd());
+
+        if (dayTarget.getPlanCounts() == DayTarget.DEFAULT_PLANCOUNTS){
+            this.dayTargetpageBinding.DaytargetInfoPlanCountsEditView.setText("");
+            this.dayTargetpageBinding.DaytargetInfoRemianCountsEditView.setText("");
+        } else {
+            this.dayTargetpageBinding.DaytargetInfoPlanCountsEditView.setText(""+dayTarget.getPlanCounts());
+            this.dayTargetpageBinding.DaytargetInfoRemianCountsEditView.setText(""+(dayTarget.getPlanCounts()-dayTarget.getDoneCounts()));
+        }
+
+        if (dayTarget.getDoneCounts() == DayTarget.DEFAULT_DONECOUNTS)
+            this.dayTargetpageBinding.DaytargetInfoDoneCountsEditView.setText("");
+        else this.dayTargetpageBinding.DaytargetInfoDoneCountsEditView.setText(""+dayTarget.getDoneCounts());
+
     }
 
 
