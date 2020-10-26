@@ -40,14 +40,12 @@ public class MainExpandableListViewHolder {
     public static class ContentHolderDayTarget {
         // 每个属性对应页面中的每个控件
         public ConstraintLayout constraintLayout;
-        public TextView targetName,timeFragment,remainCounts;
+        public TextView targetName;
         public Button behindOver;
         // 构造方法，从页面中获取控件并赋值给对应的属性
         public ContentHolderDayTarget(View itemView) {
             constraintLayout = itemView.findViewById(R.id.itemMain_content_dayTarget_constraintLayout);
             targetName = itemView.findViewById(R.id.itemMain_content_dayTarget_targetName);
-            timeFragment = itemView.findViewById(R.id.itemMain_content_dayTarget_timeFragment);
-            remainCounts = itemView.findViewById(R.id.itemMain_content_dayTarget_remainCounts);
             behindOver = itemView.findViewById(R.id.itemMain_content_dayTarget_behindOver);
         }
     }

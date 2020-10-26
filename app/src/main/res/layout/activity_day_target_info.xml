@@ -72,6 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
+            android:hint="无数据"
             android:maxLines="3"
             android:minLines="1"
             android:singleLine="false"
@@ -101,6 +102,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/DaytargetInfo_frequency_textView"
             android:textIsSelectable="true"
+            android:hint="无数据"
             android:editable="false"
             android:padding="@dimen/editText_padding"
             android:maxLength="6"
@@ -123,7 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:text="07:00"
+            android:hint="无数据"
             android:editable="false"
             android:padding="@dimen/editText_padding"
             android:textSize="@dimen/font_size"
@@ -150,7 +152,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:text="08:00"
+            android:hint="无数据"
             android:editable="false"
             android:padding="@dimen/editText_padding"
             android:textSize="@dimen/font_size"
@@ -184,7 +186,7 @@
             android:textSize="@dimen/font_size"
             android:maxLength="6"
             android:inputType="number"
-            android:text="50"/>
+            android:hint="无数据"/>
 
         <!--doneCounts 已完成次数-->
         <TextView
@@ -208,7 +210,7 @@
             android:padding="@dimen/editText_padding"
             android:textSize="@dimen/font_size"
             android:inputType="number"
-            android:text="10"
+            android:hint="无数据"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:cursorVisible="false"/>
@@ -235,7 +237,7 @@
             android:padding="@dimen/editText_padding"
             android:textSize="@dimen/font_size"
             android:inputType="number"
-            android:text="40"
+            android:hint="无数据"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:cursorVisible="false"/>

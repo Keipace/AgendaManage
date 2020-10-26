@@ -20,33 +20,13 @@
             android:id="@+id/itemMain_content_dayTarget_targetName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:text="计划名称"
             android:maxLines="1"
             android:textSize="@dimen/font_size"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_marginTop="5dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/itemMain_content_dayTarget_targetName"
-            android:id="@+id/itemMain_content_dayTarget_timeFragment"
-            android:maxLines="1"
-            android:textColor="@color/black"
-            android:layout_marginTop="2dp"
-            android:text="每天执行时间段"/>
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/itemMain_content_dayTarget_remainCounts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text="剩余次数"
-            android:textColor="@color/swipeoption_blue"
-            app:layout_constraintEnd_toStartOf="@id/itemMain_content_dayTarget_behindOver"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,7 +35,7 @@
             app:layout_constraintTop_toTopOf="parent"
             style="?attr/buttonBarButtonStyle"
             android:textColor="@color/colorPrimaryDark"
-            android:text="提前结束"/>
+            android:text="删除"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
