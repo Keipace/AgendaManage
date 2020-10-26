@@ -16,12 +16,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Target target = new Target("test");
-        TargetDao targetDao = new TargetDao(this);
-        targetDao.addTarget(target);
-        DayTarget dayTarget = new DayTarget("test");
-        DayTargetDao dayTargetDao = new DayTargetDao(this);
-        dayTargetDao.addDayTarget(dayTarget);
 
         // 初始化页面
         super.onCreate(savedInstanceState);

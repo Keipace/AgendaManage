@@ -69,8 +69,8 @@ public class MainExpandableListFillDataServer {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         // 将数据填充到 名称、计划完成时间、重要性 的textView中
         contentholder.targetName.setText(targets.get(childPosition).getName());
-        contentholder.planOver.setText(sdf.format(targets.get(childPosition).getTimePlanOver()));
-        contentholder.importance.setText(targets.get(childPosition).getImportance());
+//        contentholder.planOver.setText(sdf.format(targets.get(childPosition).getTimePlanOver()));
+//        contentholder.importance.setText(targets.get(childPosition).getImportance());
 
         // “提前结束”按钮，按钮中存储着该项数据的id，按钮点击时删除该项
         contentholder.behindOver.setTag(targets.get(childPosition).getId());

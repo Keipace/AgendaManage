@@ -33,8 +33,6 @@ public class MainExpandableListViewHolder {
         public ContentHolder(View itemView) {
             constraintLayout = itemView.findViewById(R.id.itemMain_content_constraintLayout);
             targetName = itemView.findViewById(R.id.itemMain_content_targetName);
-            planOver = itemView.findViewById(R.id.itemMain_content_planOver);
-            importance = itemView.findViewById(R.id.itemMain_content_importance);
             behindOver = itemView.findViewById(R.id.itemMain_content_behindOver);
         }
     }

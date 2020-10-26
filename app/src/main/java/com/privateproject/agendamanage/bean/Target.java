@@ -77,6 +77,14 @@ public class Target {
         this.importance = DEFAULT_IMPORTANCE;
     }
 
+    // 只有name和decoration的初始化
+    public Target(String name, String decoration) {
+        this.name = name;
+        this.decoration = decoration;
+        this.timeNeed = DEFAULT_TIMENEED;
+        this.importance = DEFAULT_IMPORTANCE;
+    }
+
     // decoration使用默认值“无”
     public Target(String name, double timeNeed, Date timePlanOver, Date timeDeadLine, Date timeRealOver, int importance, Date timePreDo) {
         this.name = name;
@@ -100,6 +108,7 @@ public class Target {
         this.importance = importance;
         this.timePreDo = timePreDo;
     }
+
 
     public Integer getId() {
         return id;

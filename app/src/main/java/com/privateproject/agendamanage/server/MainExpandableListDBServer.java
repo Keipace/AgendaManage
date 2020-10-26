@@ -62,21 +62,12 @@ public class MainExpandableListDBServer {
 
     // 将target添加页面中用户输入的信息存到数据库
     public void addTarget(ItemMainAddtargetBinding targetPage) throws ParseException {
-        // 将target添加页面中重要性单选按钮选中的项获取到
-        int importan = Target.IMPORTANCE_MIDDLE;
-        if (targetPage.targetImportanceRadioGroup.getCheckedRadioButtonId()== R.id.target_high_radioButton)
-            importan = Target.IMPORTANCE_HIGH;
-        else if(targetPage.targetImportanceRadioGroup.getCheckedRadioButtonId()==R.id.target_low_radioButton)
-            importan = Target.IMPORTANCE_LOW;
-        // 将用户输入的信息包装成Target对象
+        String decoration = targetPage.targetDecorationEditText.getText().toString();
+        if(decoration.equals("")){
+            decoration = Target.DEFAULT_DECORATION;
+        }
         Target target = new Target(targetPage.targetNameEditText.getText().toString(),
-                targetPage.targetDecorationEditText.getText().toString(),
-                Double.parseDouble(targetPage.targetTimeNeedEditText.getText().toString()),
-                sdf.parse(targetPage.targetTimePlanOverEditText.getText().toString()),
-                sdf.parse(targetPage.targetTimeDeadLineEditText.getText().toString()),
-                sdf.parse("0000-00-00"),
-                importan,
-                sdf.parse(targetPage.targetTimePreDoEditText.getText().toString()));
+                decoration);
         // 将Target对象插入表中
         targetDao.addTarget(target);
     }

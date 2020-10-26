@@ -77,22 +77,14 @@ public class TargetInputPageServer {
             }
         });
 
-        //给target添加弹出框的期待完成时间、最晚完成时间、预实施时间编辑框设置日历选择器
-        TargetUtil.setPreDoPlanDeadLineTimeEditText(context,targetPage.targetTimePlanOverEditText, targetPage.targetTimeDeadLineEditText, targetPage.targetTimePreDoEditText);
-       //给target添加弹出框的期待完成时间、最晚完成时间、预实施时间编辑框设置约束
-        TargetUtil.setTargetConstraint(targetPage.targetTimeNeedEditText, targetPage.targetNameEditText, targetPage.targetDecorationEditText);
-    }
+       }
 
 
     // 将页面中用户输入的数据存到数据库中
     // 如果必要项没有输入则返回false，否则返回true
     private boolean convertTargetMessage() throws ParseException {
         // 判断必要项是否有空的
-        if(targetPage.targetNameEditText.getText().toString().equals("")
-                || targetPage.targetTimeNeedEditText.getText().toString().equals("")
-                || targetPage.targetTimePlanOverEditText.getText().toString().equals("")
-                || targetPage.targetTimeDeadLineEditText.getText().toString().equals("")
-                || targetPage.targetTimePreDoEditText.getText().toString().equals("")) {
+        if(targetPage.targetNameEditText.getText().toString().equals("")) {
             return false;
         }
         // 将target添加页面中用户输入的信息存到数据库

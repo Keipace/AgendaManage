@@ -281,17 +281,20 @@ public class InfoPageServer {
 
     //记录下填写的信息，填入数据库时使用
     public Target getInput(Target target) throws ParseException {
-        int importance = Target.IMPORTANCE_MIDDLE;
-        if (targetPageBinding.targetInfoImportanceRadioGroup.getCheckedRadioButtonId()== R.id.targetInfo_low_radioButton)
+        int importance = -1;
+        if (targetPageBinding.targetInfoImportanceRadioGroup.getCheckedRadioButtonId()== R.id.targetInfo_low_radioButton){
             importance = Target.IMPORTANCE_LOW;
-        else if(targetPageBinding.targetInfoImportanceRadioGroup.getCheckedRadioButtonId()==R.id.targetInfo_high_radioButton)
+        } else if(targetPageBinding.targetInfoImportanceRadioGroup.getCheckedRadioButtonId()==R.id.targetInfo_high_radioButton){
             importance = Target.IMPORTANCE_HIGH;
+        }else if(targetPageBinding.targetInfoImportanceRadioGroup.getCheckedRadioButtonId()==R.id.targetInfo_middle_radioButton){
+            importance = Target.IMPORTANCE_MIDDLE;
+        }
         /*String name, String decoration, double timeNeed, Date timePlanOver, Date timeDeadLine, Date timeRealOver, int importance, Date timePreDo*/
         target.setImportance(importance);
         target.setName(targetPageBinding.targetInfoNameEditView.getText().toString());
         target.setDecoration(targetPageBinding.targetInfoDecorationEditView.getText().toString());
-        target.setTimeDeadLine(sdf.parse(targetPageBinding.targetInfoTimeDeadLineEditView.getText().toString()));
         target.setTimeNeed(Double.parseDouble(targetPageBinding.targetInfoTimeNeedEditView.getText().toString()));
+        target.setTimeDeadLine(sdf.parse(targetPageBinding.targetInfoTimeDeadLineEditView.getText().toString()));
         target.setTimePlanOver(sdf.parse(targetPageBinding.targetInfoTimePlanOverEditView.getText().toString()));
         target.setTimePreDo(sdf.parse(targetPageBinding.targetInfoTimePreDoEditView.getText().toString()));
         target.setTimeRealOver(sdf.parse(targetPageBinding.targetInfoTimeRealOverEditView.getText().toString()));
@@ -301,12 +304,39 @@ public class InfoPageServer {
     //显示出target的信息（用作还未存到数据库时）
     public void showTarget(Target target) {
         targetPageBinding.targetInfoNameEditView.setText(target.getName());
-        targetPageBinding.targetInfoDecorationEditView.setText(target.getDecoration());
-        targetPageBinding.targetInfoTimeNeedEditView.setText(""+target.getTimeNeed());
-        targetPageBinding.targetInfoTimePlanOverEditView.setText(sdf.format(target.getTimePlanOver()));
-        targetPageBinding.targetInfoTimeDeadLineEditView.setText(sdf.format(target.getTimeDeadLine()));
-        targetPageBinding.targetInfoTimePreDoEditView.setText(sdf.format(target.getTimePreDo()));
-        targetPageBinding.targetInfoTimeRealOverEditView.setText(sdf.format(target.getTimeRealOver()));
+        if(target.getDecoration().equals(Target.DEFAULT_DECORATION)){
+            targetPageBinding.targetInfoDecorationEditView.setText("");
+        }else {
+            targetPageBinding.targetInfoDecorationEditView.setText(target.getDecoration());
+        }
+        if (target.getTimeNeed()==-1){
+            targetPageBinding.targetInfoTimeNeedEditView.setText("");
+        }else {
+            targetPageBinding.targetInfoTimeNeedEditView.setText(""+target.getTimeNeed());
+        }
+        if(target.getTimePlanOver()==null){
+            targetPageBinding.targetInfoTimePlanOverEditView.setText("");
+        }else {
+            targetPageBinding.targetInfoTimePlanOverEditView.setText(sdf.format(target.getTimePlanOver()));
+        }
+
+        if(target.getTimeDeadLine()==null){
+            targetPageBinding.targetInfoTimeDeadLineEditView.setText("");
+        }else {
+            targetPageBinding.targetInfoTimeDeadLineEditView.setText(sdf.format(target.getTimeDeadLine()));
+        }
+
+        if(target.getTimePreDo()==null){
+            targetPageBinding.targetInfoTimePreDoEditView.setText("");
+        }else {
+            targetPageBinding.targetInfoTimePreDoEditView.setText(sdf.format(target.getTimePreDo()));
+        }
+
+        if(target.getTimeRealOver()==null){
+            targetPageBinding.targetInfoTimeRealOverEditView.setText("");
+        }else {
+            targetPageBinding.targetInfoTimeRealOverEditView.setText(sdf.format(target.getTimeRealOver()));
+        }
         switch (target.getImportanceRealNum()) {
             case Target.IMPORTANCE_HIGH:
                 targetPageBinding.targetInfoImportanceRadioGroup.check(R.id.targetInfo_high_radioButton);
@@ -314,8 +344,11 @@ public class InfoPageServer {
             case Target.IMPORTANCE_LOW:
                 targetPageBinding.targetInfoImportanceRadioGroup.check(R.id.targetInfo_low_radioButton);
                 break;
-            default:
+            case Target.IMPORTANCE_MIDDLE:
                 targetPageBinding.targetInfoImportanceRadioGroup.check(R.id.targetInfo_middle_radioButton);
+                break;
+            default:
+                return;
         }
     }
 
