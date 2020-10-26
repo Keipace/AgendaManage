@@ -66,21 +66,20 @@ public class MainExpandableListLoadViewServer {
 
     // 加载目标区的child的页面到类中
     // 方法返回[convertView, headHolder]
-    private boolean isTargetFirst = true; //解决第一次展开时判断convertView==null失误
     public Object[] getTargetChildItem(View convertView) {
         MainExpandableListViewHolder.ContentHolder contentHolder;
         // 第一次渲染时convertView为空
-        if (convertView == null || isTargetFirst) {
-            isTargetFirst = false;
+        if (convertView == null || convertView.getTag(R.id.tag_first).equals("dayTarget")) {
             // 加载每个child项的页面
             convertView = LayoutInflater.from(context).inflate(R.layout.item_main_content_target, null);
             // 将页面中的每个控件赋值到holder类中（把页面包装成holder类）
             contentHolder = new MainExpandableListViewHolder.ContentHolder(convertView);
             // 将holder类存储到convertView中,convertView中存着目标区的child和打卡区的child，因此用 key，value 格式的方法
-            convertView.setTag(R.id.tag_first, contentHolder);
+            convertView.setTag(R.id.tag_first, "target");
+            convertView.setTag(R.id.tag_second, contentHolder);
         // 之后渲染时convertView不为空，直接从convertView中取holder类
         } else {
-            contentHolder= (MainExpandableListViewHolder.ContentHolder) convertView.getTag(R.id.tag_first);
+            contentHolder= (MainExpandableListViewHolder.ContentHolder) convertView.getTag(R.id.tag_second);
         }
         Object[] result = new Object[2];
         result[0] = convertView;
@@ -90,17 +89,16 @@ public class MainExpandableListLoadViewServer {
 
     // 加载打卡区的child的页面到类中
     // 方法返回[convertView, contentHolderDayTarget]
-    private boolean isDayTargetFirst = true; //解决第一次展开时判断convertView==null失误
     public Object[] getDayTargetChildItem(View convertView) {
         MainExpandableListViewHolder.ContentHolderDayTarget contentHolderDayTarget;
         // 第一次渲染时convertView为空
-        if(convertView==null || isDayTargetFirst) {
-            isDayTargetFirst = false;
+        if(convertView==null || convertView.getTag(R.id.tag_first).equals("target")) {
             // 加载每个child项的页面
             convertView = LayoutInflater.from(context).inflate(R.layout.item_main_content_daytarget, null);
             // 将页面中的每个控件赋值到holder类中（把页面包装成holder类）
             contentHolderDayTarget = new MainExpandableListViewHolder.ContentHolderDayTarget(convertView);
             // 将holder类存储到convertView中,convertView中存着目标区的child和打卡区的child，因此用 key，value 格式的方法
+            convertView.setTag(R.id.tag_first, "dayTarget");
             convertView.setTag(R.id.tag_second, contentHolderDayTarget);
         // 之后渲染时convertView不为空，直接从convertView中取holder类
         } else {
