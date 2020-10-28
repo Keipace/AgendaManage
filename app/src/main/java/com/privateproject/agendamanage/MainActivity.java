@@ -8,11 +8,12 @@ import com.privateproject.agendamanage.bean.Target;
 import com.privateproject.agendamanage.databinding.ActivityMainBinding;
 import com.privateproject.agendamanage.db.DayTargetDao;
 import com.privateproject.agendamanage.db.TargetDao;
+import com.privateproject.agendamanage.fragment.GoalListFragment;
 
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding pageXml;
-    private MainExpandableListViewAdapter adapter;
+    private GoalListFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +23,8 @@ public class MainActivity extends AppCompatActivity {
         pageXml = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(pageXml.getRoot());
 
-        // 设置adapter，加载list数据并显示到list中
-        adapter = new MainExpandableListViewAdapter(this, pageXml.mainTargetListExpandableListView);
-        pageXml.mainTargetListExpandableListView.setAdapter(adapter);
-
+        fragment = new GoalListFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.main_container_layout,fragment).commitAllowingStateLoss();
     }
 
 }

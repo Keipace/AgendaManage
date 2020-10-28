@@ -6,13 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".fragment.GoalListFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main_container_layout"
+    <ExpandableListView
+        android:id="@+id/main_targetList_expandableListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:dividerHeight="1dp"
+        android:groupIndicator="@null"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
