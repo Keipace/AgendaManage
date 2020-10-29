@@ -50,6 +50,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:text="统计"
         android:textSize="@dimen/font_size"
+        android:onClick="onClick"
         android:drawableTop="@drawable/qingdan_normal"/>
     <Button
         android:id="@+id/mianActivity_me_btn"
@@ -60,10 +61,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:text="我"
         android:textSize="@dimen/font_size"
+        android:onClick="onClick"
         android:drawableTop="@drawable/qingdan_normal"/>
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
