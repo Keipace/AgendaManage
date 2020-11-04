@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.privateproject.agendamanage.activity.TargetInfoActivity;
 
@@ -195,7 +196,7 @@ public class TargetUtil {
 
 
     // target添加弹出框的“描述”不能为空，当焦点发生变化时触发监听器
-    public static View.OnFocusChangeListener getDecorationOnFocusChangeListener(EditText decoration) {
+    public static View.OnFocusChangeListener getDecorationOnFocusChangeListener(TextView decoration) {
         return new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -211,7 +212,7 @@ public class TargetUtil {
 
 
     // target添加弹出框的“名称”不能为空，当焦点发生变化时触发监听器
-    public static View.OnFocusChangeListener getNameOnFocusChangeListener(EditText targetname) {
+    public static View.OnFocusChangeListener getNameOnFocusChangeListener(TextView targetname) {
         return new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -221,11 +222,11 @@ public class TargetUtil {
     }
 
     //设置target页面输入框的约束
-    public static void setTargetConstraint(EditText timeNeedEditText, EditText nameEditText, EditText decorationEditText) {
+    public static void setTargetConstraint(EditText timeNeedEditText, TextView nameEditText, TextView decorationEditText) {
         // 设置“所需小时数”的格式，当文本改变时检查开头的0和小数位数
-        timeNeedEditText.addTextChangedListener(getTextWatcher(timeNeedEditText));
+      /*  timeNeedEditText.addTextChangedListener(getTextWatcher(timeNeedEditText));*/
         // 检测是否为0、最后一位是否是小数点
-        timeNeedEditText.setOnFocusChangeListener(getNotZeroFocusChangeListener(timeNeedEditText));
+     /*   timeNeedEditText.setOnFocusChangeListener(getNotZeroFocusChangeListener(timeNeedEditText));*/
         //// target添加弹出框的“名称”不能为空，当焦点发生变化时触发监听器
         nameEditText.setOnFocusChangeListener(getNameOnFocusChangeListener(nameEditText));
         // target添加弹出框的“描述”不能为空，当焦点发生变化时触发监听器

@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorWhite">#FFFFFF</color>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="swipeoption_blue">#3693D0</color>
     <color name="black">#000</color>
+    <color name="paleYellow">#ff9ff3</color>
+    <color name="greenblue">#81ecec</color>
+    <color name="molired">#ef475d</color>
+    <color name="gray">#804C4747</color>
+    <color name="colorGray">#145A6867</color>
 </resources>

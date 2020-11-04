@@ -21,7 +21,7 @@
             android:paddingLeft="10dp"
             android:text="写下你的计划吧！"
             android:textSize="@dimen/font_size"
-            android:textColor="@android:color/white"/>
+            android:textColor="@color/black"/>
         <Button
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:text="+"
             android:textSize="20sp"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/black"
             android:focusable="false"
             android:focusableInTouchMode="false"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

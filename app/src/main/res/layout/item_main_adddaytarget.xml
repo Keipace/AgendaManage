@@ -2,36 +2,107 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/daytarget_parent_constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/daytarget_parent_constraintLayout"
-    android:padding="20dp">
+    android:background="@drawable/bg_addtarget">
 
-    <!--名称 name-->
-    <EditText
-        android:id="@+id/daytarget_day_name_editText"
-        android:singleLine="true"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/daytarget_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="名称"
-        android:maxLength="12"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:background="@drawable/bg_addtarget_title"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <!--描述 decoration-->
-    <EditText
-        android:id="@+id/daytarget_day_decoration_editText"
+        <TextView
+            android:id="@+id/daytarget_title_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="打卡"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/daytarget_message_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="false"
-        android:inputType="textMultiLine"
-        android:maxLines="2"
-        android:minLines="1"
-        android:hint="描述(可选)"
-        android:selectAllOnFocus="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/daytarget_day_name_editText"/>
+        android:background="@color/greenblue"
+        android:padding="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/daytarget_title_layout">
+        <!--名称 name-->
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/daytarget_day_name_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="名称"
+            android:inputType="text"
+            android:maxLength="12"
+            android:singleLine="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:met_floatingLabel="normal"
+            app:met_maxCharacters="10" />
+
+        <!--描述 decoration-->
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/daytarget_day_decoration_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="描述(可选)"
+            android:inputType="textMultiLine"
+            android:maxLines="2"
+            android:minLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/daytarget_day_name_editText"
+            app:met_floatingLabel="normal"
+            app:met_maxCharacters="30" />
 
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_addtarget_bottom"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/daytarget_message_layout">
+
+        <com.github.rubensousa.raiflatbutton.RaiflatButton
+            android:id="@+id/daytarget_confirm_textView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bg_raiflat_button"
+            android:text="确定"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.github.rubensousa.raiflatbutton.RaiflatButton
+            android:id="@+id/daytarget_cancel_textView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/bg_raiflat_button"
+            android:text="取消"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp"
+            app:layout_constraintRight_toLeftOf="@id/daytarget_confirm_textView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
