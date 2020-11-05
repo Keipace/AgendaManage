@@ -6,6 +6,8 @@ import android.widget.ExpandableListView;
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.bean.DayTarget;
 import com.privateproject.agendamanage.bean.Target;
+import com.privateproject.agendamanage.customDialog.DayTargetDialog;
+import com.privateproject.agendamanage.customDialog.TargetDialog;
 import com.privateproject.agendamanage.databinding.ItemMainAdddaytargetBinding;
 import com.privateproject.agendamanage.databinding.ItemMainAddtargetBinding;
 import com.privateproject.agendamanage.db.DayTargetDao;
@@ -61,22 +63,22 @@ public class MainExpandableListDBServer {
     }
 
     // 将target添加页面中用户输入的信息存到数据库
-    public void addTarget(ItemMainAddtargetBinding targetPage) throws ParseException {
-        String decoration = targetPage.targetDecorationEditText.getText().toString();
+    public void addTarget(TargetDialog targetPage) throws ParseException {
+        String decoration = targetPage.targetDecoration.getText().toString();
         if(decoration.equals("")){
             decoration = Target.DEFAULT_DECORATION;
         }
-        Target target = new Target(targetPage.targetNameEditText.getText().toString(),
+        Target target = new Target(targetPage.targetName.getText().toString(),
                 decoration);
         // 将Target对象插入表中
         targetDao.addTarget(target);
     }
 
     // 将dayTarget添加页面中用户输入的信息存到数据库
-    public void addDayTarget(ItemMainAdddaytargetBinding dayTargetPage) throws ParseException {
+    public void addDayTarget(DayTargetDialog dayTargetPage) throws ParseException {
         // 将用户输入的信息包装成DayTarget对象
-        DayTarget dayTarget = new DayTarget(dayTargetPage.daytargetDayNameEditText.getText().toString(),
-                dayTargetPage.daytargetDayDecorationEditText.getText().toString(),
+        DayTarget dayTarget = new DayTarget(dayTargetPage.dayTargetDayName.getText().toString(),
+                dayTargetPage.dayTargetDayDecoration.getText().toString(),
                 DayTarget.DEFAULT_FREQUENCY,
                 DayTarget.DEFAULT_TIMEFRAGMENTSTART,
                 DayTarget.DEFAULT_TIMEFRAGMENTEND,

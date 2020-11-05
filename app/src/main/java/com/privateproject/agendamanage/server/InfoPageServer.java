@@ -37,7 +37,7 @@ public class InfoPageServer {
         this.targetContext = targetContext;
         this.targetDao = new TargetDao(targetContext);
         // 设置页面输入框的约束
-        TargetUtil.setTargetConstraint(targetPageBinding.targetInfoTimeNeedEditView, targetPageBinding.targetInfoNameEditView, targetPageBinding.targetInfoDecorationEditView);
+        TargetUtil.setTargetConstraint(targetPageBinding.targetInfoTimeNeedEditView, null/*targetPageBinding.targetInfoNameEditView*/, targetPageBinding.targetInfoDecorationEditView);
     }
 
 
@@ -293,27 +293,27 @@ public class InfoPageServer {
 
     // 设置页面的输入框可以编辑
     public void inputTargetEditable(boolean enable) {
-        ComponentUtil.EditTextEnable(enable, targetPageBinding.targetInfoNameEditView);
+        //ComponentUtil.EditTextEnable(enable, targetPageBinding.targetInfoNameEditView);
         ComponentUtil.EditTextEnable(enable, targetPageBinding.targetInfoDecorationEditView);
         ComponentUtil.EditTextEnable(enable, targetPageBinding.targetInfoTimeNeedEditView);
-        ComponentUtil.EditTextEnable(enable, targetPageBinding.targetInfoTimePlanOverEditView);
+        //ComponentUtil.EditTextEnable(enable, targetPageBinding.targetInfoTimePlanOverEditView);
         ComponentUtil.EditTextEnable(enable, targetPageBinding.targetInfoTimeDeadLineEditView);
-        ComponentUtil.EditTextEnable(enable, targetPageBinding.targetInfoTimePreDoEditView);
+        //ComponentUtil.EditTextEnable(enable, targetPageBinding.targetInfoTimePreDoEditView);
         ComponentUtil.EditTextEnable(enable, targetPageBinding.targetInfoTimeRealOverEditView);
 //        pageBinding.targetInfoImportanceRadioGroup.setClickable(enable);
         for (int i = 0; i < targetPageBinding.targetInfoImportanceRadioGroup.getChildCount(); i++) {
             targetPageBinding.targetInfoImportanceRadioGroup.getChildAt(i).setEnabled(enable);
         }
         if(enable) {
-            TargetUtil.setPreDoPlanDeadLineTimeEditText(targetContext,targetPageBinding.targetInfoTimePlanOverEditView,targetPageBinding.targetInfoTimeDeadLineEditView,targetPageBinding.targetInfoTimePreDoEditView);
+            //TargetUtil.setPreDoPlanDeadLineTimeEditText(targetContext,targetPageBinding.targetInfoTimePlanOverEditView,targetPageBinding.targetInfoTimeDeadLineEditView,targetPageBinding.targetInfoTimePreDoEditView);
              targetPageBinding.targetInfoTimeRealOverEditView.setOnTouchListener(
                     TargetUtil.getOnTouchListener(targetContext,targetPageBinding.targetInfoTimeRealOverEditView));
 
         }else {
             //取消期待完成时间、最晚完成时间、预实施时间、实际完成时间的setOnTouchListener监听器
-            targetPageBinding.targetInfoTimePlanOverEditView.setOnTouchListener(null);
+            //targetPageBinding.targetInfoTimePlanOverEditView.setOnTouchListener(null);
             targetPageBinding.targetInfoTimeDeadLineEditView.setOnTouchListener(null);
-            targetPageBinding.targetInfoTimePreDoEditView.setOnTouchListener(null);
+            //targetPageBinding.targetInfoTimePreDoEditView.setOnTouchListener(null);
             targetPageBinding.targetInfoTimeRealOverEditView.setOnTouchListener(null);
         }
 
@@ -332,19 +332,19 @@ public class InfoPageServer {
         }
         /*String name, String decoration, double timeNeed, Date timePlanOver, Date timeDeadLine, Date timeRealOver, int importance, Date timePreDo*/
         target.setImportance(importance);
-        target.setName(targetPageBinding.targetInfoNameEditView.getText().toString());
+        //target.setName(targetPageBinding.targetInfoNameEditView.getText().toString());
         target.setDecoration(targetPageBinding.targetInfoDecorationEditView.getText().toString());
         target.setTimeNeed(Double.parseDouble(targetPageBinding.targetInfoTimeNeedEditView.getText().toString()));
         target.setTimeDeadLine(sdf.parse(targetPageBinding.targetInfoTimeDeadLineEditView.getText().toString()));
-        target.setTimePlanOver(sdf.parse(targetPageBinding.targetInfoTimePlanOverEditView.getText().toString()));
-        target.setTimePreDo(sdf.parse(targetPageBinding.targetInfoTimePreDoEditView.getText().toString()));
+        //target.setTimePlanOver(sdf.parse(targetPageBinding.targetInfoTimePlanOverEditView.getText().toString()));
+        //target.setTimePreDo(sdf.parse(targetPageBinding.targetInfoTimePreDoEditView.getText().toString()));
         target.setTimeRealOver(sdf.parse(targetPageBinding.targetInfoTimeRealOverEditView.getText().toString()));
         return target;
     }
 
     //显示出target的信息（用作还未存到数据库时）
     public void showTarget(Target target) {
-        targetPageBinding.targetInfoNameEditView.setText(target.getName());
+        //targetPageBinding.targetInfoNameEditView.setText(target.getName());
         if(target.getDecoration().equals(Target.DEFAULT_DECORATION)){
             targetPageBinding.targetInfoDecorationEditView.setText("");
         }else {
@@ -356,9 +356,9 @@ public class InfoPageServer {
             targetPageBinding.targetInfoTimeNeedEditView.setText(""+target.getTimeNeed());
         }
         if(target.getTimePlanOver()==null){
-            targetPageBinding.targetInfoTimePlanOverEditView.setText("");
+           // targetPageBinding.targetInfoTimePlanOverEditView.setText("");
         }else {
-            targetPageBinding.targetInfoTimePlanOverEditView.setText(sdf.format(target.getTimePlanOver()));
+            //targetPageBinding.targetInfoTimePlanOverEditView.setText(sdf.format(target.getTimePlanOver()));
         }
 
         if(target.getTimeDeadLine()==null){
@@ -368,9 +368,9 @@ public class InfoPageServer {
         }
 
         if(target.getTimePreDo()==null){
-            targetPageBinding.targetInfoTimePreDoEditView.setText("");
+            //targetPageBinding.targetInfoTimePreDoEditView.setText("");
         }else {
-            targetPageBinding.targetInfoTimePreDoEditView.setText(sdf.format(target.getTimePreDo()));
+            //targetPageBinding.targetInfoTimePreDoEditView.setText(sdf.format(target.getTimePreDo()));
         }
 
         if(target.getTimeRealOver()==null){
@@ -395,11 +395,11 @@ public class InfoPageServer {
 
     // 判断必要项是否有空的
     private boolean isTargetInfoNull() {
-        if(targetPageBinding.targetInfoNameEditView.getText().toString().equals("")
-                || targetPageBinding.targetInfoTimeNeedEditView.getText().toString().equals("")
-                || targetPageBinding.targetInfoTimePlanOverEditView.getText().toString().equals("")
+        if(/*targetPageBinding.targetInfoNameEditView.getText().toString().equals("")
+                || */targetPageBinding.targetInfoTimeNeedEditView.getText().toString().equals("")
+                //|| targetPageBinding.targetInfoTimePlanOverEditView.getText().toString().equals("")
                 || targetPageBinding.targetInfoTimeDeadLineEditView.getText().toString().equals("")
-                || targetPageBinding.targetInfoTimePreDoEditView.getText().toString().equals("")
+                //|| targetPageBinding.targetInfoTimePreDoEditView.getText().toString().equals("")
                 || targetPageBinding.targetInfoTimeRealOverEditView.getText().toString().equals("")){
             return false;
         }
