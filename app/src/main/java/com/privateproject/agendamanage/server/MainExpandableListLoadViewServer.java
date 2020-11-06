@@ -83,5 +83,4 @@ public class MainExpandableListLoadViewServer {
         result[1] = contentHolderDayTarget;
         return result;
     }
-
 }

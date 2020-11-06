@@ -3,13 +3,10 @@ package com.privateproject.agendamanage.server;
 import android.content.Context;
 import android.widget.ExpandableListView;
 
-import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.bean.DayTarget;
 import com.privateproject.agendamanage.bean.Target;
 import com.privateproject.agendamanage.customDialog.DayTargetDialog;
 import com.privateproject.agendamanage.customDialog.TargetDialog;
-import com.privateproject.agendamanage.databinding.ItemMainAdddaytargetBinding;
-import com.privateproject.agendamanage.databinding.ItemMainAddtargetBinding;
 import com.privateproject.agendamanage.db.DayTargetDao;
 import com.privateproject.agendamanage.db.TargetDao;
 
@@ -21,7 +18,6 @@ public class MainExpandableListDBServer {
     /*参数相关*/
     private static TargetDao targetDao;
     private static DayTargetDao dayTargetDao;
-    private static SimpleDateFormat sdf;
     private static ExpandableListView expandableListView;
     // 数据库查询的数据保存到list中
     private static List<Target> targets;
@@ -31,7 +27,6 @@ public class MainExpandableListDBServer {
         // 初始化参数
         this.targetDao = new TargetDao(context);
         this.dayTargetDao = new DayTargetDao(context);
-        sdf = new SimpleDateFormat("yyyy-MM-dd");
         // 加载数据
         this.targets = targetDao.selectAll();
         this.dayTargets = dayTargetDao.selectAll();
@@ -68,22 +63,19 @@ public class MainExpandableListDBServer {
         if(decoration.equals("")){
             decoration = Target.DEFAULT_DECORATION;
         }
-        Target target = new Target(targetPage.targetName.getText().toString(),
-                decoration);
+        Target target = new Target(targetPage.targetName.getText().toString(), decoration);
         // 将Target对象插入表中
         targetDao.addTarget(target);
     }
 
     // 将dayTarget添加页面中用户输入的信息存到数据库
     public void addDayTarget(DayTargetDialog dayTargetPage) throws ParseException {
+        String decoration = dayTargetPage.dayTargetDayDecoration.getText().toString();
+        if (decoration.equals("")) {
+            decoration = DayTarget.DEFAULT_DECORATION;
+        }
         // 将用户输入的信息包装成DayTarget对象
-        DayTarget dayTarget = new DayTarget(dayTargetPage.dayTargetDayName.getText().toString(),
-                dayTargetPage.dayTargetDayDecoration.getText().toString(),
-                DayTarget.DEFAULT_FREQUENCY,
-                DayTarget.DEFAULT_TIMEFRAGMENTSTART,
-                DayTarget.DEFAULT_TIMEFRAGMENTEND,
-                DayTarget.DEFAULT_PLANCOUNTS,
-                DayTarget.DEFAULT_DONECOUNTS);
+        DayTarget dayTarget = new DayTarget(dayTargetPage.dayTargetDayName.getText().toString(), decoration);
         // 将DayTarget对象插入表中
         dayTargetDao.addDayTarget(dayTarget);
     }

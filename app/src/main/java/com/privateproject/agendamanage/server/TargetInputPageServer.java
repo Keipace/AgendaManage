@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.customDialog.TargetDialog;
+import com.privateproject.agendamanage.utils.ComponentUtil;
 import com.privateproject.agendamanage.utils.TargetUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
 import java.text.ParseException;
@@ -12,29 +13,26 @@ import java.text.ParseException;
 public class TargetInputPageServer {
     private Context context;
     private TargetDialog targetDialog;
+
     public TargetInputPageServer(Context context) {
         this.context = context;
         this.targetDialog = new TargetDialog(context, R.style.DayTargetDialog);
     }
 
     //弹出target添加对话框，设置target添加对话框的监听器、文本格式等
-
     public void targetView() {
-
-
         targetDialog.setDayTargetTitle("制定目标").setCancelBtn("×", new TargetDialog.IOnCancelListener() {
+            // 设置取消按钮的监听器
             @Override
             public void OnCancel(TargetDialog dialog) {
                 dialog.dismiss();
             }
         }).setConfirmBtn("√", new TargetDialog.IOnConfirmListener() {
+            // 设置确定按钮的监听器
             @Override
             public void OnConfirm(TargetDialog dialog) {
-
                 // 将焦点获取到确定按钮上
-                targetDialog.confirmBtn.setFocusable(true);
-                targetDialog.confirmBtn.setFocusableInTouchMode(true);
-                targetDialog.confirmBtn.requestFocus();
+                ComponentUtil.ButtonRequestFocus(targetDialog.confirmBtn);
                 try {
                     // 将target添加页面中用户输入的信息存到数据库
                     boolean success = convertTargetMessage();
@@ -64,9 +62,8 @@ public class TargetInputPageServer {
                 MainExpandableListFillDataServer.isAddDialogShow = false;
             }
         });
-        TargetUtil.setTargetConstraint(null,targetDialog.targetName,targetDialog.targetDecoration);
-       }
-
+        TargetUtil.setTargetConstraint(targetDialog.targetName,targetDialog.targetDecoration);
+    }
 
     // 将页面中用户输入的数据存到数据库中
     // 如果必要项没有输入则返回false，否则返回true

@@ -2,9 +2,7 @@ package com.privateproject.agendamanage.bean;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.privateproject.agendamanage.utils.StringUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /*
@@ -71,10 +69,7 @@ public class Target {
 
     // 只有name初始化
     public Target(String name) {
-        this.name = name;
-        this.decoration = DEFAULT_DECORATION;
-        this.timeNeed = DEFAULT_TIMENEED;
-        this.importance = DEFAULT_IMPORTANCE;
+        this(name, DEFAULT_DECORATION);
     }
 
     // 只有name和decoration的初始化
@@ -87,14 +82,7 @@ public class Target {
 
     // decoration使用默认值“无”
     public Target(String name, double timeNeed, Date timePlanOver, Date timeDeadLine, Date timeRealOver, int importance, Date timePreDo) {
-        this.name = name;
-        this.timeNeed = timeNeed;
-        this.timePlanOver = timePlanOver;
-        this.timeDeadLine = timeDeadLine;
-        this.timeRealOver = timeRealOver;
-        this.importance = importance;
-        this.timePreDo = timePreDo;
-        this.decoration = DEFAULT_DECORATION;
+        this(name, DEFAULT_DECORATION, timeNeed, timePlanOver, timeDeadLine, timeRealOver, importance, timePreDo);
     }
 
     // decoration使用自定义值

@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         // 初始化页面
         super.onCreate(savedInstanceState);
         pageXml = ActivityMainBinding.inflate(getLayoutInflater());
@@ -50,19 +49,19 @@ public class MainActivity extends AppCompatActivity {
         //先隐藏所有的Fragment
         hideFragments(transaction);
         switch (i) {
-            case 0:
-                if (goalListFragment == null) {
+            case 0: //显示第一个选项卡
+                if (goalListFragment == null) { //第一次显示第一个选项卡
                     goalListFragment = new GoalListFragment();
                     transaction.add(R.id.mianActivity_container_contrainlayout, goalListFragment).commitAllowingStateLoss();
-                } else {
+                } else { //返回第一个选项卡
                     transaction.show(goalListFragment).commitAllowingStateLoss();
                 }
                 break;
-            case 1:
-                if (fragmentTest == null) {
+            case 1: //显示第二个选项卡
+                if (fragmentTest == null) { //第一次显示第二个选项卡
                     fragmentTest = new FragmentTest();
                     transaction.add(R.id.mianActivity_container_contrainlayout, fragmentTest).commitAllowingStateLoss();
-                } else {
+                } else { //返回第二个选项卡
                     transaction.show(fragmentTest).commitAllowingStateLoss();
                 }
                 break;

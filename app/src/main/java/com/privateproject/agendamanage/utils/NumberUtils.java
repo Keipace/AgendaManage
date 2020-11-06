@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class NumberUtils {
 
-    // 去除开头的0（但不去除0.和0）
+/*    // 去除开头的0（但不去除0.和0）
     public static String moveStartZero(String number) {
         // 只有字符时不作任何处理
         if(number.length()==1) {
@@ -21,7 +21,7 @@ public class NumberUtils {
         return matcher.replaceAll("");
     }
 
-    /*只允许最后有一位小数*/
+    *//*只允许最后有一位小数*//*
     public static String onlyOneDecimal(String number) {
         // 如果不包含小数点则不作任何处理
         if(number.contains(".")) {
@@ -48,6 +48,5 @@ public class NumberUtils {
             number = number.replaceFirst(".$", "");
         }
         return number;
-    }
-
+    }*/
 }

@@ -28,7 +28,7 @@ public class MainExpandableListViewHolder {
     public static class ContentHolder {
         // 每个属性对应页面中的每个控件
         public ConstraintLayout constraintLayout;
-        public TextView targetName,planOver,importance;
+        public TextView targetName;
         public Button behindOver;
         // 构造方法，从页面中获取控件并赋值给对应的属性
         public ContentHolder(View itemView) {
@@ -50,5 +50,4 @@ public class MainExpandableListViewHolder {
             behindOver = itemView.findViewById(R.id.itemMain_content_dayTarget_behindOver);
         }
     }
-
 }

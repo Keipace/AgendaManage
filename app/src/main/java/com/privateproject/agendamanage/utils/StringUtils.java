@@ -7,9 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringUtils {
-    public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+/*    public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");*/
 
-    /**/
     public static String moveSpaceString(String string) {
         String result;
         // 如果字符串是有空白字符（换行、空格、tab）组成，则直接替换成 ""
@@ -24,7 +23,7 @@ public class StringUtils {
         return string;
     }
 
-    /*将yyyy-MM-dd格式的字符串转换成Date类型的数据*/
+/*    *//*将yyyy-MM-dd格式的字符串转换成Date类型的数据*//*
     public static Date getDateFromString(String date) {
         try {
             return sdf.parse(date);
@@ -33,9 +32,8 @@ public class StringUtils {
         }
     }
 
-    /*将date类型的数据转换成yyyy-MM-dd格式的字符串*/
+    *//*将date类型的数据转换成yyyy-MM-dd格式的字符串*//*
     public static String getDateToString(Date date) {
         return sdf.format(date);
-    }
-
+    }*/
 }

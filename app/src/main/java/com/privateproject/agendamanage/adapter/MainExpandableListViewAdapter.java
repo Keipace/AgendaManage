@@ -7,47 +7,37 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 
 import com.privateproject.agendamanage.R;
-import com.privateproject.agendamanage.bean.DayTarget;
-import com.privateproject.agendamanage.bean.Target;
 import com.privateproject.agendamanage.server.MainExpandableListFillDataServer;
 import com.privateproject.agendamanage.server.MainExpandableListLoadViewServer;
 import com.privateproject.agendamanage.server.MainExpandableListDBServer;
 import com.privateproject.agendamanage.viewHolder.MainExpandableListViewHolder;
-
-import java.util.List;
 
 /*
 * 1.查询数据库
 * 2.根据回调方法加载每项的页面
 * 3.根据回调方法填充每项的数据*/
 public class MainExpandableListViewAdapter extends BaseExpandableListAdapter {
-    /*参数相关*/
-    private Context context;
-
-    /*数据相关*/
+    /*1.数据相关*/
     // strings.xml文件中的group数据
     private final String[] groups;
     // 查询数据库的server
     private MainExpandableListDBServer dbServer;
 
-    /*加载页面相关*/
+    /*2.加载页面相关*/
     // 加载页面的server
     private MainExpandableListLoadViewServer loadViewServer;
 
-    /*填充页面相关*/
+    /*3.填充页面相关*/
     // 为页面填充数据
     private MainExpandableListFillDataServer fillDataServer;
-
 
     public MainExpandableListViewAdapter(Context context, ExpandableListView expandableListView) {
         // 初始化需要的参数
         this.dbServer = new MainExpandableListDBServer(context, expandableListView);
         this.fillDataServer = new MainExpandableListFillDataServer(context);
         this.loadViewServer = new MainExpandableListLoadViewServer(context);
-        this.context = context;
         // 加载数据
         this.groups = context.getResources().getStringArray(R.array.main_group);
-
     }
 
     // 回调方法：获取group的数量
@@ -144,6 +134,5 @@ public class MainExpandableListViewAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int i, int i1) {
         return true;
     }
-
 
 }

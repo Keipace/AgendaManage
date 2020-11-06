@@ -1,8 +1,7 @@
 package com.privateproject.agendamanage.utils;
 
-import android.widget.Button;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 public class ComponentUtil {
 
@@ -13,10 +12,10 @@ public class ComponentUtil {
         editText.setLongClickable(enable);
     }
     // 设置Button获取焦点
-    public static void ButtonRequestFocus(ImageView button) {
-        button.setFocusableInTouchMode(true);
-        button.setFocusable(true);
-        button.requestFocus();
+    public static void ButtonRequestFocus(View view) {
+        view.setFocusableInTouchMode(true);
+        view.setFocusable(true);
+        view.requestFocus();
     }
 
 }

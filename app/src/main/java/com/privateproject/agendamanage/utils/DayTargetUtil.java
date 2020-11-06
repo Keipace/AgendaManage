@@ -7,14 +7,13 @@ import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
 
 public class DayTargetUtil {
 
-    public static void setTimeStartToEnd(Context context, EditText startTimeEditText, EditText endTimeEditText) {
+/*    public static void setTimeStartToEnd(Context context, EditText startTimeEditText, EditText endTimeEditText) {
         startTimeEditText.setOnTouchListener(getOnTimeTouchListener(context, startTimeEditText, endTimeEditText, true));
         endTimeEditText.setOnTouchListener(getOnTimeTouchListener(context, startTimeEditText, endTimeEditText, false));
     }
@@ -37,9 +36,9 @@ public class DayTargetUtil {
                                     String[] temp = endEditText.getText().toString().split(":");
                                     int endHour = Integer.parseInt(temp[0]);
                                     int endMinute = Integer.parseInt(temp[1]);
-                                    /*
+                                    *//*
                                      * 1.开始时间的小时数不能大于结束时间的小时数
-                                     * 2.开始时间的小时数等于结束时间的小时数时，开始时间的分钟数不能大于结束时间的分钟数*/
+                                     * 2.开始时间的小时数等于结束时间的小时数时，开始时间的分钟数不能大于结束时间的分钟数*//*
                                     if(hourOfDay>endHour || (hourOfDay==endHour&&minute>=endMinute) ) {
                                         ToastUtil.newToast(context, "开始时间必须早于结束时间");
                                         return;
@@ -69,9 +68,9 @@ public class DayTargetUtil {
                 return false;
             }
         };
-    }
+    }*/
 
-    // 将int类型的小时数和分钟数转换为 hh:mm 格式
+/*    // 将int类型的小时数和分钟数转换为 hh:mm 格式
     private static String formatTimeText(int hourOfDay, int minute) {
         String temp = "";
         // 如果小时数为0，则小时数为“00”
@@ -94,7 +93,8 @@ public class DayTargetUtil {
             temp += minute;
         }
         return temp;
-    }
+    }*/
+/*
     // 处理只输入一个0和结尾是小数点的问题
     public static View.OnFocusChangeListener getNotZeroFocusChangeListener(EditText editText) {
         return new View.OnFocusChangeListener() {
@@ -135,8 +135,9 @@ public class DayTargetUtil {
             public void afterTextChanged(Editable s) {}
         };
     }
+*/
 
-    public static void setDayTargetConstraint(TextView nameEditText, TextView decorationEditText, TextView planCountsEditText, TextView frequencyEditText) {
+    public static void setDayTargetConstraint(EditText nameEditText, EditText decorationEditText) {
         // DayTarget详情页的“名称”不能为空，当焦点发生变化时触发监听器
         nameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -148,22 +149,8 @@ public class DayTargetUtil {
         decorationEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    // 此处为得到焦点时的处理内容
-                } else {
-                    // 此处为失去焦点时的处理内容
-                    decorationEditText.setText(StringUtils.moveSpaceString(decorationEditText.getText().toString()));
-                }
+                decorationEditText.setText(StringUtils.moveSpaceString(decorationEditText.getText().toString()));
             }
         });
-//        // 计划完成次数，输入的时候处理开头的0和只允许一位小数；失去焦点时处理只输入一个0和结尾是小数点的问题
-//        planCountsEditText.addTextChangedListener(getTextWatcher(planCountsEditText));
-//        planCountsEditText.setOnFocusChangeListener(getNotZeroFocusChangeListener(planCountsEditText));
-//
-//        // 频率，输入的时候处理开头的0和只允许一位小数；失去焦点时处理只输入一个0和结尾是小数点的问题
-//        frequencyEditText.addTextChangedListener(getTextWatcher(frequencyEditText));
-//        frequencyEditText.setOnFocusChangeListener(getNotZeroFocusChangeListener(frequencyEditText));
-
     }
-
 }

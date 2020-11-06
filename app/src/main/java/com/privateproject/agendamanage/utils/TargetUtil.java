@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class TargetUtil {
-    //设置preDo、deadLine、planOver的时间选择器
+/*    //设置preDo、deadLine、planOver的时间选择器
     public static void setPreDoPlanDeadLineTimeEditText(Context context, EditText planOverDate, EditText deadLineDate, EditText preDoDate) {
         planOverDate.setOnTouchListener(getOnTouchListener(context, planOverDate, deadLineDate, preDoDate, 1));
         deadLineDate.setOnTouchListener(getOnTouchListener(context, planOverDate, deadLineDate, preDoDate, 2));
@@ -40,7 +40,7 @@ public class TargetUtil {
                             Calendar temp = Calendar.getInstance();
                             temp.set(year, monthOfYear, dayOfMonth);
                             // 三个日期的选择都不能早于当前日期
-                            /*temp早于current，返回负数；temp等于current，返回0；temp晚于current，返回正数*/
+                            *//*temp早于current，返回负数；temp等于current，返回0；temp晚于current，返回正数*//*
                             if (temp.compareTo(current) < 0) {
                                 ToastUtil.newToast(context, "时间不应早于当前时间");
                                 return;
@@ -65,9 +65,9 @@ public class TargetUtil {
                 return false;
             }
         };
-    }
+    }*/
 
-    public static View.OnTouchListener getOnTouchListener(Context context, EditText editText) {
+/*    public static View.OnTouchListener getOnTouchListener(Context context, EditText editText) {
         return new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -82,7 +82,7 @@ public class TargetUtil {
                             Calendar temp = Calendar.getInstance();
                             temp.set(year, monthOfYear, dayOfMonth);
                             // 三个日期的选择都不能早于当前日期
-                            /*temp早于current，返回负数；temp等于current，返回0；temp晚于current，返回正数*/
+                            *//*temp早于current，返回负数；temp等于current，返回0；temp晚于current，返回正数*//*
                             if (temp.compareTo(current) < 0) {
                                 ToastUtil.newToast(context, "时间不应早于当前时间");
                                 return;
@@ -98,9 +98,9 @@ public class TargetUtil {
                 return false;
             }
         };
-    }
+    }*/
 
-    private static boolean compareTime(Context context, int position, EditText planOverDate, EditText deadLineDate, EditText preDoDate, String input) {
+/*    private static boolean compareTime(Context context, int position, EditText planOverDate, EditText deadLineDate, EditText preDoDate, String input) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         // 用户选择的日期转换成string类型
         // 从target添加框页面获取期待完成时间、最晚完成时间、预实施时间
@@ -108,10 +108,10 @@ public class TargetUtil {
         String preDoDatestr = preDoDate.getText().toString();
         String planOverDatestr = planOverDate.getText().toString();
         try {
-            /*通过传递的position来判断是哪个日期
+            *//*通过传递的position来判断是哪个日期
              * 1：planOverDate
              * 2：deadLineDate
-             * 3：preDoDate*/
+             * 3：preDoDate*//*
             // preDoDate早于planOverDate早于deadLineDate
             if (position == 1) { // 当前选择的日期为planOverDate
                 if (!deadLineDatestr.equals("") && sdf.parse(input).getTime() > sdf.parse(deadLineDatestr).getTime()) {
@@ -219,18 +219,23 @@ public class TargetUtil {
                 targetname.setText(StringUtils.moveSpaceString(targetname.getText().toString()));
             }
         };
-    }
+    }*/
 
     //设置target页面输入框的约束
-    public static void setTargetConstraint(TextView timeNeedEditText, TextView nameEditText, TextView decorationEditText) {
-        // 设置“所需小时数”的格式，当文本改变时检查开头的0和小数位数
-      /*  timeNeedEditText.addTextChangedListener(getTextWatcher(timeNeedEditText));*/
-        // 检测是否为0、最后一位是否是小数点
-     /*   timeNeedEditText.setOnFocusChangeListener(getNotZeroFocusChangeListener(timeNeedEditText));*/
-        //// target添加弹出框的“名称”不能为空，当焦点发生变化时触发监听器
-        nameEditText.setOnFocusChangeListener(getNameOnFocusChangeListener(nameEditText));
-        // target添加弹出框的“描述”不能为空，当焦点发生变化时触发监听器
-        decorationEditText.setOnFocusChangeListener(getDecorationOnFocusChangeListener(decorationEditText));
-
+    public static void setTargetConstraint(TextView nameEditText, TextView decorationEditText) {
+        // Target详情页的“名称”不能为空，当焦点发生变化时触发监听器
+        nameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                nameEditText.setText(StringUtils.moveSpaceString(nameEditText.getText().toString()));
+            }
+        });
+        // Target详情页的“描述”不能为空，当焦点发生变化时触发监听器
+        decorationEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                decorationEditText.setText(StringUtils.moveSpaceString(decorationEditText.getText().toString()));
+            }
+        });
     }
 }

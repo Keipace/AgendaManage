@@ -9,7 +9,6 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,20 +16,14 @@ import androidx.annotation.NonNull;
 import com.github.rubensousa.raiflatbutton.RaiflatButton;
 import com.privateproject.agendamanage.R;
 
-public class TargetDialog extends Dialog implements View.OnClickListener {
-    public TextView TargetTitle,targetName,targetDecoration;
+public class
+TargetDialog extends Dialog implements View.OnClickListener {
+    public TextView TargetTitle;
+    public EditText targetName,targetDecoration;
     public RaiflatButton cancelBtn,confirmBtn;
     private String title,cancel,confirm;
     private TargetDialog.IOnCancelListener cancelListener;
     private TargetDialog.IOnConfirmListener confirmListener;
-
-    public TargetDialog(Context context) {
-        super(context);
-    }
-
-    public TargetDialog(Context context, View layout, int style) {
-        super(context,style);
-    }
 
     public TargetDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
@@ -58,8 +51,7 @@ public class TargetDialog extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_main_addtarget);
         //设置宽度
-        WindowManager manager=getWindow().getWindowManager();
-        Display display=manager.getDefaultDisplay();
+        Display display=getWindow().getWindowManager().getDefaultDisplay();
         WindowManager.LayoutParams params=getWindow().getAttributes();
         Point size=new Point();
         display.getSize(size);
@@ -72,11 +64,6 @@ public class TargetDialog extends Dialog implements View.OnClickListener {
         confirmBtn = findViewById(R.id.target_confirm_textView);
         targetName=findViewById(R.id.target_name_editText);
         targetDecoration=findViewById(R.id.target_decoration_editText);
-       /* targetTimePlanOver=findViewById(R.id.target_time_planOver_edit_textView);
-        targetTimeDeadLine=findViewById(R.id.target_time_deadLine_editText);
-        targetTimePreDo=findViewById(R.id.target_time_preDo_edit_textView);
-        targetTimeNeed=findViewById(R.id.target_time_need_editText);
-        targetImportance=findViewById(R.id.target_importance_radioGroup);*/
 
         //给控件填内容
         if (!TextUtils.isEmpty(title)) {

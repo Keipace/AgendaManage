@@ -2,11 +2,6 @@ package com.privateproject.agendamanage.bean;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.privateproject.agendamanage.utils.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /*
 DayTarget:
@@ -66,46 +61,26 @@ public class DayTarget {
 
     /*只有name的初始化*/
     public DayTarget(String name) {
-        this.name = name;
-        this.timeFragmentStart = DEFAULT_TIMEFRAGMENTSTART;
-        this.timeFragmentEnd = DEFAULT_TIMEFRAGMENTEND;
-        this.planCounts = DEFAULT_PLANCOUNTS;
-        this.doneCounts = DEFAULT_DONECOUNTS;
-        this.decoration = DEFAULT_DECORATION;
-        this.frequency = DEFAULT_FREQUENCY;
+        this(name, DEFAULT_DECORATION);
+    }
+
+    public DayTarget(String name, String decoration) {
+        this(name, decoration, DEFAULT_FREQUENCY, DEFAULT_TIMEFRAGMENTSTART, DEFAULT_TIMEFRAGMENTEND, DEFAULT_PLANCOUNTS, DEFAULT_DONECOUNTS);
     }
 
     // decoration使用默认值“无”，frequency使用默认值1
     public DayTarget(String name, String timeFragmentStart, String timeFragmentEnd, int planCounts, int doneCounts) {
-        this.name = name;
-        this.timeFragmentStart = timeFragmentStart;
-        this.timeFragmentEnd = timeFragmentEnd;
-        this.planCounts = planCounts;
-        this.doneCounts = doneCounts;
-        this.decoration = DEFAULT_DECORATION;
-        this.frequency = DEFAULT_FREQUENCY;
+        this(name, DEFAULT_DECORATION, DEFAULT_FREQUENCY, timeFragmentStart, timeFragmentEnd, planCounts, doneCounts);
     }
 
     // decoration使用自定义值，frequency使用默认值1
     public DayTarget(String name, String decoration, String timeFragmentStart, String timeFragmentEnd, int planCounts, int doneCounts) {
-        this.name = name;
-        this.decoration = decoration;
-        this.timeFragmentStart = timeFragmentStart;
-        this.timeFragmentEnd = timeFragmentEnd;
-        this.planCounts = planCounts;
-        this.doneCounts = doneCounts;
-        this.frequency = DEFAULT_FREQUENCY;
+        this(name, decoration, DEFAULT_FREQUENCY, timeFragmentStart, timeFragmentEnd, planCounts, doneCounts);
     }
 
     // decoration使用默认值“无”， frequency使用自定义值
     public DayTarget(String name, int frequency, String timeFragmentStart, String timeFragmentEnd, int planCounts, int doneCounts) {
-        this.name = name;
-        this.frequency = frequency;
-        this.timeFragmentStart = timeFragmentStart;
-        this.timeFragmentEnd = timeFragmentEnd;
-        this.planCounts = planCounts;
-        this.doneCounts = doneCounts;
-        this.decoration = DEFAULT_DECORATION;
+        this(name, DEFAULT_DECORATION, frequency, timeFragmentStart, timeFragmentEnd, planCounts, doneCounts);
     }
 
     // decoration使用自定义值， frequency使用自定义值

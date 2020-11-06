@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.privateproject.agendamanage.R;
-
 public class FragmentTest extends Fragment {
 
     @Nullable
@@ -20,6 +18,5 @@ public class FragmentTest extends Fragment {
         TextView textView = new TextView(getContext());
         textView.setText("test");
         return textView;
-
     }
 }

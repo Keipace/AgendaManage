@@ -7,6 +7,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--页面四个角方角变圆角时透明-->
     <style name="DayTargetDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>

@@ -11,8 +11,6 @@ import com.privateproject.agendamanage.databinding.ActivityDayTargetInfoBinding;
 import com.privateproject.agendamanage.server.InfoPageServer;
 import com.privateproject.agendamanage.utils.ToastUtil;
 
-import java.text.ParseException;
-
 public class DayTargetInfoActivity extends AppCompatActivity {
     private InfoPageServer infoPageServer;
     private ActivityDayTargetInfoBinding pageBinding;
@@ -41,7 +39,5 @@ public class DayTargetInfoActivity extends AppCompatActivity {
         super.onResume();
         // 根据id来设置页面内容
         infoPageServer.setDayTargetInfoPageContent(this.id);
-        // 设置页面不可编辑状态
-        //infoPageServer.inputDayEditable(false);
     }
 }
