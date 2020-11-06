@@ -33,7 +33,7 @@
         android:id="@+id/daytarget_message_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/greenblue"
+        android:background="@color/colorWhite"
         android:padding="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/target_title_layout">

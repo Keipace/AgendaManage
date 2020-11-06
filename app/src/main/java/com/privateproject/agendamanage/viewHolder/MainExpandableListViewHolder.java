@@ -2,6 +2,7 @@ package com.privateproject.agendamanage.viewHolder;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -41,12 +42,12 @@ public class MainExpandableListViewHolder {
         // 每个属性对应页面中的每个控件
         public ConstraintLayout constraintLayout;
         public TextView targetName;
-        public Button behindOver;
+        public ImageView behindOver;
         // 构造方法，从页面中获取控件并赋值给对应的属性
         public ContentHolderDayTarget(View itemView) {
             constraintLayout = itemView.findViewById(R.id.itemMain_content_dayTarget_constraintLayout);
             targetName = itemView.findViewById(R.id.itemMain_content_dayTarget_targetName);
-            //behindOver = itemView.findViewById(R.id.itemMain_content_dayTarget_behindOver);
+            behindOver = itemView.findViewById(R.id.itemMain_content_dayTarget_behindOver);
         }
     }
 

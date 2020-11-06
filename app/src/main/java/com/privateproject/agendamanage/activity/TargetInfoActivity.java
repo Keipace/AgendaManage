@@ -52,7 +52,7 @@ public class TargetInfoActivity extends AppCompatActivity {
         // 根据id来设置页面内容
         infoPageServer.setTargetInfoPageContent(this.id);
         // 设置页面不可编辑状态
-        infoPageServer.inputTargetEditable(false);
+        //infoPageServer.inputTargetEditable(false);
     }
 
 

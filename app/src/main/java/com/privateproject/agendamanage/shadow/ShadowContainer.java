@@ -22,6 +22,10 @@ public class ShadowContainer extends ViewGroup {
     private final float deltaLength;
     private final float cornerRadius;
     private final Paint mShadowPaint;
+    private final float topMargin;
+    private final float leftMargin;
+    private final float rightMargin;
+    private final float bottomMargin;
     private boolean drawShadow;
 
     public ShadowContainer(Context context) {
@@ -39,6 +43,10 @@ public class ShadowContainer extends ViewGroup {
 //        int shadowColor = Color.RED;
         float shadowRadius = a.getDimension(R.styleable.ShadowContainer_containerShadowRadius, 0);
         deltaLength = a.getDimension(R.styleable.ShadowContainer_containerDeltaLength, 0);
+        topMargin=a.getDimension(R.styleable.ShadowContainer_containerTopMargin,0);
+        leftMargin=a.getDimension(R.styleable.ShadowContainer_containerLeftMargin,0);
+        rightMargin=a.getDimension(R.styleable.ShadowContainer_containerRightMargin,0);
+        bottomMargin=a.getDimension(R.styleable.ShadowContainer_containerBottomMargin,0);
         cornerRadius = a.getDimension(R.styleable.ShadowContainer_containerCornerRadius, 0);
         float dx = a.getDimension(R.styleable.ShadowContainer_deltaX, 0);
         float dy = a.getDimension(R.styleable.ShadowContainer_deltaY, 0);
@@ -106,10 +114,10 @@ public class ShadowContainer extends ViewGroup {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         View child = getChildAt(0);
         LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
-        int childBottomMargin = (int) (Math.max(deltaLength, layoutParams.bottomMargin) + 1);
-        int childLeftMargin = (int) (Math.max(deltaLength, layoutParams.leftMargin) + 1);
-        int childRightMargin = (int) (Math.max(deltaLength, layoutParams.rightMargin) + 1);
-        int childTopMargin = (int) (Math.max(deltaLength, layoutParams.topMargin) + 1);
+        int childBottomMargin = (int) (Math.max(deltaLength, layoutParams.bottomMargin) + bottomMargin);
+        int childLeftMargin = (int) (Math.max(deltaLength, layoutParams.leftMargin) + leftMargin);
+        int childRightMargin = (int) (Math.max(deltaLength, layoutParams.rightMargin) + rightMargin);
+        int childTopMargin = (int) (Math.max(deltaLength, layoutParams.topMargin) + topMargin);
         int widthMeasureSpecMode;
         int widthMeasureSpecSize;
         int heightMeasureSpecMode;

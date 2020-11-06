@@ -3,12 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/itemMain_content_dayTarget_constraintLayout"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    android:background="@drawable/constraintlayout_goalbg"
-    android:layout_marginLeft="2dp"
-    android:layout_marginRight="2dp"
-    android:padding="20dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!--<TextView
@@ -32,66 +26,81 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dayTarget_beginTime"
         />-->
-    <ImageView
+    <com.privateproject.agendamanage.shadow.ShadowContainer
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/iv_line"
-        android:scaleType="fitXY"
-        android:layout_width="20dp"
-        android:layout_height="80dp"
-        android:src="@drawable/verticalline"
-        />
+        app:containerShadowColor="@color/colorGray"
+        app:containerShadowRadius="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:background="@drawable/constraintlayout_goalbg"
+            android:layout_height="wrap_content">
+            <ImageView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/iv_line"
+                android:scaleType="fitXY"
+                android:layout_width="20dp"
+                android:layout_height="80dp"
+                android:src="@drawable/verticalline"
+                />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/itemMain_content_dayTarget_targetName"
-        app:layout_constraintLeft_toRightOf="@id/iv_line"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="10dp"
-        android:text="计划名称"
-        android:maxLines="1"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/itemMain_content_dayTarget_targetName"
+                app:layout_constraintLeft_toRightOf="@id/iv_line"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="10dp"
+                android:text="计划名称"
+                android:maxLines="1"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tv_decoration"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintLeft_toLeftOf="@id/itemMain_content_dayTarget_targetName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="10dp"
-        android:text="这是描述"
-        />
+            <TextView
+                android:id="@+id/tv_decoration"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintLeft_toLeftOf="@id/itemMain_content_dayTarget_targetName"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="10dp"
+                android:text="这是描述"
+                />
 
-    <!--<TextView
-        android:id="@+id/tv_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_decoration"
-        android:text="完成1/5次"/>-->
+            <!--<TextView
+                android:id="@+id/tv_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_decoration"
+                android:text="完成1/5次"/>-->
 
-    <ImageView
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:id="@+id/dayTarget_delete"
-        app:layout_constraintTop_toTopOf="@id/iv_line"
-        app:layout_constraintRight_toRightOf="parent"
-        android:src="@drawable/back"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="@id/dayTarget_delete"
-        app:layout_constraintBottom_toBottomOf="@id/tv_decoration"
-        android:textSize="16sp"
-        android:text="还剩10天"
-        android:textStyle="bold"
-        android:textColor="@color/molired"/>
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:id="@+id/itemMain_content_dayTarget_behindOver"
+                app:layout_constraintTop_toTopOf="@id/iv_line"
+                app:layout_constraintRight_toRightOf="parent"
+                android:src="@drawable/back"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="@id/itemMain_content_dayTarget_behindOver"
+                app:layout_constraintBottom_toBottomOf="@id/tv_decoration"
+                android:textSize="16sp"
+                android:text="还剩10天"
+                android:textStyle="bold"
+                android:textColor="@color/molired"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.privateproject.agendamanage.shadow.ShadowContainer>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

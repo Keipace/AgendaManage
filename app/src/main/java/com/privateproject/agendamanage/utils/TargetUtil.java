@@ -222,7 +222,7 @@ public class TargetUtil {
     }
 
     //设置target页面输入框的约束
-    public static void setTargetConstraint(EditText timeNeedEditText, TextView nameEditText, TextView decorationEditText) {
+    public static void setTargetConstraint(TextView timeNeedEditText, TextView nameEditText, TextView decorationEditText) {
         // 设置“所需小时数”的格式，当文本改变时检查开头的0和小数位数
       /*  timeNeedEditText.addTextChangedListener(getTextWatcher(timeNeedEditText));*/
         // 检测是否为0、最后一位是否是小数点

@@ -7,14 +7,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragment.GoalListFragment">
-
-    <ExpandableListView
-        android:id="@+id/main_targetList_expandableListView"
+    <com.privateproject.agendamanage.shadow.ShadowContainer
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="1dp"
-        android:groupIndicator="@null"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:containerShadowColor="@color/colorGray">
+        <ExpandableListView
+            android:id="@+id/main_targetList_expandableListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="5dp"
+            android:groupIndicator="@null"
+            android:divider="@null"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+    </com.privateproject.agendamanage.shadow.ShadowContainer>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

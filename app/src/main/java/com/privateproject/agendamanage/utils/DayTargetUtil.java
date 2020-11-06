@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -135,7 +136,7 @@ public class DayTargetUtil {
         };
     }
 
-    public static void setDayTargetConstraint(EditText nameEditText, EditText decorationEditText, EditText planCountsEditText, EditText frequencyEditText) {
+    public static void setDayTargetConstraint(TextView nameEditText, TextView decorationEditText, TextView planCountsEditText, TextView frequencyEditText) {
         // DayTarget详情页的“名称”不能为空，当焦点发生变化时触发监听器
         nameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

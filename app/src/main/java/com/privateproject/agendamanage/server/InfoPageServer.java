@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.privateproject.agendamanage.MainActivity;
 import com.privateproject.agendamanage.R;
-import com.privateproject.agendamanage.activity.TargetInfoActivity;
 import com.privateproject.agendamanage.bean.DayTarget;
 import com.privateproject.agendamanage.bean.Target;
 import com.privateproject.agendamanage.databinding.ActivityDayTargetInfoBinding;
@@ -37,7 +36,7 @@ public class InfoPageServer {
         this.targetContext = targetContext;
         this.targetDao = new TargetDao(targetContext);
         // 设置页面输入框的约束
-        TargetUtil.setTargetConstraint(targetPageBinding.targetInfoTimeNeedEditView, null/*targetPageBinding.targetInfoNameEditView*/, targetPageBinding.targetInfoDecorationEditView);
+        //TargetUtil.setTargetConstraint(targetPageBinding.targetInfoTimeNeedEditView, null/*targetPageBinding.targetInfoNameEditView*/, targetPageBinding.targetInfoDecorationEditView);
     }
 
 
@@ -52,7 +51,7 @@ public class InfoPageServer {
         this.dayTargetContext = dayTargetContext;
         this.dayTargetDao = new DayTargetDao(dayTargetContext);
         // 设置页面输入框的约束
-        DayTargetUtil.setDayTargetConstraint(pageBinding.DaytargetInfoNameEditView, pageBinding.DaytargetInfoDecorationEditView, pageBinding.DaytargetInfoPlanCountsEditView, pageBinding.DaytargetInfoFrequencyEditView);
+        //DayTargetUtil.setDayTargetConstraint(pageBinding.DaytargetInfoNameTextView, pageBinding.DaytargetInfoDecorationEditView, pageBinding.DaytargetInfoPlanCountsEditView, pageBinding.DaytargetInfoFrequencyEditView);
     }
 
     private boolean isDayTargetInfoEditing = false;
@@ -67,20 +66,20 @@ public class InfoPageServer {
         this.dayTargetpageBinding.DaytargetInfoBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isDayTargetInfoEditing) {//完成按钮
+                /*if(isDayTargetInfoEditing) {//完成按钮
                     // 按钮获取焦点
                     ComponentUtil.ButtonRequestFocus(dayTargetpageBinding.DaytargetInfoBackButton);
                     // 判断必要项是否填写完全
                     boolean success = isDayTargetInfoNull();
                     if(success) { //不为空时
-                        /*
+                        *//*
                          * 1.修改页面按钮和编辑状态、获取页面的输入信息
                          * 2.修改数据库信息
-                         * 3.查询数据库信息并显示在页面上*/
+                         * 3.查询数据库信息并显示在页面上*//*
                         // 变换按钮
                         isDayTargetInfoEditing = false;
-                        dayTargetpageBinding.DaytargetInfoEditButton.setText("编辑");
-                        dayTargetpageBinding.DaytargetInfoBackButton.setText("返回");
+                      *//*  dayTargetpageBinding.DaytargetInfoEditButton.setText("编辑");
+                        dayTargetpageBinding.DaytargetInfoBackButton.setText("返回");*//*
                         // 设置页面不可编辑
                         inputDayEditable(false);
                         DayTarget dayTarget1 = dayTargetDao.selectById(id);
@@ -95,17 +94,19 @@ public class InfoPageServer {
                 } else {//返回按钮，从当前的dayTarget详情页跳转到主页面
                     Intent intent = new Intent(dayTargetContext, MainActivity.class);
                     dayTargetContext.startActivity(intent);
-                }
+                }*/
+                Intent intent = new Intent(dayTargetContext, MainActivity.class);
+                dayTargetContext.startActivity(intent);
             }
         });
         // 设置 编辑/取消 按钮的监听器
         this.dayTargetpageBinding.DaytargetInfoEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isDayTargetInfoEditing) { //取消按钮
-                    /*
-                    * 1.设置页面不可编辑状态并变换按钮
-                    * 2.恢复页面（查询数据库并填充页面）*/
+                /*if (isDayTargetInfoEditing) { //取消按钮
+                 *//*
+                 * 1.设置页面不可编辑状态并变换按钮
+                 * 2.恢复页面（查询数据库并填充页面）*//*
                     isDayTargetInfoEditing = false;
                     inputDayEditable(false);
                     dayTargetpageBinding.DaytargetInfoEditButton.setText("编辑");
@@ -113,17 +114,18 @@ public class InfoPageServer {
                     // 查询数据库并恢复页面
                     showDayTarget(dayTargetDao.selectById(id));
                 } else { // 编辑按钮
-                    /*
-                    * 1.设置页面可编辑状态并变换按钮*/
+                    *//*
+                 * 1.设置页面可编辑状态并变换按钮*//*
                     isDayTargetInfoEditing = true;
                     inputDayEditable(true);
                     dayTargetpageBinding.DaytargetInfoEditButton.setText("取消");
                     dayTargetpageBinding.DaytargetInfoBackButton.setText("完成");
-                }
+                }*/
+                ToastUtil.newToast(dayTargetContext,"编辑");
             }
         });
     }
-    // 判断页面必要项是否有空的
+   /* // 判断页面必要项是否有空的
     private boolean isDayTargetInfoNull(){
         if (this.dayTargetpageBinding.DaytargetInfoNameEditView.getText().toString().equals("")
                 || this.dayTargetpageBinding.DaytargetInfoFrequencyEditView.getText().toString().equals("")
@@ -133,9 +135,9 @@ public class InfoPageServer {
             return false;
         else
             return true;
-    }
+    }*/
     // 设置页面的输入框可以编辑
-    public void inputDayEditable(boolean enable) {
+    /*public void inputDayEditable(boolean enable) {
         ComponentUtil.EditTextEnable(enable, this.dayTargetpageBinding.DaytargetInfoNameEditView);
         ComponentUtil.EditTextEnable(enable, this.dayTargetpageBinding.DaytargetInfoDecorationEditView);
         ComponentUtil.EditTextEnable(enable, this.dayTargetpageBinding.DaytargetInfoFrequencyEditView);
@@ -148,10 +150,10 @@ public class InfoPageServer {
             this.dayTargetpageBinding.DaytargetInfoTimeFragmentStartEditText.setOnTouchListener(null);
             this.dayTargetpageBinding.DaytargetInfoTimeFragmentEndEditText.setOnTouchListener(null);
         }
-    }
+    }*/
 
     // 获取页面输入的信息并包装为DayTarget对象
-    public DayTarget getInput(DayTarget dayTarget){
+    /*public DayTarget getInput(DayTarget dayTarget){
         dayTarget.setName(this.dayTargetpageBinding.DaytargetInfoNameEditView.getText().toString());
 
         String decoration = this.dayTargetpageBinding.DaytargetInfoDecorationEditView.getText().toString();
@@ -180,38 +182,48 @@ public class InfoPageServer {
         else dayTarget.setDoneCounts(Integer.parseInt(this.dayTargetpageBinding.DaytargetInfoDoneCountsEditView.getText().toString()));
 
         return dayTarget;
-    }
+    }*/
 
     // 将dayTarget的信息显示到dayTarget详情页
     public void showDayTarget(DayTarget dayTarget) {
-        this.dayTargetpageBinding.DaytargetInfoNameEditView.setText(dayTarget.getName());
-        if (dayTarget.getDecoration().equals(DayTarget.DEFAULT_DECORATION))
-            this.dayTargetpageBinding.DaytargetInfoDecorationEditView.setText("");
-        else this.dayTargetpageBinding.DaytargetInfoDecorationEditView.setText(dayTarget.getDecoration());
+        this.dayTargetpageBinding.DaytargetInfoNameTextView.setText(dayTarget.getName());
+        if (dayTarget.getDecoration().equals(DayTarget.DEFAULT_DECORATION)){
+            //this.dayTargetpageBinding.DaytargetInfoDecorationEditView.setText("");
+        } else {
+            this.dayTargetpageBinding.DaytargetInfoDecorationEditView.setText(dayTarget.getDecoration());
+        }
 
-        if (dayTarget.getFrequency() == DayTarget.DEFAULT_FREQUENCY)
-            this.dayTargetpageBinding.DaytargetInfoFrequencyEditView.setText("");
-        else this.dayTargetpageBinding.DaytargetInfoFrequencyEditView.setText(""+dayTarget.getFrequency());
+        if (dayTarget.getFrequency() == DayTarget.DEFAULT_FREQUENCY){
+            //this.dayTargetpageBinding.DaytargetInfoFrequencyEditView.setText("");
+        }else{
+            this.dayTargetpageBinding.DaytargetInfoFrequencyEditView.setText(""+dayTarget.getFrequency());
+        }
 
-        if (dayTarget.getTimeFragmentStart().equals(DayTarget.DEFAULT_TIMEFRAGMENTSTART))
-            this.dayTargetpageBinding.DaytargetInfoTimeFragmentStartEditText.setText("");
-        else this.dayTargetpageBinding.DaytargetInfoTimeFragmentStartEditText.setText(dayTarget.getTimeFragmentStart());
+        if (dayTarget.getTimeFragmentStart().equals(DayTarget.DEFAULT_TIMEFRAGMENTSTART)){
+            //this.dayTargetpageBinding.DaytargetInfoTimeFragmentStartTextView.setText("");
+        }else{
+            this.dayTargetpageBinding.DaytargetInfoTimeFragmentStartTextView.setText(dayTarget.getTimeFragmentStart());
+        }
 
-        if (dayTarget.getTimeFragmentEnd().equals(DayTarget.DEFAULT_TIMEFRAGMENTEND))
-            this.dayTargetpageBinding.DaytargetInfoTimeFragmentEndEditText.setText("");
-        else this.dayTargetpageBinding.DaytargetInfoTimeFragmentEndEditText.setText(dayTarget.getTimeFragmentEnd());
+        if (dayTarget.getTimeFragmentEnd().equals(DayTarget.DEFAULT_TIMEFRAGMENTEND)){
+            //this.dayTargetpageBinding.DaytargetInfoTimeFragmentEndTextView.setText("");
+        }else{
+            this.dayTargetpageBinding.DaytargetInfoTimeFragmentEndTextView.setText(dayTarget.getTimeFragmentEnd());
+        }
 
         if (dayTarget.getPlanCounts() == DayTarget.DEFAULT_PLANCOUNTS){
-            this.dayTargetpageBinding.DaytargetInfoPlanCountsEditView.setText("");
-            this.dayTargetpageBinding.DaytargetInfoRemianCountsEditView.setText("");
+            //this.dayTargetpageBinding.DaytargetInfoPlanCountsEditView.setText("");
+            //this.dayTargetpageBinding.DaytargetInfoRemianCountsEditView.setText("");
         } else {
             this.dayTargetpageBinding.DaytargetInfoPlanCountsEditView.setText(""+dayTarget.getPlanCounts());
             this.dayTargetpageBinding.DaytargetInfoRemianCountsEditView.setText(""+(dayTarget.getPlanCounts()-dayTarget.getDoneCounts()));
         }
 
-        if (dayTarget.getDoneCounts() == DayTarget.DEFAULT_DONECOUNTS)
-            this.dayTargetpageBinding.DaytargetInfoDoneCountsEditView.setText("");
-        else this.dayTargetpageBinding.DaytargetInfoDoneCountsEditView.setText(""+dayTarget.getDoneCounts());
+        if (dayTarget.getDoneCounts() == DayTarget.DEFAULT_DONECOUNTS){
+            //this.dayTargetpageBinding.DaytargetInfoDoneCountsEditView.setText("");
+        }else{
+            this.dayTargetpageBinding.DaytargetInfoDoneCountsEditView.setText(""+dayTarget.getDoneCounts());
+        }
 
     }
 
@@ -228,16 +240,16 @@ public class InfoPageServer {
         targetPageBinding.targetInfoBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isTargetInfoEditing) {//完成按钮
+                /*if(isTargetInfoEditing) {//完成按钮
                     // 按钮获取焦点
                     ComponentUtil.ButtonRequestFocus(targetPageBinding.targetInfoBackButton);
                     // 判断必要项是否填写完全
                     boolean success = isTargetInfoNull();
                     if (success){//不为空时
-                        /*
+                        *//*
                          * 1.修改页面按钮和编辑状态、获取页面的输入信息
                          * 2.修改数据库信息
-                         * 3.查询数据库信息并显示在页面上*/
+                         * 3.查询数据库信息并显示在页面上*//*
                         //变换按钮,设置按钮文字，并设置不可编辑
                         isTargetInfoEditing = false;
                         targetPageBinding.targetInfoEditButton.setText("编辑");
@@ -261,7 +273,9 @@ public class InfoPageServer {
                 } else {//返回按钮，从当前的target详情页跳转到主页面
                     Intent intent = new Intent(targetContext, MainActivity.class);
                     targetContext.startActivity(intent);
-                }
+                }*/
+                Intent intent = new Intent(targetContext, MainActivity.class);
+                targetContext.startActivity(intent);
             }
         });
 
@@ -269,10 +283,10 @@ public class InfoPageServer {
         targetPageBinding.targetInfoEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isTargetInfoEditing) {//取消按钮
-                    /*
-                     * 1.设置页面不可编辑状态并变换按钮
-                     * 2.恢复页面（查询数据库并填充页面）*/
+                /*if (isTargetInfoEditing) {//取消按钮
+                 *//*
+                 * 1.设置页面不可编辑状态并变换按钮
+                 * 2.恢复页面（查询数据库并填充页面）*//*
                     isTargetInfoEditing = false;
                     inputTargetEditable(false);
                     targetPageBinding.targetInfoEditButton.setText("编辑");
@@ -280,19 +294,20 @@ public class InfoPageServer {
                     // 查询数据库并恢复页面
                     showTarget(targetDao.selectById(id));
                 } else {// 编辑按钮
-                    /*
-                     * 1.设置页面可编辑状态并变换按钮*/
+                    *//*
+                 * 1.设置页面可编辑状态并变换按钮*//*
                     isTargetInfoEditing = true;
                     inputTargetEditable(true);
                     targetPageBinding.targetInfoEditButton.setText("取消");
                     targetPageBinding.targetInfoBackButton.setText("完成");
-                }
+                }*/
+                ToastUtil.newToast(targetContext,"编辑");
             }
         });
     }
 
     // 设置页面的输入框可以编辑
-    public void inputTargetEditable(boolean enable) {
+   /* public void inputTargetEditable(boolean enable) {
         //ComponentUtil.EditTextEnable(enable, targetPageBinding.targetInfoNameEditView);
         ComponentUtil.EditTextEnable(enable, targetPageBinding.targetInfoDecorationEditView);
         ComponentUtil.EditTextEnable(enable, targetPageBinding.targetInfoTimeNeedEditView);
@@ -318,10 +333,10 @@ public class InfoPageServer {
         }
 
 
-    }
+    }*/
 
     //记录下填写的信息，填入数据库时使用
-    public Target getInput(Target target) throws ParseException {
+    /*public Target getInput(Target target) throws ParseException {
         int importance = -1;
         if (targetPageBinding.targetInfoImportanceRadioGroup.getCheckedRadioButtonId()== R.id.targetInfo_low_radioButton){
             importance = Target.IMPORTANCE_LOW;
@@ -330,7 +345,7 @@ public class InfoPageServer {
         }else if(targetPageBinding.targetInfoImportanceRadioGroup.getCheckedRadioButtonId()==R.id.targetInfo_middle_radioButton){
             importance = Target.IMPORTANCE_MIDDLE;
         }
-        /*String name, String decoration, double timeNeed, Date timePlanOver, Date timeDeadLine, Date timeRealOver, int importance, Date timePreDo*/
+        *//*String name, String decoration, double timeNeed, Date timePlanOver, Date timeDeadLine, Date timeRealOver, int importance, Date timePreDo*//*
         target.setImportance(importance);
         //target.setName(targetPageBinding.targetInfoNameEditView.getText().toString());
         target.setDecoration(targetPageBinding.targetInfoDecorationEditView.getText().toString());
@@ -340,18 +355,18 @@ public class InfoPageServer {
         //target.setTimePreDo(sdf.parse(targetPageBinding.targetInfoTimePreDoEditView.getText().toString()));
         target.setTimeRealOver(sdf.parse(targetPageBinding.targetInfoTimeRealOverEditView.getText().toString()));
         return target;
-    }
+    }*/
 
     //显示出target的信息（用作还未存到数据库时）
     public void showTarget(Target target) {
-        //targetPageBinding.targetInfoNameEditView.setText(target.getName());
+        targetPageBinding.targetInfoNameTextView.setText(target.getName());
         if(target.getDecoration().equals(Target.DEFAULT_DECORATION)){
-            targetPageBinding.targetInfoDecorationEditView.setText("");
+            //targetPageBinding.targetInfoDecorationEditView.setText("");
         }else {
             targetPageBinding.targetInfoDecorationEditView.setText(target.getDecoration());
         }
-        if (target.getTimeNeed()==-1){
-            targetPageBinding.targetInfoTimeNeedEditView.setText("");
+        if (target.getTimeNeed()==Target.DEFAULT_TIMENEED){
+            //targetPageBinding.targetInfoTimeNeedEditView.setText("");
         }else {
             targetPageBinding.targetInfoTimeNeedEditView.setText(""+target.getTimeNeed());
         }
@@ -362,7 +377,7 @@ public class InfoPageServer {
         }
 
         if(target.getTimeDeadLine()==null){
-            targetPageBinding.targetInfoTimeDeadLineEditView.setText("");
+            //targetPageBinding.targetInfoTimeDeadLineEditView.setText("");
         }else {
             targetPageBinding.targetInfoTimeDeadLineEditView.setText(sdf.format(target.getTimeDeadLine()));
         }
@@ -374,7 +389,7 @@ public class InfoPageServer {
         }
 
         if(target.getTimeRealOver()==null){
-            targetPageBinding.targetInfoTimeRealOverEditView.setText("");
+            //targetPageBinding.targetInfoTimeRealOverEditView.setText("");
         }else {
             targetPageBinding.targetInfoTimeRealOverEditView.setText(sdf.format(target.getTimeRealOver()));
         }
@@ -394,9 +409,9 @@ public class InfoPageServer {
     }
 
     // 判断必要项是否有空的
-    private boolean isTargetInfoNull() {
-        if(/*targetPageBinding.targetInfoNameEditView.getText().toString().equals("")
-                || */targetPageBinding.targetInfoTimeNeedEditView.getText().toString().equals("")
+    /*private boolean isTargetInfoNull() {
+        if(*//*targetPageBinding.targetInfoNameEditView.getText().toString().equals("")
+                || *//*targetPageBinding.targetInfoTimeNeedEditView.getText().toString().equals("")
                 //|| targetPageBinding.targetInfoTimePlanOverEditView.getText().toString().equals("")
                 || targetPageBinding.targetInfoTimeDeadLineEditView.getText().toString().equals("")
                 //|| targetPageBinding.targetInfoTimePreDoEditView.getText().toString().equals("")
@@ -404,6 +419,6 @@ public class InfoPageServer {
             return false;
         }
         return true;
-    }
+    }*/
 
 }
