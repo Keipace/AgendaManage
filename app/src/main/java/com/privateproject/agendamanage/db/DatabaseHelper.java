@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.privateproject.agendamanage.bean.DayTarget;
+import com.privateproject.agendamanage.bean.DayTimeFragment;
 import com.privateproject.agendamanage.bean.Target;
 
 import java.sql.SQLException;
@@ -57,6 +58,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTable(connectionSource, DayTarget.class);
             TableUtils.createTable(connectionSource, Target.class);
+            TableUtils.createTable(connectionSource, DayTimeFragment.class);
+            Dao<DayTimeFragment, Integer> dao = getDao(DayTimeFragment.class);
+            dao.create(new DayTimeFragment(0, "00:00"));
+            dao.create(new DayTimeFragment(1, "23:59"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -69,6 +74,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.dropTable(connectionSource, Target.class, true);
             TableUtils.dropTable(connectionSource, DayTarget.class, true);
+            TableUtils.dropTable(connectionSource, DayTimeFragment.class, true);
             onCreate(database, connectionSource);
         } catch (SQLException e) {
             e.printStackTrace();

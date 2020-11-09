@@ -7,9 +7,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragment.GoalListFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragmentGoalList_header_constraintLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fragmentGoalList_dayTimeSelect_btn"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="分割时间"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.privateproject.agendamanage.shadow.ShadowContainer
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentGoalList_header_constraintLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:containerShadowColor="@color/colorGray">
         <ExpandableListView
             android:id="@+id/main_targetList_expandableListView"
