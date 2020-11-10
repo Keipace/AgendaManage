@@ -9,11 +9,13 @@ import android.view.View;
 import com.privateproject.agendamanage.databinding.ActivityMainBinding;
 import com.privateproject.agendamanage.fragment.FragmentTest;
 import com.privateproject.agendamanage.fragment.GoalListFragment;
+import com.privateproject.agendamanage.fragment.WeekTimeFragment;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding pageXml;
     private GoalListFragment goalListFragment;
     private FragmentTest fragmentTest;
+    private WeekTimeFragment weekTimeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 selectTab(1);
                 break;
             case R.id.mianActivity_tongji_btn:
-                //统计页面
+                selectTab(2);
                 break;
             case R.id.mianActivity_me_btn:
                 //我 页面
@@ -58,6 +60,14 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case 1: //显示第二个选项卡
+                if (weekTimeFragment == null) { //第一次显示第二个选项卡
+                    weekTimeFragment = new WeekTimeFragment();
+                    transaction.add(R.id.mianActivity_container_contrainlayout, weekTimeFragment).commitAllowingStateLoss();
+                } else { //返回第二个选项卡
+                    transaction.show(weekTimeFragment).commitAllowingStateLoss();
+                }
+                break;
+            case 2: //显示第二个选项卡
                 if (fragmentTest == null) { //第一次显示第二个选项卡
                     fragmentTest = new FragmentTest();
                     transaction.add(R.id.mianActivity_container_contrainlayout, fragmentTest).commitAllowingStateLoss();
@@ -75,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if (goalListFragment != null) {
             transaction.hide(goalListFragment);
+        }
+        if (weekTimeFragment != null) {
+            transaction.hide(weekTimeFragment);
         }
     }
 
