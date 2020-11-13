@@ -32,8 +32,8 @@
         app:layout_constraintTop_toBottomOf="@id/fragmentGoalList_header_constraintLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:containerShadowColor="@color/colorGray">
-        <ExpandableListView
-            android:id="@+id/main_targetList_expandableListView"
+        <com.diegodobelo.expandingview.ExpandingList
+            android:id="@+id/fragmentGoalList_listContainer_expandingList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dividerHeight="5dp"

@@ -46,5 +46,6 @@ dependencies {
     // 导入ormlite框架的依赖
     implementation 'com.j256.ormlite:ormlite-android:5.0'
     implementation 'com.j256.ormlite:ormlite-core:5.0'
-
+    // 导入ExpandingList
+    implementation 'com.diegodobelo.expandingview:expanding-view:0.9.4'
 }
