@@ -104,7 +104,7 @@ public class GoalListServer {
 
     private void showInsertTargetDialog(final OnItemCreated positive){
         // 新建弹出框
-        TargetDialog targetDialog=new TargetDialog(context);
+        TargetDialog targetDialog=new TargetDialog(context, R.style.DayTargetDialog);
         // 设置标题、取消按钮、确定按钮
         targetDialog.setTargetTitle("打卡").setCancelBtn("×", new TargetDialog.IOnCancelListener() {
             @Override
@@ -208,7 +208,7 @@ public class GoalListServer {
 
     private void showInsertDayTargetDialog(final OnItemCreated positive){
         // 新建弹出框
-        DayTargetDialog dayTargetDialog=new DayTargetDialog(context);
+        DayTargetDialog dayTargetDialog=new DayTargetDialog(context, R.style.DayTargetDialog);
         // 设置弹出框的标题、取消和确定按钮
         dayTargetDialog.setDayTargetTitle("打卡").setCancelBtn("×", new DayTargetDialog.IOnCancelListener() {
             @Override
