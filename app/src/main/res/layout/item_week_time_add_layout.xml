@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_WeekTimeAdd_CourseName_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:padding="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/item_addCourse_courseName_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="事件"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/item_WeekTimeAdd_CourseName_layout"
+            app:layout_constraintLeft_toLeftOf="@id/item_WeekTimeAdd_CourseName_layout"
+            app:layout_constraintRight_toLeftOf="@id/item_WeekTimeAdd_courseName_et"
+            app:layout_constraintTop_toTopOf="@id/item_WeekTimeAdd_CourseName_layout" />
+
+        <EditText
+            android:id="@+id/item_WeekTimeAdd_courseName_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/null_stroke"
+            android:hint="未填写"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/item_WeekTimeAdd_CourseName_layout"
+            app:layout_constraintLeft_toRightOf="@id/item_addCourse_courseName_tv"
+            app:layout_constraintRight_toRightOf="@id/item_WeekTimeAdd_CourseName_layout"
+            app:layout_constraintTop_toTopOf="@id/item_WeekTimeAdd_CourseName_layout" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_WeekTimeAdd_address_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#fff"
+        android:padding="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_WeekTimeAdd_CourseName_layout">
+
+        <TextView
+            android:id="@+id/item_WeekTimeAdd_address_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="地点"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/item_WeekTimeAdd_address_layout"
+            app:layout_constraintLeft_toLeftOf="@id/item_WeekTimeAdd_address_layout"
+            app:layout_constraintRight_toLeftOf="@id/item_WeekTimeAdd_address_et"
+            app:layout_constraintTop_toTopOf="@id/item_WeekTimeAdd_address_layout" />
+
+        <EditText
+            android:id="@+id/item_WeekTimeAdd_address_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/null_stroke"
+            android:hint="未填写"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/item_WeekTimeAdd_address_layout"
+            app:layout_constraintLeft_toRightOf="@id/item_WeekTimeAdd_address_tv"
+            app:layout_constraintRight_toRightOf="@id/item_WeekTimeAdd_address_layout"
+            app:layout_constraintTop_toTopOf="@id/item_WeekTimeAdd_address_layout" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--    <TextView-->
+<!--        android:id="@+id/item_WeekTimeAdd_tixing_tv"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginRight="10dp"-->
+<!--        android:text="会覆盖此处任务的哦"-->
+<!--        android:textSize="10sp"-->
+<!--        app:layout_constraintLeft_toLeftOf="@id/item_WeekTimeAdd_address_layout"-->
+<!--        app:layout_constraintRight_toRightOf="@id/item_WeekTimeAdd_address_layout"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/item_WeekTimeAdd_address_layout" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

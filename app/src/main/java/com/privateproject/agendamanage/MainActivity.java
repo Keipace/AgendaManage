@@ -1,11 +1,16 @@
 package com.privateproject.agendamanage;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.privateproject.agendamanage.activity.WeekTimeEditChoiseActivity;
+import com.privateproject.agendamanage.adapter.DayTimeSelectRecycleAdapter;
+import com.privateproject.agendamanage.adapter.WeekTimeAdapter;
 import com.privateproject.agendamanage.databinding.ActivityMainBinding;
 import com.privateproject.agendamanage.fragment.FragmentTest;
 import com.privateproject.agendamanage.fragment.GoalListFragment;
@@ -64,7 +69,13 @@ public class MainActivity extends AppCompatActivity {
                     weekTimeFragment = new WeekTimeFragment();
                     transaction.add(R.id.mianActivity_container_contrainlayout, weekTimeFragment).commitAllowingStateLoss();
                 } else { //返回第二个选项卡
-                    transaction.show(weekTimeFragment).commitAllowingStateLoss();
+                    if(DayTimeSelectRecycleAdapter.isChange == true){
+                        weekTimeFragment = new WeekTimeFragment();
+                        transaction.add(R.id.mianActivity_container_contrainlayout, weekTimeFragment).commitAllowingStateLoss();
+                        DayTimeSelectRecycleAdapter.isChange = false;
+                    }else {
+                        transaction.show(weekTimeFragment).commitAllowingStateLoss();
+                    }
                 }
                 break;
             case 2: //显示第二个选项卡
@@ -91,4 +102,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==WeekTimeAdapter.REQUESTCODE_WEEKTIMEEDIT && resultCode==WeekTimeEditChoiseActivity.RESULTCODE_WEEKTIMEEDIT) {
+            weekTimeFragment.refresh();
+        }
+    }
 }

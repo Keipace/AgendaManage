@@ -33,12 +33,22 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<RecyclerVi
     private static final int TYPE_ODD = 0;
     private static final int TYPE_EVEN = 1;
 
+    //数据是否改变
+    public static boolean isChange = false;
+
+    public boolean isChange() {
+        return isChange;
+    }
+
+    public void setChange(boolean change) {
+        isChange = change;
+    }
+
     private Context context;
     private DayTimeFragmentDao dao;
     private List<String> datas;
     private DayTimeSelectAddServer selectAddServer;
     private DayTimeSelectRecycleAdapter adapter;
-
     public void setAdapter(DayTimeSelectRecycleAdapter adapter) {
         this.adapter = adapter;
     }
@@ -145,6 +155,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<RecyclerVi
         for (int i = 0; i < this.datas.size(); i++) {
             dao.addDayTimeFragment(new DayTimeFragment(i, this.datas.get(i)));
         }
+        isChange = true;
         adapter.notifyDataSetChanged();
     }
 
