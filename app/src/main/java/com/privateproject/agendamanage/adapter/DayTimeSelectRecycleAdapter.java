@@ -35,6 +35,17 @@ import java.util.Set;
 
 public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSelectViewHolder.DayTimeSelectTextViewRecycleViewHolder> {
 
+    //数据是否改变
+    public static boolean isChange = false;
+
+    public boolean isChange() {
+        return isChange;
+    }
+
+    public void setChange(boolean change) {
+        isChange = change;
+    }
+
     private Context context;
     private DayTimeFragmentDao dao;
     private DayTimeSelectRecycleAdapter adapter;
@@ -55,8 +66,6 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
         this.binding = binding;
         this.temp = new ArrayList<Integer>();
     }
-    //选中要删除用户
-
 
     @NonNull
     @Override
@@ -182,6 +191,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
     public void refresh() {
         isRestart = true;
         this.dayTimeFragmentList = dao.selectAll();
+        isChange = true;
         adapter.notifyDataSetChanged();
     }
     public void isVisible(boolean isvisible){

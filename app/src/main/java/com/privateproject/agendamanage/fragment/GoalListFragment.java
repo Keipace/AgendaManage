@@ -1,6 +1,4 @@
 package com.privateproject.agendamanage.fragment;
-
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,14 +8,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ExpandableListView;
 
+import com.diegodobelo.expandingview.ExpandingList;
 import com.privateproject.agendamanage.R;
-import com.privateproject.agendamanage.activity.DayTimeSelectActivity;
-import com.privateproject.agendamanage.adapter.MainExpandableListViewAdapter;
+import com.privateproject.agendamanage.server.GoalListServer;
 
 public class GoalListFragment extends Fragment {
+    private ExpandingList expandingList;
+    private GoalListServer listServer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,19 +26,12 @@ public class GoalListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // 设置adapter，加载list数据并显示到list中
-        ExpandableListView expandableListView = view.findViewById(R.id.main_targetList_expandableListView);
-        MainExpandableListViewAdapter adapter = new MainExpandableListViewAdapter(getContext(), expandableListView);
-        expandableListView.setAdapter(adapter);
-
-        Button button = view.findViewById(R.id.fragmentGoalList_dayTimeSelect_btn);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), DayTimeSelectActivity.class);
-                startActivity(intent);
-            }
-        });
+        // 加载expandingList
+        expandingList=view.findViewById(R.id.fragmentGoalList_listContainer_expandingList);
+        //创建两个item
+        listServer=new GoalListServer(getContext());
+        listServer.createTargetItem(expandingList);
+        listServer.createDayTargetItem(expandingList);
     }
 
 }

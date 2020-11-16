@@ -1,5 +1,11 @@
 <resources>
-    <string name="app_name">AgendaManage</string>
+
+    <string name="qingdan_icon_title">清单</string>
+    <string name="richeng_icon_title">日程</string>
+    <string name="tongji_icon_title">统计</string>
+    <string name="wo_icon_title">我</string>
+
+    <string name="app_name">理时小助手</string>
 
     <string-array name="main_group">
         <item>目标区</item>

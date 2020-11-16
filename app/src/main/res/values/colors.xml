@@ -12,6 +12,7 @@
     <color name="gray">#804C4747</color>
     <color name="colorGray">#145A6867</color>
     <color name="weired">#4DEF475D</color>
-
+    <color name="separatorColor">#18102C</color>
+    <color name="colorBackground">#241445</color>
     <color name="divider">#50BDBDBD</color>
 </resources>

@@ -7,6 +7,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.privateproject.agendamanage.bean.Course;
 import com.privateproject.agendamanage.bean.DayTarget;
 import com.privateproject.agendamanage.bean.DayTimeFragment;
 import com.privateproject.agendamanage.bean.Target;
@@ -61,6 +62,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Target.class);
             TableUtils.createTable(connectionSource, DayTimeFragment.class);
             TableUtils.createTable(connectionSource, Task.class);
+            TableUtils.createTable(connectionSource, Course.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -75,6 +77,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, DayTarget.class, true);
             TableUtils.dropTable(connectionSource, DayTimeFragment.class, true);
             TableUtils.dropTable(connectionSource, Task.class, true);
+            TableUtils.dropTable(connectionSource, Course.class, true);
             onCreate(database, connectionSource);
         } catch (SQLException e) {
             e.printStackTrace();
