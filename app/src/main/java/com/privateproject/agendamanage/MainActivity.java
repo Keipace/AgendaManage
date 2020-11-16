@@ -2,6 +2,7 @@ package com.privateproject.agendamanage;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
@@ -28,24 +29,53 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         pageXml = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(pageXml.getRoot());
-
+        setListener();
+        pageXml.mianActivityQingdanBtn.transitionToEnd();
         selectTab(0);//默认选中第一个Tab，即清单
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.mianActivity_qingdan_btn:
-                selectTab(0);
-                break;
-            case R.id.mianActivity_richeng_btn:
-                selectTab(1);
-                break;
-            case R.id.mianActivity_tongji_btn:
-                selectTab(2);
-                break;
-            case R.id.mianActivity_me_btn:
-                //我 页面
-                break;
+    private void setListener() {
+        OnClick onClick = new OnClick();
+        pageXml.mianActivityQingdanBtn.setOnClickListener(onClick);
+        pageXml.mianActivityRichengBtn.setOnClickListener(onClick);
+        pageXml.mianActivityTongjiBtn.setOnClickListener(onClick);
+        pageXml.mianActivityMeBtn.setOnClickListener(onClick);
+    }
+
+    private class OnClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.mianActivity_qingdan_btn:
+                    pageXml.mianActivityQingdanBtn.transitionToEnd();
+                    pageXml.mianActivityTongjiBtn.transitionToStart();
+                    pageXml.mianActivityRichengBtn.transitionToStart();
+                    pageXml.mianActivityMeBtn.transitionToStart();
+                    selectTab(0);
+                    break;
+                case R.id.mianActivity_richeng_btn:
+                    pageXml.mianActivityRichengBtn.transitionToEnd();
+                    pageXml.mianActivityTongjiBtn.transitionToStart();
+                    pageXml.mianActivityQingdanBtn.transitionToStart();
+                    pageXml.mianActivityMeBtn.transitionToStart();
+                    selectTab(1);
+                    break;
+                case R.id.mianActivity_tongji_btn:
+                    pageXml.mianActivityTongjiBtn.transitionToEnd();
+                    pageXml.mianActivityQingdanBtn.transitionToStart();
+                    pageXml.mianActivityRichengBtn.transitionToStart();
+                    pageXml.mianActivityMeBtn.transitionToStart();
+                    selectTab(2);
+                    break;
+                case R.id.mianActivity_me_btn:
+                    //我 页面
+                    pageXml.mianActivityMeBtn.transitionToEnd();
+                    pageXml.mianActivityQingdanBtn.transitionToStart();
+                    pageXml.mianActivityRichengBtn.transitionToStart();
+                    pageXml.mianActivityTongjiBtn.transitionToStart();
+                    break;
+            }
         }
     }
 

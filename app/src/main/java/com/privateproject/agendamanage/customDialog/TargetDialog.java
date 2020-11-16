@@ -16,8 +16,7 @@ import androidx.annotation.NonNull;
 import com.github.rubensousa.raiflatbutton.RaiflatButton;
 import com.privateproject.agendamanage.R;
 
-public class
-TargetDialog extends Dialog implements View.OnClickListener {
+public class TargetDialog extends Dialog implements View.OnClickListener {
     public TextView TargetTitle;
     public EditText targetName,targetDecoration;
     public RaiflatButton cancelBtn,confirmBtn;
@@ -25,11 +24,15 @@ TargetDialog extends Dialog implements View.OnClickListener {
     private TargetDialog.IOnCancelListener cancelListener;
     private TargetDialog.IOnConfirmListener confirmListener;
 
+    public TargetDialog(@NonNull Context context) {
+        super(context);
+    }
+
     public TargetDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
     }
 
-    public TargetDialog setDayTargetTitle(String title) {
+    public TargetDialog setTargetTitle(String title) {
         this.title = title;
         return this;
     }

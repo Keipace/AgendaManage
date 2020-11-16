@@ -25,23 +25,16 @@
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.privateproject.agendamanage.shadow.ShadowContainer
+    <com.diegodobelo.expandingview.ExpandingList
+        android:id="@+id/fragmentGoalList_listContainer_expandingList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:dividerHeight="5dp"
+        android:groupIndicator="@null"
+        android:divider="@null"
+        android:background="@drawable/bg_main"
         app:layout_constraintTop_toBottomOf="@id/fragmentGoalList_header_constraintLayout"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:containerShadowColor="@color/colorGray">
-        <ExpandableListView
-            android:id="@+id/main_targetList_expandableListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="5dp"
-            android:groupIndicator="@null"
-            android:divider="@null"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
-    </com.privateproject.agendamanage.shadow.ShadowContainer>
-
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

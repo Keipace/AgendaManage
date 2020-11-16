@@ -12,7 +12,7 @@ public class ComponentUtil {
         editText.setLongClickable(enable);
     }
     // 设置Button获取焦点
-    public static void ButtonRequestFocus(View view) {
+    public static void requestFocus(View view) {
         view.setFocusableInTouchMode(true);
         view.setFocusable(true);
         view.requestFocus();

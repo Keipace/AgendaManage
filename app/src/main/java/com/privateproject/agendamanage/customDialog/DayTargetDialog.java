@@ -24,6 +24,10 @@ public class DayTargetDialog extends Dialog implements View.OnClickListener {
     private IOnCancelListener cancelListener;
     private IOnConfirmListener confirmListener;
 
+    public DayTargetDialog(@NonNull Context context) {
+        super(context);
+    }
+
     public DayTargetDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
     }

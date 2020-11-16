@@ -10,56 +10,148 @@
         android:id="@+id/mianActivity_container_contrainlayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/mainActivity_container_linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/mianActivity_qingdan_btn">
+        app:layout_constraintVertical_bias="0.0">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/mianActivity_qingdan_btn"
+    <LinearLayout
+        android:id="@+id/mainActivity_container_linearLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/mianActivity_richeng_btn"
+        android:layout_height="56dp"
+        android:background="@color/colorGray"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="清单"
-        android:textSize="@dimen/font_size"
-        android:onClick="onClick"
-        android:drawableTop="@drawable/qingdan_normal"/>
-    <Button
-        android:id="@+id/mianActivity_richeng_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/mianActivity_qingdan_btn"
-        app:layout_constraintEnd_toStartOf="@id/mianActivity_tongji_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="日程"
-        android:onClick="onClick"
-        android:textSize="@dimen/font_size"
-        android:drawableTop="@drawable/qingdan_normal"/>
-    <Button
-        android:id="@+id/mianActivity_tongji_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/mianActivity_richeng_btn"
-        app:layout_constraintEnd_toStartOf="@id/mianActivity_me_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="统计"
-        android:textSize="@dimen/font_size"
-        android:onClick="onClick"
-        android:drawableTop="@drawable/qingdan_normal"/>
-    <Button
-        android:id="@+id/mianActivity_me_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/mianActivity_tongji_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="我"
-        android:textSize="@dimen/font_size"
-        android:onClick="onClick"
-        android:drawableTop="@drawable/qingdan_normal"/>
+        app:layout_constraintStart_toStartOf="parent">
 
+        <androidx.constraintlayout.motion.widget.MotionLayout
+            android:id="@+id/mianActivity_qingdan_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layoutDescription="@xml/activity_main_qingdan_scene">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/qingdan_imageView"
+                android:layout_width="38dp"
+                android:layout_height="24dp"
+                app:altSrc="@drawable/ic_baseline_sort_fill"
+                app:layout_constraintBottom_toTopOf="@id/qingdan_textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_sort_stroke" />
+
+            <TextView
+                android:id="@+id/qingdan_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/qingdan_icon_title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/qingdan_imageView" />
+        </androidx.constraintlayout.motion.widget.MotionLayout>
+
+        <androidx.constraintlayout.motion.widget.MotionLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/mianActivity_richeng_btn"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layoutDescription="@xml/activity_main_richeng_scene">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/richeng_imageView"
+                android:layout_width="38dp"
+                android:layout_height="24dp"
+                app:layout_constraintBottom_toTopOf="@id/richeng_textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_event_note_stroke"
+                app:altSrc="@drawable/ic_baseline_event_note_fill"
+                />
+
+            <TextView
+                android:id="@+id/richeng_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/richeng_icon_title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        </androidx.constraintlayout.motion.widget.MotionLayout>
+
+        <androidx.constraintlayout.motion.widget.MotionLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/mianActivity_tongji_btn"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layoutDescription="@xml/activity_main_tongji_scene">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/tongji_imageView"
+                android:layout_width="38dp"
+                android:layout_height="24dp"
+                app:layout_constraintBottom_toTopOf="@id/tongji_textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_bar_chart_stroke"
+                app:altSrc="@drawable/ic_baseline_bar_chart_fill"
+                />
+
+            <TextView
+                android:id="@+id/tongji_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tongji_icon_title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        </androidx.constraintlayout.motion.widget.MotionLayout>
+
+        <androidx.constraintlayout.motion.widget.MotionLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/mianActivity_me_btn"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layoutDescription="@xml/activity_main_wo_scene">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/wo_imageView"
+                android:layout_width="38dp"
+                android:layout_height="24dp"
+                app:layout_constraintBottom_toTopOf="@id/wo_textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_person_stroke"
+                app:altSrc="@drawable/ic_baseline_person_fill"
+                />
+
+            <TextView
+                android:id="@+id/wo_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wo_icon_title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        </androidx.constraintlayout.motion.widget.MotionLayout>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
