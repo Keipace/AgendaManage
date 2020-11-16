@@ -11,7 +11,9 @@ public class DayTimeFragment {
     @DatabaseField(generatedId = true)
     private Integer id;
     @DatabaseField(canBeNull = false)
-    private String timePoint;
+    private String start;
+    @DatabaseField(canBeNull = false)
+    private String end;
     @DatabaseField(canBeNull = false, columnName = "order")
     private int order;
 
@@ -19,9 +21,10 @@ public class DayTimeFragment {
         return id;
     }
 
-    public DayTimeFragment(int order, String timePoint) {
+    public DayTimeFragment(int order, String start, String end) {
         this.order = order;
-        this.timePoint = timePoint;
+        this.start = start;
+        this.end = end;
     }
 
     private DayTimeFragment() {
@@ -35,21 +38,32 @@ public class DayTimeFragment {
         this.order = order;
     }
 
-    public String getTimePoint() {
-        return timePoint;
+    public String getStart() {
+        return start;
     }
 
-    public void setTimePoint(String timePoint) {
-        this.timePoint = timePoint;
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        return this.timePoint.equals(obj.toString());
+        if (obj instanceof DayTimeFragment)
+            return this.toString().equals(obj.toString());
+        else
+            return false;
     }
 
     @Override
     public String toString() {
-        return this.timePoint;
+        return start + '-' + end ;
     }
 }

@@ -61,9 +61,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Target.class);
             TableUtils.createTable(connectionSource, DayTimeFragment.class);
             TableUtils.createTable(connectionSource, Task.class);
-            Dao<DayTimeFragment, Integer> dao = getDao(DayTimeFragment.class);
-            dao.create(new DayTimeFragment(0, "00:00"));
-            dao.create(new DayTimeFragment(1, "23:59"));
         } catch (SQLException e) {
             e.printStackTrace();
         }

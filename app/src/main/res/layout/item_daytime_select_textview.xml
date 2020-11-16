@@ -7,11 +7,20 @@
 
     <TextView
         android:id="@+id/daytime_select_textview"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="时间段"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+
+    <CheckBox
+        android:id="@+id/daytime_select_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="gone"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
