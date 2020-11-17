@@ -81,11 +81,17 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
             fragment[i] = dayTimeList.get(i).toString();
         }
         // 初始化数据矩阵，并赋予其第一行和第一列的数据
-        this.datas = new Object[dayTimeList.size()+1][8];
-        this.datas[0] = new Object[]{"", "周一", "周二", "周三", "周四", "周五", "周六", "周日"};
-        for (int i = 1; i < this.datas.length; i++) {
-            this.datas[i][0] = fragment[i-1];
+        if(dayTimeList.size()==0||dayTimeList==null||fragment.length==0||dayTimeList==null){
+            this.datas = new Object[dayTimeList.size()+1][8];
+            this.datas[0] = new Object[]{""};
+        }else {
+            this.datas = new Object[dayTimeList.size()+1][8];
+            this.datas[0] = new Object[]{"", "周一", "周二", "周三", "周四", "周五", "周六", "周日"};
+            for (int i = 1; i < this.datas.length; i++) {
+                this.datas[i][0] = fragment[i-1];
+            }
         }
+
         // 测试时显示
         Task task = new Task("1", 0, null, null);
         for (int i = 1; i < this.datas.length; i++) {
@@ -252,10 +258,15 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
             fragment[i] = dayTimeList.get(i).toString();
         }
         // 初始化数据矩阵，并赋予其第一行和第一列的数据
-//        this.datas = new Object[dayTimeList.size()+1][8];
-        this.datas[0] = new Object[]{"", "周一", "周二", "周三", "周四", "周五", "周六", "周日"};
-        for (int i = 1; i < this.datas.length; i++) {
-            this.datas[i][0] = fragment[i-1];
+        if(dayTimeList.size()==0||dayTimeList==null||fragment.length==0||dayTimeList==null){
+            this.datas = new Object[dayTimeList.size()+1][8];
+            this.datas[0] = new Object[]{""};
+        }else {
+            this.datas = new Object[dayTimeList.size()+1][8];
+            this.datas[0] = new Object[]{"", "周一", "周二", "周三", "周四", "周五", "周六", "周日"};
+            for (int i = 1; i < this.datas.length; i++) {
+                this.datas[i][0] = fragment[i-1];
+            }
         }
 
         // 查询数据
