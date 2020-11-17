@@ -76,16 +76,17 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
         // 查询DayTimeFragment数据库所有数据
         List<DayTimeFragment> dayTimeList = dayTimeFragmentDao.selectAll();
         // 将一天的时间点连接成时间段字符串
-        String[] fragment = new String[dayTimeList.size() - 1];
-        for (int i = 0; i < fragment.length; i++) {
+        String[] fragment = new String[dayTimeList.size()];
+        for (int i = 0; i < dayTimeList.size(); i++) {
             fragment[i] = dayTimeList.get(i).toString();
         }
         // 初始化数据矩阵，并赋予其第一行和第一列的数据
-        this.datas = new Object[dayTimeList.size()][8];
+        this.datas = new Object[dayTimeList.size()+1][8];
         this.datas[0] = new Object[]{"", "周一", "周二", "周三", "周四", "周五", "周六", "周日"};
         for (int i = 1; i < this.datas.length; i++) {
-            this.datas[i][0] = fragment[i - 1];
+            this.datas[i][0] = fragment[i-1];
         }
+
         // 测试时显示
         Task task = new Task("1", 0, null, null);
         for (int i = 1; i < this.datas.length; i++) {
@@ -149,21 +150,6 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
                         Intent intent = new Intent(context,WeekTimeEditChoiseActivity.class);
                         intent.putExtra("posi",position);
                         context.startActivityForResult(intent, REQUESTCODE_WEEKTIMEEDIT);
-
-//                        //显示每周事件
-//                        View view = LayoutInflater.from(context).inflate(R.layout.item_week_time_edit_choise_layout, null);
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                        builder.setTitle("更新每周事件")
-//                                .setView(view)
-//                                .setNegativeButton("取消", null)
-//                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//
-//                                    }
-//
-//                                })
-//                                .create().show();
 
                     } else {
                         //添加每周事件
@@ -262,18 +248,16 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
     public void refresh() {
         // 查询DayTimeFragment数据库所有数据
         List<DayTimeFragment> dayTimeList = dayTimeFragmentDao.selectAll();
-        // 将一天的时间点连接成时间段字符串
-        String[] fragment = new String[dayTimeList.size() - 1];
-        for (int i = 0; i < fragment.length; i++) {
-            fragment[i] = dayTimeList.get(i).getTimePoint() + "-" + dayTimeList.get(i + 1).getTimePoint();
+        String[] fragment = new String[dayTimeList.size()];
+        for (int i = 0; i < dayTimeList.size(); i++) {
+            fragment[i] = dayTimeList.get(i).toString();
         }
         // 初始化数据矩阵，并赋予其第一行和第一列的数据
-        this.datas = new Object[dayTimeList.size()][8];
+//        this.datas = new Object[dayTimeList.size()+1][8];
         this.datas[0] = new Object[]{"", "周一", "周二", "周三", "周四", "周五", "周六", "周日"};
         for (int i = 1; i < this.datas.length; i++) {
-            this.datas[i][0] = fragment[i - 1];
+            this.datas[i][0] = fragment[i-1];
         }
-
         // 查询数据
         courseList = courseDao.selectAll();
     }

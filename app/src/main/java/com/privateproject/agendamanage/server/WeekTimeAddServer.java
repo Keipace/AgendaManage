@@ -21,10 +21,5 @@ public class WeekTimeAddServer {
         course.setAddress(address);
         courseDao.addCourse(course);
     }
-    public void updateCoures(CourseDao courseDao, Integer position, String courseName, String address) {
-        course.setPosition(position);
-        course.setClassname(courseName);
-        course.setAddress(address);
-        courseDao.updateOrAdd(course);
-    }
+
 }

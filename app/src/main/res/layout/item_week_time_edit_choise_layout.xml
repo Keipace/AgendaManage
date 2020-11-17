@@ -14,7 +14,6 @@
     android:orientation="vertical"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintLeft_toLeftOf="parent">
-
 </androidx.recyclerview.widget.RecyclerView>
     <Button
         android:id="@+id/item_weekTimeEditChoise_add_btn"
