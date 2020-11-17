@@ -1,4 +1,5 @@
 package com.privateproject.agendamanage.fragment;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,9 +9,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.diegodobelo.expandingview.ExpandingList;
 import com.privateproject.agendamanage.R;
+import com.privateproject.agendamanage.activity.DayTimeSelectActivity;
 import com.privateproject.agendamanage.server.GoalListServer;
 
 public class GoalListFragment extends Fragment {
@@ -32,6 +35,14 @@ public class GoalListFragment extends Fragment {
         listServer=new GoalListServer(getContext());
         listServer.createTargetItem(expandingList);
         listServer.createDayTargetItem(expandingList);
+        Button selectTimeBotton = view.findViewById(R.id.fragmentGoalList_dayTimeSelect_btn);
+        selectTimeBotton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), DayTimeSelectActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
     }
 
 }

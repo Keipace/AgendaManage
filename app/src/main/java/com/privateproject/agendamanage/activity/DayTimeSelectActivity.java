@@ -16,6 +16,7 @@ import com.privateproject.agendamanage.db.DayTimeFragmentDao;
 import com.privateproject.agendamanage.server.DayTimeSelectAddServer;
 import com.privateproject.agendamanage.utils.ComponentUtil;
 import com.privateproject.agendamanage.utils.TimeUtil;
+import com.privateproject.agendamanage.utils.ToastUtil;
 
 public class DayTimeSelectActivity extends AppCompatActivity {
     private ActivityDayTimeSelectBinding timebinding;
@@ -31,6 +32,15 @@ public class DayTimeSelectActivity extends AppCompatActivity {
         adapter.setAdapter(adapter);
         timebinding.daytimeSelectRecyclelist.setLayoutManager(new LinearLayoutManager(DayTimeSelectActivity.this));
         timebinding.daytimeSelectRecyclelist.setAdapter(adapter);
+
+        //添加按钮监听器
+        timebinding.daytimeSelectAddBotton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dao = new DayTimeFragmentDao(DayTimeSelectActivity.this);
+                DayTimeSelectAddServer.TimeSelectAlerDialog(DayTimeSelectActivity.this,dao,adapter,true,-1);
+            }
+        });
     }
 
 }

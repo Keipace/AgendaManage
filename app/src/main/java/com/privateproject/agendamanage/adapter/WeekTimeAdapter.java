@@ -265,7 +265,7 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
         // 将一天的时间点连接成时间段字符串
         String[] fragment = new String[dayTimeList.size() - 1];
         for (int i = 0; i < fragment.length; i++) {
-            fragment[i] = dayTimeList.get(i).getTimePoint() + "-" + dayTimeList.get(i + 1).getTimePoint();
+            fragment[i] = dayTimeList.get(i).toString();
         }
         // 初始化数据矩阵，并赋予其第一行和第一列的数据
         this.datas = new Object[dayTimeList.size()][8];
