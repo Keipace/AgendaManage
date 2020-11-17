@@ -85,7 +85,7 @@ public class DayTimeSelectAddServer {
 
     public static boolean AppearConflict(List<DayTimeFragment> dayTimeFragmentList, String[] times){
         int temp = dayTimeFragmentList.size();
-        if (dayTimeFragmentList == null)
+        if (dayTimeFragmentList == null||dayTimeFragmentList.size() == 0)
             return false;
         else {
             //如果开始时间和结束时间均大于最晚时间段的最晚时间，则返回false，不发生冲突

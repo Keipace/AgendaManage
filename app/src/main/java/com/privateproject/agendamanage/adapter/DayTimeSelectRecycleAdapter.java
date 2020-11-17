@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -23,6 +24,7 @@ import com.privateproject.agendamanage.server.DayTimeSelectAddServer;
 import com.privateproject.agendamanage.utils.ComponentUtil;
 import com.privateproject.agendamanage.utils.Time;
 import com.privateproject.agendamanage.utils.TimeUtil;
+import com.privateproject.agendamanage.utils.ToastUtil;
 import com.privateproject.agendamanage.viewHolder.DayTimeSelectViewHolder;
 
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
     private List<DayTimeSelectViewHolder.DayTimeSelectTextViewRecycleViewHolder> items;
     private List<DayTimeFragment> dayTimeFragmentList;
     private ActivityDayTimeSelectBinding binding;
-    private List<Integer> temp;
+    private List<String> temp;
 
     public void setAdapter(DayTimeSelectRecycleAdapter adapter) {
         this.adapter = adapter;
@@ -64,7 +66,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
         this.dayTimeFragmentList = dao.selectAll();
         this.items = new ArrayList<DayTimeSelectViewHolder.DayTimeSelectTextViewRecycleViewHolder>();
         this.binding = binding;
-        this.temp = new ArrayList<Integer>();
+        this.temp = new ArrayList<String>();
     }
 
     @NonNull
@@ -96,6 +98,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
         holder.daytimeSelectContainer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                temp.clear();
                 for (int i = 0; i < items.size(); i++) {
                     //为所有TextView设置不可选，CheckBox可见
                     items.get(i).RecycleTextView.setEnabled(false);
@@ -103,7 +106,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
                 }
                 //显示有关的组件
                 isVisible(true);
-                items.get(position).daytimeSelectCheckBox.setChecked(true);
+                items.get(position).daytimeSelectCheckBox.setChecked(false);
                 return true;
             }
         });
@@ -113,10 +116,10 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
                     //被选到，把下标放入temp中
-                    temp.add(position);
+                    temp.add(items.get(position).RecycleTextView.getText().toString());
                 }else {
                     //取消选择，把存入temp中对应的下标删除
-                    temp.remove(temp.indexOf(position));
+                    temp.remove(items.get(position).RecycleTextView.getText().toString());
                 }
             }
         });
@@ -146,12 +149,13 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
                 }
                 isVisible(false);
                 //删除dayTimeFragmentList中对应下标的数据
-                int n = 0;
-                int m = 0;
-                while (n<temp.size()){
-                    dayTimeFragmentList.remove(temp.get(n)-m);
-                    n++;
-                    m++;
+                int number = dayTimeFragmentList.size();
+                for (int i = 0; i<temp.size(); i++){
+                    for (int j = 0; j<dayTimeFragmentList.size(); j++){
+                        if (dayTimeFragmentList.get(j).toString().equals(temp.get(i))){
+                            dayTimeFragmentList.remove(j);
+                        }
+                    }
                 }
                 DayTimeSelectRecycleAdapter.this.temp.clear();
                 //清空数据库
@@ -164,14 +168,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
                 refresh();
             }
         });
-        //添加按钮监听器
-        binding.daytimeSelectAddBotton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dao = new DayTimeFragmentDao(context);
-                DayTimeSelectAddServer.TimeSelectAlerDialog(context,dao,adapter,true,-1);
-            }
-        });
+
     }
     @Override
     public long getItemId(int position) {

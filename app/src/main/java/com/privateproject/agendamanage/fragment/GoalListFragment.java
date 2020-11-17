@@ -35,7 +35,6 @@ public class GoalListFragment extends Fragment {
         listServer=new GoalListServer(getContext());
         listServer.createTargetItem(expandingList);
         listServer.createDayTargetItem(expandingList);
-
         Button selectTimeBotton = view.findViewById(R.id.fragmentGoalList_dayTimeSelect_btn);
         selectTimeBotton.setOnClickListener(new View.OnClickListener() {
             @Override

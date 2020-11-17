@@ -86,7 +86,6 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
         for (int i = 1; i < this.datas.length; i++) {
             this.datas[i][0] = fragment[i-1];
         }
-
         // 测试时显示
         Task task = new Task("1", 0, null, null);
         for (int i = 1; i < this.datas.length; i++) {
@@ -258,6 +257,7 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
         for (int i = 1; i < this.datas.length; i++) {
             this.datas[i][0] = fragment[i-1];
         }
+
         // 查询数据
         courseList = courseDao.selectAll();
     }
