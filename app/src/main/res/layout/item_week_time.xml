@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="@id/itemWeekTime_cell_btn" />
     <Button
         android:id="@+id/itemWeekTime_cell_btn"
-        android:layout_width="70dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="1dp"
         android:background="#00000000"

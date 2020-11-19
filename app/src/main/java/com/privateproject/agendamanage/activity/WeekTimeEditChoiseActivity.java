@@ -60,6 +60,7 @@ public class WeekTimeEditChoiseActivity extends AppCompatActivity {
                 EditText courseNameEt = view.findViewById(R.id.item_WeekTimeAdd_courseName_et);
                 EditText addressEt = view.findViewById(R.id.item_WeekTimeAdd_address_et);
                 AlertDialog.Builder builder = new AlertDialog.Builder(WeekTimeEditChoiseActivity.this);
+                //添加事件
                 builder.setTitle("添加每周事件")
                         .setView(view)
                         .setNegativeButton("取消", null)
@@ -121,6 +122,7 @@ public class WeekTimeEditChoiseActivity extends AppCompatActivity {
             holder.nameTv.setText(courseList.get(position).getClassname());
             holder.addressTv.setText(courseList.get(position).getAddress());
 
+            //删除事件
             holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -130,6 +132,7 @@ public class WeekTimeEditChoiseActivity extends AppCompatActivity {
                 }
             });
 
+            //编辑事件
             holder.editBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

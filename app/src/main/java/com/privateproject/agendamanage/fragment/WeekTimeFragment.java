@@ -26,11 +26,13 @@ public class WeekTimeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // 设置要显示的页面
         return inflater.inflate(R.layout.fragment_week_time,null);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        // 设置页面的数据
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.fragmentWeekTime_list_recyclerView);
         recyclerView.setAdapter(this.adapter);

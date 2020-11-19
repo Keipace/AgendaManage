@@ -15,6 +15,7 @@ import com.diegodobelo.expandingview.ExpandingList;
 import com.privateproject.agendamanage.MainActivity;
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.activity.DayTimeSelectActivity;
+import com.privateproject.agendamanage.activity.WeekTimeActivity;
 import com.privateproject.agendamanage.bean.DayTimeFragment;
 import com.privateproject.agendamanage.db.DayTimeFragmentDao;
 import com.privateproject.agendamanage.server.GoalListServer;
@@ -44,15 +45,8 @@ public class GoalListFragment extends Fragment {
         selectTimeBotton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DayTimeFragmentDao dao = new DayTimeFragmentDao(getContext());
-                List<DayTimeFragment> dayTimeFragmentList = dao.selectAll();
-                if (dayTimeFragmentList.size() == 0||dayTimeFragmentList == null){
-                    Intent intent = new Intent(getActivity(), DayTimeSelectActivity.class);
-                    getActivity().startActivity(intent);
-                }else {
-                    Intent intent = new Intent(getActivity(),DayTimeSelectActivity.class);
-                    getActivity().startActivity(intent);
-                }
+                Intent intent = new Intent(getContext(), WeekTimeActivity.class);
+                startActivity(intent);
             }
         });
     }

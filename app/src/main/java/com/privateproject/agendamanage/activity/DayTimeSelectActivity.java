@@ -34,7 +34,7 @@ public class DayTimeSelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         timebinding = ActivityDayTimeSelectBinding.inflate(LayoutInflater.from(this));
         setContentView(timebinding.getRoot());
-
+        dao = new DayTimeFragmentDao(this);
         Intent intent = getIntent();
         intent.putExtra("isBack", true);
         setResult(RESULTCODE_CREATETIME, intent);
@@ -61,7 +61,7 @@ public class DayTimeSelectActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 List<DayTimeFragment> dayTimeFragmentList = dao.selectAll();
-                if (dayTimeFragmentList.size() == 0||dayTimeFragmentList == null){
+                if (dayTimeFragmentList == null||dayTimeFragmentList.size() == 0){
                     ToastUtil.newToast(DayTimeSelectActivity.this,"时间段为空，请先设置时间段");
                 }else {
                     intent.putExtra("isBack", false);

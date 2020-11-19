@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.WeekTimeEditChoiseActivity"></activity>
+        <activity android:name=".activity.WeekTimeActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity android:name=".activity.WeekTimeEditChoiseActivity" />
         <activity android:name=".activity.DayTargetInfoActivity" />
         <activity android:name=".activity.TargetInfoActivity" />
         <activity android:name=".activity.DayTimeSelectActivity" />
