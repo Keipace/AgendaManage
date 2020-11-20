@@ -7,11 +7,16 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.privateproject.agendamanage.bean.DayTarget;
 import com.privateproject.agendamanage.bean.Target;
+import com.privateproject.agendamanage.db.CourseDao;
 import com.privateproject.agendamanage.db.DayTargetDao;
+import com.privateproject.agendamanage.db.DayTimeFragmentDao;
 import com.privateproject.agendamanage.db.TargetDao;
+import com.privateproject.agendamanage.server.EverydayTotalTimeServer;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -27,17 +32,13 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.privateproject.agendamanage", appContext.getPackageName());
+        DayTimeFragmentDao dayTimeFragmentDao = new DayTimeFragmentDao(appContext);
+        CourseDao courseDao = new CourseDao(appContext);
 
-        Target target = new Target("test");
-        TargetDao targetDao = new TargetDao(appContext);
-        targetDao.addTarget(target);
-        Target target1 = targetDao.selectById(target.getId());
-        System.out.println(target1);
-
-        DayTarget dayTarget = new DayTarget("test");
-        DayTargetDao dayTargetDao = new DayTargetDao(appContext);
-        dayTargetDao.addDayTarget(dayTarget);
-        DayTarget dayTarget1 = dayTargetDao.selectById(dayTarget.getId());
-        System.out.println(dayTarget1);
+        EverydayTotalTimeServer everydayTotalTimeServer = new EverydayTotalTimeServer(appContext,dayTimeFragmentDao,courseDao);
+        List<Integer> list = everydayTotalTimeServer.totalTime();
+        for (int i = 0; i < list.size() ; i++) {
+            System.out.println("星期"+i+"有"+list.get(i)+"分钟可以支配");
+        }
     }
 }
