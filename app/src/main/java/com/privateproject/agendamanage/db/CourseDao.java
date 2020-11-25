@@ -89,11 +89,11 @@ public class CourseDao {
         return courses;
     }
     // 查询数据库中的所有记录，没有查询到时返回null
-    public List<Course> selectAll(Integer position) {
+    public List<Course> selectByPosition(int row, int col) {
         List<Course> result = null;
         QueryBuilder<Course, Integer> queryBuilder = dao.queryBuilder();
         try {
-            queryBuilder.where().eq("position", position);
+            queryBuilder.where().eq("row", row).eq("col", col);
             result = queryBuilder.query();
         } catch (SQLException e) {
             e.printStackTrace();

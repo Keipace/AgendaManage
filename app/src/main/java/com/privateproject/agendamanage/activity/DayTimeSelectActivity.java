@@ -1,24 +1,17 @@
 package com.privateproject.agendamanage.activity;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.privateproject.agendamanage.MainActivity;
 import com.privateproject.agendamanage.adapter.DayTimeSelectRecycleAdapter;
 import com.privateproject.agendamanage.bean.DayTimeFragment;
 import com.privateproject.agendamanage.databinding.ActivityDayTimeSelectBinding;
-import com.privateproject.agendamanage.databinding.ItemDaytimeAddLayoutBinding;
 import com.privateproject.agendamanage.db.DayTimeFragmentDao;
 import com.privateproject.agendamanage.server.DayTimeSelectAddServer;
-import com.privateproject.agendamanage.utils.ComponentUtil;
-import com.privateproject.agendamanage.utils.TimeUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
 
 import java.util.List;
@@ -35,28 +28,31 @@ public class DayTimeSelectActivity extends AppCompatActivity {
         timebinding = ActivityDayTimeSelectBinding.inflate(LayoutInflater.from(this));
         setContentView(timebinding.getRoot());
         dao = new DayTimeFragmentDao(this);
+
+        // 使用intent来控制是否点击的是 返回 按钮
         Intent intent = getIntent();
         intent.putExtra("isBack", true);
         setResult(RESULTCODE_CREATETIME, intent);
 
+        // 显示时间段的列表
         DayTimeSelectRecycleAdapter adapter = new DayTimeSelectRecycleAdapter(DayTimeSelectActivity.this,timebinding);
-        adapter.setAdapter(adapter);
         timebinding.daytimeSelectRecyclelist.setAdapter(adapter);
 
         //添加按钮监听器
         timebinding.daytimeSelectAddBotton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dao = new DayTimeFragmentDao(DayTimeSelectActivity.this);
-                DayTimeSelectAddServer.TimeSelectAlerDialog(DayTimeSelectActivity.this,dao,adapter,true,-1);
+                DayTimeSelectAddServer.TimeSelectAlerDialog(DayTimeSelectActivity.this,dao,adapter,-1);
             }
         });
+        // 返回 按钮监听器
         timebinding.daytimeSelectArrowLeftBotton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        // 确定 按钮监听器
         timebinding.daytimeSelectArrowRightBotton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -2,11 +2,9 @@ package com.privateproject.agendamanage.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
-import com.privateproject.agendamanage.MainActivity;
 import com.privateproject.agendamanage.databinding.ActivityDayTargetInfoBinding;
 import com.privateproject.agendamanage.server.InfoPageServer;
 import com.privateproject.agendamanage.utils.ToastUtil;
@@ -25,10 +23,7 @@ public class DayTargetInfoActivity extends AppCompatActivity {
         // 获取传送过来的id参数，默认值为-1（即传送失败时为-1）
         this.id = getIntent().getIntExtra("id", -1);
         if(id==-1) {// id传送失败
-            // 跳转回主页面
-            Intent intent = new Intent(this, MainActivity.class);
             ToastUtil.newToast(this, "打开页面失败");
-            startActivity(intent);
             // 销毁activity
             finish();
         }

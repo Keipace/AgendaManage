@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     // 标明数据库的名字
-    private static final String DATABASE_NAME = "agenda_manage";
+    private static final String DATABASE_NAME = "agenda_manage.db";
     // 使用一个Map集合来存储已经创建的Dao类对象，避免重复Dao类对象
     private Map<String, Dao> daos = new HashMap<String, Dao>();
 

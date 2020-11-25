@@ -27,6 +27,7 @@ public class WeekTimeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_week_time);
+
         //跳转按钮
         Button button = findViewById(R.id.WeekActivity_toTimeFrag_btn);
         button.setOnClickListener(new View.OnClickListener() {
@@ -50,10 +51,7 @@ public class WeekTimeActivity extends AppCompatActivity {
             Intent intent = new Intent(this, DayTimeSelectActivity.class);
             startActivityForResult(intent, REQUESTCODE_CREATETIME);
             // 如果有时间段
-        } else {
-            showWeekTime();
         }
-
     }
 
     @Override
@@ -63,13 +61,7 @@ public class WeekTimeActivity extends AppCompatActivity {
             boolean isBack = data.getBooleanExtra("isBack", false);
             if (isBack) {
                 // 选择时间段页面点击 返回 按钮
-//                weekTimeFragment = new WeekTimeFragment();
-//                showWeekTime();
                 finish();
-            } else {
-                // 选择时间段页面点击 确定 按钮
-//                weekTimeFragment = new WeekTimeFragment();
-                showWeekTime();
             }
         }
     }
@@ -86,9 +78,6 @@ public class WeekTimeActivity extends AppCompatActivity {
             weekTimeFragment = new WeekTimeFragment();
             transaction.add(R.id.WeekActivity_container_contrainlayout, weekTimeFragment).commitAllowingStateLoss();
         } else{
-            if(DayTimeSelectRecycleAdapter.isChange == true){
-                DayTimeSelectRecycleAdapter.isChange = false;
-            }
             weekTimeFragment.refresh();
         }
 

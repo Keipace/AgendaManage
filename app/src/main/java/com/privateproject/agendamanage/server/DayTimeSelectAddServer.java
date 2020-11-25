@@ -1,7 +1,6 @@
 package com.privateproject.agendamanage.server;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -12,85 +11,73 @@ import com.privateproject.agendamanage.bean.DayTimeFragment;
 import com.privateproject.agendamanage.databinding.ItemDaytimeAddLayoutBinding;
 import com.privateproject.agendamanage.db.DayTimeFragmentDao;
 import com.privateproject.agendamanage.utils.ComponentUtil;
-import com.privateproject.agendamanage.utils.DayTargetUtil;
 import com.privateproject.agendamanage.utils.Time;
 import com.privateproject.agendamanage.utils.TimeUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class DayTimeSelectAddServer {
 
-    public static void TimeSelectAlerDialog(Context context, DayTimeFragmentDao dao, DayTimeSelectRecycleAdapter adapter, boolean AddorUpdate, int position){
+    public static void TimeSelectAlerDialog(Context context, DayTimeFragmentDao dao, DayTimeSelectRecycleAdapter adapter, int position){
         ItemDaytimeAddLayoutBinding addTimePageXml = ItemDaytimeAddLayoutBinding.inflate(LayoutInflater.from(context));
-        //设置选择时间段界面的组件监听器(时间选择器)
+        // 时间段的选择
         TimeUtil.setTimeStartToEnd(context, addTimePageXml.daytimeAddBegintimeEdit, addTimePageXml.daytimeAddEndtimeEdit, false);
         ComponentUtil.EditTextEnable(false, addTimePageXml.daytimeAddBegintimeEdit);
         ComponentUtil.EditTextEnable(false, addTimePageXml.daytimeAddEndtimeEdit);
-        //设置时间段设置的选择框
+        // 显示弹出框
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         AlertDialog alertDialog = builder.setTitle("设置时间段")
-                .setView(addTimePageXml.daytimeAddContainer)
+                .setView(addTimePageXml.getRoot())
                 .setNegativeButton("取消", null)
                 .setPositiveButton("确定", null)
                 .create();
         alertDialog.show();
+        // 设置弹出框的确定按钮
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String[] times = {addTimePageXml.daytimeAddBegintimeEdit.getText().toString(), addTimePageXml.daytimeAddEndtimeEdit.getText().toString()};
-                if (times[0].equals("")||times[0] == null||times[1].equals("")||times[1] == null){
+                if (times[0].equals("")||times[1].equals("")){
                     ToastUtil.newToast(context,"数据不能为空");
                 }else {
                     List<DayTimeFragment> dayTimeFragmentList = dao.selectAll();
-                    //判断选择的时间段与已有的时间段是否冲突
-                    if(!AddorUpdate){
+                    //判断是否是修改时间段
+                    if(position!=-1){
                         dayTimeFragmentList.remove(position);
-                        if (AppearConflict(dayTimeFragmentList,times)){
-                            ConflictAlerDialog(context,adapter);
-                        }else {
-                            AddDatas(dayTimeFragmentList,dao,times);
-                        }
-                    }else {
-                        if (AppearConflict(dayTimeFragmentList, times)) {
-                            //冲突出现时弹出的提示框
-                            ConflictAlerDialog(context,adapter);
-                        } else {
-                            //数据改变，刷新页面
-                            AddDatas(dayTimeFragmentList,dao, times);
-                        }
                     }
-                    adapter.refresh();
+                    //判断选择的时间段与已有的时间段是否冲突
+                    if (AppearConflict(dayTimeFragmentList,times)){
+                        //冲突出现时弹出的提示框
+                        ConflictAlerDialog(context);
+                        alertDialog.dismiss();
+                    }else {
+                        //数据改变，刷新页面
+                        AddDatas(dayTimeFragmentList,dao,times);
+                        adapter.refresh();
+                    }
                     alertDialog.dismiss();
                 }
             }
         });
     }
 
-    public static void ConflictAlerDialog(Context context,DayTimeSelectRecycleAdapter adapter){
+    private static void ConflictAlerDialog(Context context){
         final AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle("提示")
                 .setMessage("记录时间与之前的记录有重叠部分，请重新设置时间段！")
-                .setNegativeButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        adapter.refresh();
-                    }
-                });
+                .setNegativeButton("确定", null);
         builder.create().show();
     }
 
-    public static boolean AppearConflict(List<DayTimeFragment> dayTimeFragmentList, String[] times){
+    private static boolean AppearConflict(List<DayTimeFragment> dayTimeFragmentList, String[] times){
         int temp = dayTimeFragmentList.size();
         if (dayTimeFragmentList == null||dayTimeFragmentList.size() == 0)
+            // 没有时间段的时候不可能有冲突
             return false;
         else {
             //如果开始时间和结束时间均大于最晚时间段的最晚时间，则返回false，不发生冲突
-            if ((Time.parseTime(times[0]).after(Time.parseTime(dayTimeFragmentList.get(temp-1).getEnd())))&&
-                    Time.parseTime(times[1]).after(Time.parseTime(dayTimeFragmentList.get(temp-1).getEnd()))){
+            if (Time.parseTime(times[0]).after(Time.parseTime(dayTimeFragmentList.get(temp-1).getEnd()))){
                 return false;
             }
             //冲0开始查找第一个大于用户输入的时间段的数据
@@ -114,31 +101,27 @@ public class DayTimeSelectAddServer {
         }
     }
 
-    public static void AddDatas(List<DayTimeFragment> dayTimeFragmentList, DayTimeFragmentDao dao, String[] times){
+    private static void AddDatas(List<DayTimeFragment> dayTimeFragmentList, DayTimeFragmentDao dao, String[] times){
         int temp = dayTimeFragmentList.size();
-        //清空数据库
+        // 清空数据库
         dao.clearTable();
         //如果数据库为空，直接添加
-        if (dayTimeFragmentList == null){
-            DayTimeFragment dayTimeFragment = new DayTimeFragment(0,times[0],times[1]);
+        if (dayTimeFragmentList == null || temp==0){
+            DayTimeFragment dayTimeFragment = new DayTimeFragment(times[0],times[1]);
             dao.addDayTimeFragment(dayTimeFragment);
         }else {
             //数据库不为空，先把数据按顺序存入到List中
             for (int i = 0; i<temp; i++){
                 //如果用户输入的开始时间时间小于数据库中的某一开始时间，则把用户输入的数据插入到该数据项的前面
                 if (Time.parseTime(times[0]).before(Time.parseTime(dayTimeFragmentList.get(i).getStart()))) {
-                    DayTimeFragment dayTimeFragment = new DayTimeFragment(i, times[0], times[1]);
+                    DayTimeFragment dayTimeFragment = new DayTimeFragment(times[0], times[1]);
                     dayTimeFragmentList.add(i, dayTimeFragment);
-                    for (int j = i+1; j<temp+1; j++){
-                        //把List中的DayTimeFragment的order属性全部后移一位
-                        dayTimeFragmentList.get(j).setOrder(j);
-                    }
                     break;
                 }
             }
             //如果List修改后的长度和原本的长度相等，说明用户户输入的时间段排在最后，因此把此数据添加到末尾
             if (dayTimeFragmentList.size() == temp){
-                DayTimeFragment dayTimeFragment = new DayTimeFragment(dayTimeFragmentList.size(), times[0], times[1]);
+                DayTimeFragment dayTimeFragment = new DayTimeFragment(times[0], times[1]);
                 dayTimeFragmentList.add(dayTimeFragment);
             }
         }

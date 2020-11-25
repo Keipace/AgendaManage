@@ -1,21 +1,13 @@
 package com.privateproject.agendamanage.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.wifi.aware.DiscoverySession;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -25,18 +17,13 @@ import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.activity.WeekTimeEditChoiseActivity;
 import com.privateproject.agendamanage.bean.Course;
 import com.privateproject.agendamanage.bean.DayTimeFragment;
-import com.privateproject.agendamanage.bean.Task;
+import com.privateproject.agendamanage.databinding.ItemWeekTimeAddLayoutBinding;
 import com.privateproject.agendamanage.db.CourseDao;
 import com.privateproject.agendamanage.db.DayTimeFragmentDao;
-import com.privateproject.agendamanage.server.WeekTimeAddServer;
-import com.privateproject.agendamanage.utils.ToastUtil;
 import com.privateproject.agendamanage.viewHolder.WeekTimeViewHolder;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.zip.Inflater;
 
 public class WeekTimeAdapter extends RecyclerView.Adapter {
     public static final int REQUESTCODE_WEEKTIMEEDIT = 1;
@@ -60,37 +47,20 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
     };
 
     private Activity context;
+    // 表格对应的数据
     private Object[][] datas;
     private DayTimeFragmentDao dayTimeFragmentDao;
     private CourseDao courseDao;
-    private List<Course> coursePositionList;
+    // 所有的课程
     private List<Course> courseList;
-
+    private WeekTimeAdapter adapter;
 
     public WeekTimeAdapter(Activity context) {
         this.context = context;
         dayTimeFragmentDao = new DayTimeFragmentDao(context);
         courseDao = new CourseDao(context);
 
-
-        // 查询DayTimeFragment数据库所有数据
-        List<DayTimeFragment> dayTimeList = dayTimeFragmentDao.selectAll();
-        // 将一天的时间点连接成时间段字符串
-        String[] fragment = new String[dayTimeList.size()];
-        for (int i = 0; i < dayTimeList.size(); i++) {
-            fragment[i] = dayTimeList.get(i).toString();
-        }
-        // 初始化数据矩阵，并赋予其第一行和第一列的数据
-        this.datas = new Object[dayTimeList.size()+1][8];
-        if(dayTimeList==null||dayTimeList.size()==0||fragment==null||fragment.length==0){
-            this.datas[0] = new Object[]{""};
-        }else {
-            this.datas[0] = new Object[]{"", "周一", "周二", "周三", "周四", "周五", "周六", "周日"};
-            for (int i = 0; i < this.datas.length-1; i++) {
-                this.datas[i+1][0] = fragment[i];
-            }
-        }
-
+        initFormData();
     }
 
     @NonNull
@@ -121,50 +91,42 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
             headViewHoder.textViewHead.setText(this.datas[0][position].toString());
         } else if (getItemViewType(position) == LEFT) {
             // 为第一列的视图设置数据（包括最左上角的）
-            int col = position / 8;
+            int row = position / 8;
             WeekTimeViewHolder.WeekTimeLeftViewHoder leftViewHoder = (WeekTimeViewHolder.WeekTimeLeftViewHoder) holder;
-            leftViewHoder.textViewLeft.setText(this.datas[col][0].toString());
+            leftViewHoder.textViewLeft.setText(this.datas[row][0].toString());
         } else {
-            //添加相应的Course和Task数据
-            courseList = courseDao.selectAll();
-            String tmp = showCourseAndTask(position,courseList);
-            //显示出来
+            int row = position/8;
+            int col = position%8;
+            //显示课程
             WeekTimeViewHolder.WeekTimeCellViewHolder cellViewHolder = (WeekTimeViewHolder.WeekTimeCellViewHolder) holder;
-            randomColor(cellViewHolder.btnCell, tmp);
-            //此position处对应的button的courseList的长度
-            final List<Course>[] coursePositionList = new List[]{courseDao.selectAll(position)};
+            setCourse(cellViewHolder.btnCell, row, col);
             //添加监听器
-            ((WeekTimeViewHolder.WeekTimeCellViewHolder) holder).btnCell.setOnClickListener(new View.OnClickListener() {
+            cellViewHolder.btnCell.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (coursePositionList[0].size() > 0) {
-                        Intent intent = new Intent(context,WeekTimeEditChoiseActivity.class);
-                        intent.putExtra("posi",position);
+                    if (hasCourse(row, col)) {
+                        Intent intent = new Intent(context, WeekTimeEditChoiseActivity.class);
+                        intent.putExtra("row", row);
+                        intent.putExtra("col", col);
                         context.startActivityForResult(intent, REQUESTCODE_WEEKTIMEEDIT);
 
                     } else {
+                        ItemWeekTimeAddLayoutBinding dialogBinding = ItemWeekTimeAddLayoutBinding.inflate(context.getLayoutInflater());
                         //添加每周事件
-                        View view = LayoutInflater.from(context).inflate(R.layout.item_week_time_add_layout, null);
-                        EditText courseNameEt = view.findViewById(R.id.item_WeekTimeAdd_courseName_et);
-                        EditText addressEt = view.findViewById(R.id.item_WeekTimeAdd_address_et);
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setTitle("添加每周事件")
-                                .setView(view)
+                                .setView(dialogBinding.getRoot())
                                 .setNegativeButton("取消", null)
                                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        //获得相应的控件
                                         //将新的Course添加至数据库
-                                        String courseName = courseNameEt.getText().toString();
-                                        String address = addressEt.getText().toString();
-                                        WeekTimeAddServer weekTimeAddServer = new WeekTimeAddServer(context);
-                                        weekTimeAddServer.addCoures(courseDao, position, courseName, address);
+                                        String name = dialogBinding.itemWeekTimeAddCourseNameEt.getText().toString();
+                                        String address = dialogBinding.itemWeekTimeAddAddressEt.getText().toString();
+                                        courseDao.addCourse(new Course(name, address, row, col));
                                         //更新button内容
-                                        courseList = courseDao.selectAll();
-                                        String finalTmp = showCourseAndTask(position,courseList);
-                                        randomColor(cellViewHolder.btnCell, finalTmp);
-                                        coursePositionList[0] = courseDao.selectAll(position);
+                                        refreshFormData();
+                                        adapter.notifyDataSetChanged();
                                     }
 
                                 })
@@ -194,67 +156,72 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
         return CELL; //数据区，viewType为2
     }
 
-    //显示出Button,有字的设置的颜色
-    private int colorCount = 0;
-
-    public void randomColor(Button view, String str) {
-        String regEX = "[\n, ]+";
-        String aa = "";
-        String newString = str.replaceAll(regEX, aa);
-        if (newString == null || newString.equals("") || newString.equals(" ")) {
-            view.setBackgroundColor(Color.rgb(255, 255, 255));
-        } else {
-            view.setBackgroundColor(COLORSOPPORTED[colorCount % COLORSOPPORTED.length]);
-            colorCount++;
-        }
-        view.setText(str);
-    }
-
-    //根据position显示相应位置的内容
-    public String showCourseAndTask(int position,List<Course> courseList) {
-        //添加Task数据
-        int col = position % 8;
-        int row = position / 8;
-        Object tmpObejct = datas[row][col];
-//        List<Task> taskList = (ArrayList<Task>) tmpObejct;
-        // 为数据区的视图设置数据
-        String tmp = "";
-        //添加course数据
-        if (courseList != null && courseList.size() != 0) {
-            for (int i = 0; i < courseList.size(); i++) {
-                if (position == courseList.get(i).getPosition()) {
-                    tmp += courseList.get(i).toString();
-                }
-            }
-        }
-//        if (taskList != null && taskList.size() != 0) {
-//            for (int j = 0; j < taskList.size() - 1; j++) {
-//                tmp += taskList.get(j).getName() + ",\n";
-//            }
-//            tmp += taskList.get(taskList.size() - 1).getName();
-//        }
-        return tmp;
-    }
-
-    public void refresh() {
+    public void initFormData() {
         // 查询DayTimeFragment数据库所有数据
         List<DayTimeFragment> dayTimeList = dayTimeFragmentDao.selectAll();
-        String[] fragment = new String[dayTimeList.size()];
-        for (int i = 0; i < dayTimeList.size(); i++) {
-            fragment[i] = dayTimeList.get(i).toString();
-        }
-        // 初始化数据矩阵，并赋予其第一行和第一列的数据
         this.datas = new Object[dayTimeList.size()+1][8];
-        if(dayTimeList==null||dayTimeList.size()==0||fragment==null||fragment.length==0){
-            this.datas[0] = new Object[]{""};
-        }else {
-            this.datas[0] = new Object[]{"", "周一", "周二", "周三", "周四", "周五", "周六", "周日"};
+        this.datas[0] = new Object[]{"", "周一", "周二", "周三", "周四", "周五", "周六", "周日"};
+        if(dayTimeList.size()!=0) {
+            // 将一天的时间点连接成时间段字符串
+            String[] fragment = new String[dayTimeList.size()];
+            for (int i = 0; i < dayTimeList.size(); i++) {
+                fragment[i] = dayTimeList.get(i).toString();
+            }
+            // 初始化数据矩阵，并赋予其第一行和第一列的数据
             for (int i = 0; i < this.datas.length-1; i++) {
                 this.datas[i+1][0] = fragment[i];
             }
         }
-        // 查询数据
-        courseList = courseDao.selectAll();
     }
 
+    public void refreshFormData() {
+        courseList = courseDao.selectAll();
+        for (int i = 0; i < courseList.size(); i++) {
+            Course course = courseList.get(i);
+            if (this.datas[course.getRow()][course.getCol()]==null) {
+                List<Course> courses = new ArrayList<Course>();
+                courses.add(course);
+                this.datas[course.getRow()][course.getCol()] = courses;
+            } else {
+                List<Course> courses = (ArrayList<Course>)this.datas[course.getRow()][course.getCol()];
+                courses.add(course);
+            }
+        }
+    }
+
+    //显示出Button有字的设置的颜色
+    private int colorCount = 0;
+    private void setCourse(Button view, int row, int col) {
+        // 获取对应位置上的数据
+        String tmp = "";
+        if (this.datas[row][col]==null) {
+            // 没有课程时默认显示
+            return;
+        }
+        // 将多个课程拼接成一个字符串
+        List<Course> courses = (ArrayList<Course>)this.datas[row][col];
+        for (int i = 0; i < courses.size(); i++) {
+            tmp += courseList.get(i).toString();
+        }
+
+        // 根据字符串来设置button的背景颜色
+        String newString = tmp.replaceAll("[\n, ]+", "");
+        if (newString != null && !newString.equals("")) {
+            view.setBackgroundColor(COLORSOPPORTED[colorCount % COLORSOPPORTED.length]);
+            colorCount++;
+            // button显示课程的名称
+            view.setText(tmp);
+        }
+    }
+
+    private boolean hasCourse(int row, int col) {
+        if (this.datas[row][col]==null || ((ArrayList<Course>)this.datas[row][col]).size()==0) {
+            return false;
+        }
+        return true;
+    }
+
+    public void setAdapter(WeekTimeAdapter adapter) {
+        this.adapter = adapter;
+    }
 }

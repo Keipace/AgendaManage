@@ -21,13 +21,14 @@ public class WeekTimeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.adapter = new WeekTimeAdapter(getActivity());
+        this.adapter.setAdapter(this.adapter);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // 设置要显示的页面
-        return inflater.inflate(R.layout.fragment_week_time,null);
+        return inflater.inflate(R.layout.fragment_week_time, container, false);
     }
 
     @Override
@@ -39,7 +40,10 @@ public class WeekTimeFragment extends Fragment {
     }
 
     public void refresh() {
-        adapter.refresh();
+        // 刷新数据
+        adapter.initFormData();
+        adapter.refreshFormData();
+        // 刷新视图
         adapter.notifyDataSetChanged();
     }
 

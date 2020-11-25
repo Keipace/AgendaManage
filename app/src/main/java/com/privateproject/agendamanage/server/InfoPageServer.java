@@ -1,10 +1,9 @@
 package com.privateproject.agendamanage.server;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 
-import com.privateproject.agendamanage.MainActivity;
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.bean.DayTarget;
 import com.privateproject.agendamanage.bean.Target;
@@ -12,12 +11,8 @@ import com.privateproject.agendamanage.databinding.ActivityDayTargetInfoBinding;
 import com.privateproject.agendamanage.databinding.ActivityTargetInfoBinding;
 import com.privateproject.agendamanage.db.DayTargetDao;
 import com.privateproject.agendamanage.db.TargetDao;
-import com.privateproject.agendamanage.utils.ComponentUtil;
-import com.privateproject.agendamanage.utils.DayTargetUtil;
-import com.privateproject.agendamanage.utils.TargetUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class InfoPageServer {
@@ -57,8 +52,7 @@ public class InfoPageServer {
         this.dayTargetpageBinding.DaytargetInfoBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(dayTargetContext, MainActivity.class);
-                dayTargetContext.startActivity(intent);
+                ((Activity)dayTargetContext).finish();
             }
         });
         // 设置 编辑 按钮的监听器
@@ -124,8 +118,7 @@ public class InfoPageServer {
         targetPageBinding.targetInfoBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(targetContext, MainActivity.class);
-                targetContext.startActivity(intent);
+                ((Activity)targetContext).finish();
             }
         });
 

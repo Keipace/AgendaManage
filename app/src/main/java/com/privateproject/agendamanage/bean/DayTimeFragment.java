@@ -14,28 +14,17 @@ public class DayTimeFragment {
     private String start;
     @DatabaseField(canBeNull = false)
     private String end;
-    @DatabaseField(canBeNull = false, columnName = "order")
-    private int order;
 
     public Integer getId(){
         return id;
     }
 
-    public DayTimeFragment(int order, String start, String end) {
-        this.order = order;
+    public DayTimeFragment(String start, String end) {
         this.start = start;
         this.end = end;
     }
 
     private DayTimeFragment() {
-    }
-
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
     }
 
     public String getStart() {

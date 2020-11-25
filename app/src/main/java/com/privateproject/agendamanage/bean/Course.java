@@ -13,31 +13,27 @@ public class Course {
     @DatabaseField
     private String address;//地点
     @DatabaseField(canBeNull = false)
-    private Integer position;//元素所在位置
+    private int col;//元素所在列，代表星期几
+    @DatabaseField(canBeNull = false)
+    private int row;// 元素所在行，代表第几个时间段
 
-    public Course() {
+    private Course() {}
 
-    }
-
-    public Course(Integer id, String classname, Integer position) {
-        this.id = id;
+    public Course(String classname, int col, int row) {
         this.classname = classname;
-        this.position = position;
+        this.col = col;
+        this.row = row;
     }
 
-    public Course(Integer id, String classname, String address, Integer position) {
-        this.id = id;
+    public Course(String classname, String address, int col, int row) {
         this.classname = classname;
         this.address = address;
-        this.position = position;
+        this.col = col;
+        this.row = row;
     }
 
     public Integer getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getClassname() {
@@ -56,12 +52,20 @@ public class Course {
         this.address = address;
     }
 
-    public Integer getPosition() {
-        return position;
+    public int getCol() {
+        return col;
     }
 
-    public void setPosition(Integer position) {
-        this.position = position;
+    public void setCol(int col) {
+        this.col = col;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
     }
 
     @Override

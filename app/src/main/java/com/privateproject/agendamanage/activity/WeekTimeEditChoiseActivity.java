@@ -17,76 +17,149 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.privateproject.agendamanage.R;
+import com.privateproject.agendamanage.adapter.WeekTimeAdapter;
 import com.privateproject.agendamanage.bean.Course;
 import com.privateproject.agendamanage.db.CourseDao;
-import com.privateproject.agendamanage.server.WeekTimeAddServer;
 
 import java.util.List;
 
 public class WeekTimeEditChoiseActivity extends AppCompatActivity {
     public static final int RESULTCODE_WEEKTIMEEDIT = 1;
 
-    private RecyclerView recyclerView;
-    private Button addBtn;
-    private List<Course> courseList;
     private CourseDao courseDao;
-    private int posi;
+    private List<Course> courseList;
+    private int row, col;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_week_time_edit_choise_layout);
-
-
-        recyclerView = findViewById(R.id.item_weekTimeEditChoise_recyclerView);
-        recyclerView.setHasFixedSize(true);
         courseDao = new CourseDao(this);
-        addBtn = findViewById(R.id.item_weekTimeEditChoise_add_btn);
 
         Intent intent = getIntent();
-        posi = intent.getIntExtra("posi", -1);
-        courseList = courseDao.selectAll(posi);
         setResult(RESULTCODE_WEEKTIMEEDIT, intent);
+        row = intent.getIntExtra("row", -1);
+        col = intent.getIntExtra("col", -1);
+        if (row==-1 || col==-1) {
+            finish();
+        }
 
-        MyAdapter adapter = new MyAdapter();
-        adapter.setInnerAdapter(adapter);
+        courseList = courseDao.selectByPosition(row, col);
+        RecyclerView recyclerView = findViewById(R.id.item_weekTimeEditChoise_recyclerView);
+        Button addBtn = findViewById(R.id.item_weekTimeEditChoise_add_btn);
+
+        // 设置list列表
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.Adapter adapter = new RecyclerView.Adapter<CourseViewHolder>() {
+            @NonNull
+            @Override
+            public CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(WeekTimeEditChoiseActivity.this).inflate(R.layout.item_week_time_course_list, parent, false);
+                return new CourseViewHolder(view);
+            }
+
+            @Override
+            public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
+                holder.nameTv.setText(courseList.get(position).getClassname());
+                holder.addressTv.setText(courseList.get(position).getAddress());
+
+                //删除事件
+                holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        courseDao.deleteCourseById(courseList.get(position));
+                        courseList = courseDao.selectByPosition(row, col);
+                        notifyDataSetChanged();
+                    }
+                });
+
+                //编辑事件
+                holder.editBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showDialog(false, position, new InnerListener() {
+                            @Override
+                            public void innnerAction() {
+                                notifyDataSetChanged();
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public int getItemCount() {
+                return courseList.size();
+            }
+        };
         recyclerView.setAdapter(adapter);
 
-
+        // 设置添加按钮监听器
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View view = LayoutInflater.from(WeekTimeEditChoiseActivity.this).inflate(R.layout.item_week_time_add_layout, null);
-                EditText courseNameEt = view.findViewById(R.id.item_WeekTimeAdd_courseName_et);
-                EditText addressEt = view.findViewById(R.id.item_WeekTimeAdd_address_et);
-                AlertDialog.Builder builder = new AlertDialog.Builder(WeekTimeEditChoiseActivity.this);
-                //添加事件
-                builder.setTitle("添加每周事件")
-                        .setView(view)
-                        .setNegativeButton("取消", null)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //获得相应的控件
-                                //将新的Course添加至数据库
-                                String courseName = courseNameEt.getText().toString();
-                                String address = addressEt.getText().toString();
-                                WeekTimeAddServer weekTimeAddServer = new WeekTimeAddServer(WeekTimeEditChoiseActivity.this);
-                                weekTimeAddServer.addCoures(courseDao, posi, courseName, address);
-                                //更新courseList内容
-                                courseList = courseDao.selectAll(posi);
-                                adapter.notifyDataSetChanged();
-                            }
-
-                        })
-                        .create().show();
+                showDialog(true, -1, new InnerListener() {
+                    @Override
+                    public void innnerAction() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
             }
         });
     }
 
+    private void showDialog(boolean isAdd, int position, InnerListener innerListener) {
+        View view = LayoutInflater.from(WeekTimeEditChoiseActivity.this).inflate(R.layout.item_week_time_add_layout, null);
+        EditText courseNameEt = view.findViewById(R.id.item_WeekTimeAdd_courseName_et);
+        EditText addressEt = view.findViewById(R.id.item_WeekTimeAdd_address_et);
+        AlertDialog.Builder builder = new AlertDialog.Builder(WeekTimeEditChoiseActivity.this);
+        builder.setView(view)
+                .setNegativeButton("取消",null);
+        if (isAdd) {
+            builder.setTitle("添加每周事件")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //获得相应的控件
+                            //将新的Course添加至数据库
+                            String courseName = courseNameEt.getText().toString();
+                            String address = addressEt.getText().toString();
+                            courseDao.addCourse(new Course(courseName, address, row, col));
+                            //更新courseList内容
+                            courseList = courseDao.selectByPosition(row, col);
+                            innerListener.innnerAction();
+                        }
+                    });
+        } else {
+            Course course = courseList.get(position);
+            courseNameEt.setText(course.getClassname());
+            addressEt.setText(course.getAddress());
+            builder.setTitle("编辑每周事件")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //获得相应的控件
+                            //将新的Course添加至数据库
+                            String courseName = courseNameEt.getText().toString();
+                            String address = addressEt.getText().toString();
+                            course.setClassname(courseName);
+                            course.setAddress(address);
+                            courseDao.updateCourse(course);
+                            //更新courseList内容
+                            courseList = courseDao.selectByPosition(row, col);
+                            innerListener.innnerAction();
+                        }
 
-    class CourseViewHolder extends RecyclerView.ViewHolder {
+                    });
+        }
+        builder.create().show();
+    }
 
+    private interface InnerListener {
+        public void innnerAction();
+    }
+
+    static class CourseViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout rootView;
         TextView nameTv;
         TextView addressTv;
@@ -100,76 +173,6 @@ public class WeekTimeEditChoiseActivity extends AppCompatActivity {
             this.addressTv = itemView.findViewById(R.id.item_weekTimeCourse_address_tv);
             this.deleteBtn = itemView.findViewById(R.id.item_weekTimeCourse_delete_btn);
             this.editBtn = itemView.findViewById(R.id.item_weekTimeCourse_edit_btn);
-        }
-    }
-
-    class MyAdapter extends RecyclerView.Adapter<CourseViewHolder> {
-        private RecyclerView.Adapter innerAdapter;
-
-        public void setInnerAdapter(RecyclerView.Adapter innerAdapter) {
-            this.innerAdapter = innerAdapter;
-        }
-
-        @Override
-        public CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            //此处一定要加parent
-            View view = LayoutInflater.from(WeekTimeEditChoiseActivity.this).inflate(R.layout.item_week_time_course_list, parent, false);
-            return new CourseViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
-            holder.nameTv.setText(courseList.get(position).getClassname());
-            holder.addressTv.setText(courseList.get(position).getAddress());
-
-            //删除事件
-            holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    courseDao.deleteCourseById(courseList.get(position));
-                    courseList = courseDao.selectAll(posi);
-                    innerAdapter.notifyDataSetChanged();
-                }
-            });
-
-            //编辑事件
-            holder.editBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Course course = courseList.get(position);
-                    View view = LayoutInflater.from(WeekTimeEditChoiseActivity.this).inflate(R.layout.item_week_time_add_layout, null);
-                    EditText courseNameEt = view.findViewById(R.id.item_WeekTimeAdd_courseName_et);
-                    courseNameEt.setText(course.getClassname());
-                    EditText addressEt = view.findViewById(R.id.item_WeekTimeAdd_address_et);
-                    addressEt.setText(course.getAddress());
-                    AlertDialog.Builder builder = new AlertDialog.Builder(WeekTimeEditChoiseActivity.this);
-                    builder.setTitle("编辑每周事件")
-                            .setView(view)
-                            .setNegativeButton("取消", null)
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //获得相应的控件
-                                    //将新的Course添加至数据库
-                                    String courseName = courseNameEt.getText().toString();
-                                    String address = addressEt.getText().toString();
-                                    course.setClassname(courseName);
-                                    course.setAddress(address);
-                                    courseDao.updateOrAdd(course);
-                                    //更新courseList内容
-                                    courseList = courseDao.selectAll(posi);
-                                    innerAdapter.notifyDataSetChanged();
-                                }
-
-                            })
-                            .create().show();
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return courseList.size();
         }
     }
 

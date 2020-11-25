@@ -1,13 +1,12 @@
 package com.privateproject.agendamanage.utils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import android.view.View;
+import android.widget.EditText;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringUtils {
-/*    public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");*/
 
     public static String moveSpaceString(String string) {
         String result;
@@ -23,17 +22,16 @@ public class StringUtils {
         return string;
     }
 
-/*    *//*将yyyy-MM-dd格式的字符串转换成Date类型的数据*//*
-    public static Date getDateFromString(String date) {
-        try {
-            return sdf.parse(date);
-        } catch (ParseException e) {
-            return null;
-        }
+    public static void setMoveSPaceListener(EditText editText) {
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // 失去焦点的时候去除空白字符
+                if (!hasFocus) {
+                    editText.setText(moveSpaceString(editText.getText().toString()));
+                }
+            }
+        });
     }
 
-    *//*将date类型的数据转换成yyyy-MM-dd格式的字符串*//*
-    public static String getDateToString(Date date) {
-        return sdf.format(date);
-    }*/
 }

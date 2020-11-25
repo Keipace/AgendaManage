@@ -36,29 +36,12 @@ import java.util.Map;
 import java.util.Set;
 
 public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSelectViewHolder.DayTimeSelectTextViewRecycleViewHolder> {
-
-    //数据是否改变
-    public static boolean isChange = false;
-
-    public boolean isChange() {
-        return isChange;
-    }
-
-    public void setChange(boolean change) {
-        isChange = change;
-    }
-
     private Context context;
     private DayTimeFragmentDao dao;
-    private DayTimeSelectRecycleAdapter adapter;
     private List<DayTimeSelectViewHolder.DayTimeSelectTextViewRecycleViewHolder> items;
     private List<DayTimeFragment> dayTimeFragmentList;
     private ActivityDayTimeSelectBinding binding;
     private List<String> temp;
-
-    public void setAdapter(DayTimeSelectRecycleAdapter adapter) {
-        this.adapter = adapter;
-    }
 
     public DayTimeSelectRecycleAdapter(Context context,ActivityDayTimeSelectBinding binding) {
         this.context = context;
@@ -92,7 +75,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
             @Override
             public void onClick(View v) {
                 //跳出时间选择器，用户修改时间段
-                DayTimeSelectAddServer.TimeSelectAlerDialog(context, dao, adapter, false, position);
+                DayTimeSelectAddServer.TimeSelectAlerDialog(context, dao, DayTimeSelectRecycleAdapter.this, position);
             }
         });
         holder.daytimeSelectContainer.setOnLongClickListener(new View.OnLongClickListener() {
@@ -106,20 +89,19 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
                 }
                 //显示有关的组件
                 isVisible(true);
-                items.get(position).daytimeSelectCheckBox.setChecked(false);
                 return true;
             }
         });
         //复选框监听器
-        items.get(position).daytimeSelectCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.daytimeSelectCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
                     //被选到，把下标放入temp中
-                    temp.add(items.get(position).RecycleTextView.getText().toString());
+                    temp.add(holder.RecycleTextView.getText().toString());
                 }else {
                     //取消选择，把存入temp中对应的下标删除
-                    temp.remove(items.get(position).RecycleTextView.getText().toString());
+                    temp.remove(holder.RecycleTextView.getText().toString());
                 }
             }
         });
@@ -145,11 +127,11 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
                 for (int i = 0; i < items.size(); i++) {
                     //为所有TextView设置可选，CheckBox不可见
                     items.get(i).RecycleTextView.setEnabled(true);
+                    items.get(i).daytimeSelectCheckBox.setChecked(false);
                     items.get(i).daytimeSelectCheckBox.setVisibility(View.GONE);
                 }
                 isVisible(false);
                 //删除dayTimeFragmentList中对应下标的数据
-                int number = dayTimeFragmentList.size();
                 for (int i = 0; i<temp.size(); i++){
                     for (int j = 0; j<dayTimeFragmentList.size(); j++){
                         if (dayTimeFragmentList.get(j).toString().equals(temp.get(i))){
@@ -171,10 +153,6 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
 
     }
     @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-    @Override
     public int getItemCount() {
         //返回Item的数量
         return dayTimeFragmentList.size();
@@ -188,8 +166,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
     public void refresh() {
         isRestart = true;
         this.dayTimeFragmentList = dao.selectAll();
-        isChange = true;
-        adapter.notifyDataSetChanged();
+        notifyDataSetChanged();
     }
     public void isVisible(boolean isvisible){
         if (isvisible) {
@@ -203,4 +180,5 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
         }
 
     }
+
 }
