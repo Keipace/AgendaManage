@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/itemWeekTime_head_tv"
-    android:text="星期一"
-    android:background="#09f"
-    android:textColor="#fff"
-    android:gravity="center"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    android:paddingTop="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="星期一"
+
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:id="@+id/itemWeekTime_head_tv"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="@id/itemWeekTime_headBottom_textView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/itemWeekTime_headBottom_textView"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

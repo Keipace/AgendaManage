@@ -2,6 +2,7 @@ package com.privateproject.agendamanage.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -141,17 +142,22 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
     }
 
     private int colorCount = 0;
-    public void randomColor(Button view, String str){
+    public void randomColor(Button button, String str){
         String regEX="[\n, ]+";
         String aa = "";
         String newString = str.replaceAll(regEX,aa);
         if (newString==null||newString.equals("")||newString.equals(" ")){
-            view.setBackgroundColor(Color.rgb(255,255,255));
+            button.setBackgroundColor(Color.rgb(255,255,255));
 
         }else {
-            view.setBackgroundColor(COLORSOPPORTED[colorCount%COLORSOPPORTED.length]);
+            GradientDrawable gradientDrawable = new GradientDrawable();
+            gradientDrawable.setShape(GradientDrawable.RECTANGLE);//形状
+            gradientDrawable.setCornerRadius(20f);//设置圆角Radius
+            gradientDrawable.setColor(COLORSOPPORTED[colorCount%COLORSOPPORTED.length]);//颜色
+
+            button.setBackground(gradientDrawable);//设置为background
             colorCount++;
         }
-        view.setText(str);
+        button.setText(str);
     }
 }
