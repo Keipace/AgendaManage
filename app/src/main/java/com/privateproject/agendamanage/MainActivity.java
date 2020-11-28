@@ -10,13 +10,14 @@ import android.view.View;
 import com.privateproject.agendamanage.databinding.ActivityMainBinding;
 import com.privateproject.agendamanage.fragment.FragmentTest;
 import com.privateproject.agendamanage.fragment.GoalListFragment;
-import com.privateproject.agendamanage.fragment.WeekTimeFragment;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding pageXml;
+
+    // 第一个页面
     private GoalListFragment goalListFragment;
+    // 第二个页面
     private FragmentTest fragmentTest;
-    private WeekTimeFragment weekTimeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,54 +25,57 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         pageXml = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(pageXml.getRoot());
+        // 设置 tag 切换页面的监听器
         setListener();
+        // 默认打开时显示第一个页面
         pageXml.mianActivityQingdanBtn.transitionToEnd();
         selectTab(0);//默认选中第一个Tab，即清单
     }
 
     private void setListener() {
-        OnClick onClick = new OnClick();
-        pageXml.mianActivityQingdanBtn.setOnClickListener(onClick);
-        pageXml.mianActivityRichengBtn.setOnClickListener(onClick);
-        pageXml.mianActivityTongjiBtn.setOnClickListener(onClick);
-        pageXml.mianActivityMeBtn.setOnClickListener(onClick);
+        // 分别给四个tag（motionLayout）设置监听器
+        setBtnOnClickListener(pageXml.mianActivityQingdanBtn);
+        setBtnOnClickListener(pageXml.mianActivityMeBtn);
+        setBtnOnClickListener(pageXml.mianActivityRichengBtn);
+        setBtnOnClickListener(pageXml.mianActivityTongjiBtn);
     }
 
-    private class OnClick implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.mianActivity_qingdan_btn:
-                    pageXml.mianActivityQingdanBtn.transitionToEnd();
-                    pageXml.mianActivityTongjiBtn.transitionToStart();
-                    pageXml.mianActivityRichengBtn.transitionToStart();
-                    pageXml.mianActivityMeBtn.transitionToStart();
-                    selectTab(0);
-                    break;
-                case R.id.mianActivity_richeng_btn:
-                    pageXml.mianActivityRichengBtn.transitionToEnd();
-                    pageXml.mianActivityTongjiBtn.transitionToStart();
-                    pageXml.mianActivityQingdanBtn.transitionToStart();
-                    pageXml.mianActivityMeBtn.transitionToStart();
-                    selectTab(1);
-                    break;
-                case R.id.mianActivity_tongji_btn:
-                    pageXml.mianActivityTongjiBtn.transitionToEnd();
-                    pageXml.mianActivityQingdanBtn.transitionToStart();
-                    pageXml.mianActivityRichengBtn.transitionToStart();
-                    pageXml.mianActivityMeBtn.transitionToStart();
-                    selectTab(2);
-                    break;
-                case R.id.mianActivity_me_btn:
-                    //我 页面
-                    pageXml.mianActivityMeBtn.transitionToEnd();
-                    pageXml.mianActivityQingdanBtn.transitionToStart();
-                    pageXml.mianActivityRichengBtn.transitionToStart();
-                    pageXml.mianActivityTongjiBtn.transitionToStart();
-                    break;
+    private void setBtnOnClickListener(MotionLayout motionLayout) {
+        motionLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    // 切换时先显示动画，然后切换页面
+                    case R.id.mianActivity_qingdan_btn:
+                        pageXml.mianActivityQingdanBtn.transitionToEnd();
+                        pageXml.mianActivityTongjiBtn.transitionToStart();
+                        pageXml.mianActivityRichengBtn.transitionToStart();
+                        pageXml.mianActivityMeBtn.transitionToStart();
+                        selectTab(0);
+                        break;
+                    case R.id.mianActivity_richeng_btn:
+                        pageXml.mianActivityRichengBtn.transitionToEnd();
+                        pageXml.mianActivityTongjiBtn.transitionToStart();
+                        pageXml.mianActivityQingdanBtn.transitionToStart();
+                        pageXml.mianActivityMeBtn.transitionToStart();
+                        selectTab(1);
+                        break;
+                    case R.id.mianActivity_tongji_btn:
+                        pageXml.mianActivityTongjiBtn.transitionToEnd();
+                        pageXml.mianActivityQingdanBtn.transitionToStart();
+                        pageXml.mianActivityRichengBtn.transitionToStart();
+                        pageXml.mianActivityMeBtn.transitionToStart();
+                        break;
+                    case R.id.mianActivity_me_btn:
+                        //我 页面
+                        pageXml.mianActivityMeBtn.transitionToEnd();
+                        pageXml.mianActivityQingdanBtn.transitionToStart();
+                        pageXml.mianActivityRichengBtn.transitionToStart();
+                        pageXml.mianActivityTongjiBtn.transitionToStart();
+                        break;
+                }
             }
-        }
+        });
     }
 
     //进行选中Tab的处理
@@ -90,14 +94,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case 1: //显示第二个选项卡
-                if (weekTimeFragment == null) { //第一次显示第二个选项卡
-                    weekTimeFragment = new WeekTimeFragment();
-                    transaction.add(R.id.mianActivity_container_contrainlayout, weekTimeFragment).commitAllowingStateLoss();
-                } else { //返回第二个选项卡
-                    transaction.show(weekTimeFragment).commitAllowingStateLoss();
-                }
-                break;
-            case 2: //显示第二个选项卡
                 if (fragmentTest == null) { //第一次显示第二个选项卡
                     fragmentTest = new FragmentTest();
                     transaction.add(R.id.mianActivity_container_contrainlayout, fragmentTest).commitAllowingStateLoss();
@@ -115,9 +111,6 @@ public class MainActivity extends AppCompatActivity {
         }
         if (goalListFragment != null) {
             transaction.hide(goalListFragment);
-        }
-        if (weekTimeFragment != null) {
-            transaction.hide(weekTimeFragment);
         }
     }
 

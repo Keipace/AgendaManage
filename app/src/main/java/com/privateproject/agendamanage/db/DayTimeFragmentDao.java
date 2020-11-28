@@ -52,16 +52,6 @@ public class DayTimeFragmentDao {
         }
     }
 
-    public void deleteDayTimeFragmentByOrder(int order){
-        DeleteBuilder<DayTimeFragment, Integer> deleteBuilder = dao.deleteBuilder();
-        try {
-            deleteBuilder.where().eq("order", order);
-            deleteBuilder.delete();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void clearTable() {
         DeleteBuilder<DayTimeFragment, Integer> deleteBuilder = dao.deleteBuilder();
         try {
@@ -104,9 +94,7 @@ public class DayTimeFragmentDao {
     public List<DayTimeFragment> selectAll() {
         List<DayTimeFragment> dayTimeFragments = null;
         try {
-            QueryBuilder<DayTimeFragment, Integer> queryBuilder = dao.queryBuilder();
-            queryBuilder.orderBy("order", true);
-            dayTimeFragments = queryBuilder.query();
+            dayTimeFragments = dao.queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }

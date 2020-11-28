@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.privateproject.agendamanage.R;
+import com.privateproject.agendamanage.adapter.DayTimeSelectRecycleAdapter;
 import com.privateproject.agendamanage.adapter.WeekTimeAdapter;
 
 public class WeekTimeFragment extends Fragment {
@@ -20,20 +21,31 @@ public class WeekTimeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.adapter = new WeekTimeAdapter(getContext());
+        this.adapter = new WeekTimeAdapter(getActivity());
+        this.adapter.setAdapter(this.adapter);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_week_time,null);
+        // 设置要显示的页面
+        return inflater.inflate(R.layout.fragment_week_time, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        // 设置页面的数据
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.fragmentWeekTime_list_recyclerView);
         recyclerView.setAdapter(this.adapter);
+    }
+
+    public void refresh() {
+        // 刷新数据
+        adapter.initFormData();
+        adapter.refreshFormData();
+        // 刷新视图
+        adapter.notifyDataSetChanged();
     }
 
 }

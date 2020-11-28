@@ -12,21 +12,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/fragmentGoalList_header_constraintLayout"
-        android:background="@drawable/bg_header"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         >
         <com.github.rubensousa.raiflatbutton.RaiflatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/fragmentGoalList_dayTimeSelect_btn"
+            android:id="@+id/fragmentGoalList_setCourse_btn"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/bg_raiflat_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_margin="10dp"
-            android:text="分割时间"
-            android:textStyle="bold"
+            android:text="设置课程表"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fragmentGoalList_emergencySelect_btn"
+            app:layout_constraintLeft_toRightOf="@id/fragmentGoalList_setCourse_btn"
+            android:layout_marginLeft="5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="设置应急时间量"
             />
         <View
             app:layout_constraintLeft_toLeftOf="parent"
