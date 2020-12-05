@@ -8,9 +8,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class TimeUtil {
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
     public static void setTimeStartToEnd(Context context, EditText startTimeEditText, EditText endTimeEditText, boolean isShowCurrent) {
         startTimeEditText.setOnTouchListener(getOnTimeTouchListener(context, startTimeEditText, endTimeEditText, true, isShowCurrent));
         endTimeEditText.setOnTouchListener(getOnTimeTouchListener(context, startTimeEditText, endTimeEditText, false, isShowCurrent));
@@ -60,5 +65,45 @@ public class TimeUtil {
                 return false;
             }
         };
+    }
+
+    /*
+    * 比较两个时间的大小
+    * 参数字符串为yyyy-MM-dd格式
+    * 当first<second时返回-1；当first=second时返回0；当first>second时返回1；*/
+    public static int compareDate(String first, String second) {
+        Date firstDate = getDate(first);
+        Date secondDate = getDate(second);
+        return compareDate(firstDate, secondDate);
+    }
+
+    /*
+     * 比较两个时间的大小
+     * 当first<second时返回-1；当first=second时返回0；当first>second时返回1；*/
+    public static int compareDate(Date first, Date second) {
+        if (first.getTime() < second.getTime()) {
+            return -1;
+        } else if (first.getTime() > second.getTime()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    // 将 yyyy-MM-dd 格式的字符串转换成Date类型的数据
+    public static Date getDate(String date) {
+        Date result;
+        try {
+             result = sdf.parse(date);
+        } catch (ParseException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        return result;
+    }
+
+    // 计算end对应的日期距离start对应的日期
+    public static int subDate(Date start, Date end) {
+        long diff = start.getTime() - end.getTime();
+        return (int)(diff/(1000*60*60*24));
     }
 }
