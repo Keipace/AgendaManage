@@ -106,4 +106,8 @@ public class TimeUtil {
         long diff = start.getTime() - end.getTime();
         return (int)(diff/(1000*60*60*24));
     }
+
+    public static String getDate(Date date) {
+        return sdf.format(date);
+    }
 }

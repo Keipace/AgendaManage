@@ -130,7 +130,7 @@ public class PlanNode {
         } else {
             this.startTime = start;
             this.endTime = end;
-            this.duringDay = TimeUtil.subDate(this.startTime, this.endTime);
+            this.duringDay = TimeUtil.subDate(this.endTime, this.startTime);
         }
     }
 
@@ -174,6 +174,10 @@ public class PlanNode {
 
     public boolean isHasChildren() {
         return hasChildren;
+    }
+
+    public void setTimeNeeded(int timeNeeded) {
+        this.timeNeeded = timeNeeded;
     }
 
     public int getTimeNeeded() {
