@@ -25,7 +25,7 @@ public class Course {
         this.row = row;
     }
 
-    public Course(String classname, String address, int col, int row) {
+    public Course(String classname, String address, int row, int col) {
         this.classname = classname;
         this.address = address;
         this.col = col;

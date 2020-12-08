@@ -61,6 +61,7 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
         courseDao = new CourseDao(context);
 
         initFormData();
+        refreshFormData();
     }
 
     @NonNull
@@ -184,7 +185,17 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
                 this.datas[course.getRow()][course.getCol()] = courses;
             } else {
                 List<Course> courses = (ArrayList<Course>)this.datas[course.getRow()][course.getCol()];
-                courses.add(course);
+                boolean isInCourse = false;
+                for (int j = 0; j < courses.size(); j++) {
+                    if (course.getId() == courses.get(j).getId()){
+                        isInCourse = true;
+                        break;
+                    }
+                }
+                if (!isInCourse){
+                    courses.add(course);
+                    this.datas[course.getRow()][course.getCol()] = courses;
+                }
             }
         }
     }
@@ -201,9 +212,8 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
         // 将多个课程拼接成一个字符串
         List<Course> courses = (ArrayList<Course>)this.datas[row][col];
         for (int i = 0; i < courses.size(); i++) {
-            tmp += courseList.get(i).toString();
+            tmp += courses.get(i).toString();
         }
-
         // 根据字符串来设置button的背景颜色
         String newString = tmp.replaceAll("[\n, ]+", "");
         if (newString != null && !newString.equals("")) {
@@ -212,6 +222,7 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
             // button显示课程的名称
             view.setText(tmp);
         }
+
     }
 
     private boolean hasCourse(int row, int col) {
