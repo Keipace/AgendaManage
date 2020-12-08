@@ -1,9 +1,14 @@
 package com.privateproject.agendamanage.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +20,8 @@ import com.privateproject.agendamanage.bean.PlanNode;
 import com.privateproject.agendamanage.bean.Target;
 import com.privateproject.agendamanage.db.PlanNodeDao;
 import com.privateproject.agendamanage.utils.TimeUtil;
+import com.privateproject.agendamanage.utils.ToastUtil;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +46,8 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
     public PlanNodeAdapter(Target topParent, Context context, TextView pathShow) {
         this.stack = new Stack<PlanNode>();
         this.topParent = topParent;
-        this.planNodes = new ArrayList<>(topParent.getPlanNodes());
+        if (topParent.getPlanNodes()!=null)
+            this.planNodes = new ArrayList<>(topParent.getPlanNodes());
         this.context = context;
         this.dao = new PlanNodeDao(context);
         this.path = topParent.getName()+":";
@@ -57,28 +65,116 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
     @Override
     public void onBindViewHolder(@NonNull PlanNodeAdapter.PlanNodeViewHolder holder, int position) {
         PlanNode tmp = this.planNodes.get(position);
+        dao.initPlanNode(tmp);
         holder.title.setText(tmp.getName());
-        holder.childrenCount.setText((tmp.getChildren()==null?0:tmp.getChildren().size())+"");
         holder.startTime.setText(TimeUtil.getDate(tmp.getStartTime()));
         holder.endTime.setText(TimeUtil.getDate(tmp.getEndTime()));
         holder.duringDay.setText(tmp.getDuringDay()+"");
 
-        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+        if (tmp.isHasChildren()) {
+            holder.childrenCountTitle.setText("子节点数量:");
+            holder.childrenCount.setText((tmp.getChildren()==null?0:tmp.getChildren().size())+"");
+            holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (parent!=null) {
+                        stack.push(parent);
+                    }
+                    if (parent==null) {
+                        path += planNodes.get(position).getName();
+                    } else {
+                        path += SPLIT+planNodes.get(position).getName();
+                    }
+                    pathShow.setText(path);
+                    parent = planNodes.get(position);
+                    dao.initPlanNode(parent);
+                    planNodes = parent.getChildren();
+                    notifyDataSetChanged();
+                }
+            });
+        } else {
+            holder.childrenCountTitle.setText("所需时间(分钟):");
+            holder.childrenCount.setText(tmp.getTimeNeeded()+"");
+            holder.constraintLayout.setOnClickListener(null);
+        }
+
+        holder.constraintLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-                if (parent!=null) {
-                    stack.push(parent);
-                }
-                if (parent==null) {
-                    path += planNodes.get(position).getName();
+            public boolean onLongClick(View v) {
+                View root = LayoutInflater.from(context).inflate(R.layout.dialog_add_plannode, null);
+                MaterialEditText nameEditText = root.findViewById(R.id.addPlanDialog_name_MaterialEditText);
+                EditText decoration = root.findViewById(R.id.addPlanDialog_decoration_editText);
+                EditText startDate = root.findViewById(R.id.addPlanDialog_startDate_editText);
+                EditText endDate = root.findViewById(R.id.addPlanDialog_endDate_editText);
+                Switch setTimeNeeded = root.findViewById(R.id.addPlanDialog_setTimeNeeded_switch);
+                ConstraintLayout container = root.findViewById(R.id.addPlanDialog_addPlanChild_container);
+                MaterialEditText timeNeed = root.findViewById(R.id.addPlanDialog_setTimeNeeded_materialEditText);
+
+                setTimeNeeded.setChecked(!tmp.isHasChildren());
+                if (setTimeNeeded.isChecked()) {
+                    container.setVisibility(View.GONE);
+                    timeNeed.setVisibility(View.VISIBLE);
                 } else {
-                    path += SPLIT+planNodes.get(position).getName();
+                    container.setVisibility(View.VISIBLE);
+                    timeNeed.setVisibility(View.GONE);
                 }
-                pathShow.setText(path);
-                parent = planNodes.get(position);
-                dao.initPlanNode(parent);
-                planNodes = parent.getChildren();
-                notifyDataSetChanged();
+
+                setTimeNeeded.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            container.setVisibility(View.GONE);
+                            timeNeed.setVisibility(View.VISIBLE);
+                        } else {
+                            container.setVisibility(View.VISIBLE);
+                            timeNeed.setVisibility(View.GONE);
+                        }
+                    }
+                });
+
+                TimeUtil.setDateStartToEnd(context, startDate, endDate, true);
+                AlertDialog dialog = new AlertDialog.Builder(context).setTitle("添加计划")
+                        .setView(root)
+                        .setPositiveButton("确定", null)
+                        .setNegativeButton("取消", null).create();
+                dialog.show();
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // 用户设置的是所需时间量
+                        if (setTimeNeeded.isChecked()) {
+                            if (timeNeed.getText().toString().equals("")) {
+                                ToastUtil.newToast(context, "请输入所需时间量！");
+                                return;
+                            }
+                            Integer time = Integer.parseInt(timeNeed.getText().toString());
+                            tmp.setChildren(false, time);
+                            dao.updatePlanNode(tmp);
+                            refresh();
+                            dialog.dismiss();
+                            return;
+                        }
+                        // 用户设置的是添加子计划
+                        String decor = decoration.getText().toString();
+                        if (nameEditText.getText().toString().equals("") ||
+                                startDate.getText().toString().equals("") ||
+                                endDate.getText().toString().equals("")) {
+                            ToastUtil.newToast(context, "请输入完整信息！");
+                            return;
+                        }
+                        if (decor.equals("")) {
+                            decor = PlanNode.DEFAULT_DECORATION;
+                        }
+                        PlanNode planNode = new PlanNode(nameEditText.getText().toString(), decor,
+                                startDate.getText().toString(),
+                                endDate.getText().toString());
+                        dao.addPlanNode(planNode);
+                        dao.addChild(planNodes.get(position), planNode);
+                        refresh();
+                        dialog.dismiss();
+                    }
+                });
+                return true;
             }
         });
     }
@@ -104,7 +200,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
             String[] tmp = this.path.split(SPLIT);
             String tmpPath = "";
             for (int i = 0; i < tmp.length-2; i++) {
-                tmpPath += tmp[i];
+                tmpPath += tmp[i]+SPLIT;
             }
             tmpPath += tmp[tmp.length-2];
             this.path = tmpPath;
@@ -115,9 +211,18 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
         notifyDataSetChanged();
     }
 
+    public void refresh() {
+        if (this.parent==null) {
+            this.planNodes = new ArrayList<>(this.topParent.getPlanNodes());
+        } else {
+            this.planNodes = this.parent.getChildren();
+        }
+        notifyDataSetChanged();
+    }
+
     static class PlanNodeViewHolder extends RecyclerView.ViewHolder {
         public ConstraintLayout constraintLayout;
-        public TextView title, childrenCount;
+        public TextView title, childrenCount, childrenCountTitle;
         public TextView startTime, endTime;
         public TextView duringDay;
 
@@ -129,6 +234,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
             startTime = itemView.findViewById(R.id.itemPlanNode_startTime_textView);
             endTime = itemView.findViewById(R.id.itemPlanNode_endTime_textView);
             duringDay = itemView.findViewById(R.id.itemPlanNode_duringDay_textView);
+            childrenCountTitle = itemView.findViewById(R.id.itemPlanNode_childrenCountTitle_textView);
         }
     }
 }

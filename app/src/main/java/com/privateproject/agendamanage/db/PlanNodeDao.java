@@ -135,6 +135,7 @@ public class PlanNodeDao {
                 List<PlanNode> planNodes = parent.getChildren();
                 planNodes.add(child);
                 parent.setChildren(true, planNodes);
+                updatePlanNode(parent);
             }
         } else {
             throw new RuntimeException("当前PlanNode对象没有子节点");
