@@ -6,8 +6,10 @@ import android.util.Log;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.privateproject.agendamanage.activity.TimeLineChartActivity;
 import com.privateproject.agendamanage.bean.DayTarget;
 import com.privateproject.agendamanage.bean.Target;
+import com.privateproject.agendamanage.databinding.ActivityTimeLineChartBinding;
 import com.privateproject.agendamanage.db.CourseDao;
 import com.privateproject.agendamanage.db.DayTargetDao;
 import com.privateproject.agendamanage.db.DayTimeFragmentDao;
@@ -19,6 +21,7 @@ import org.junit.runner.RunWith;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -40,15 +43,15 @@ public class ExampleInstrumentedTest {
         DayTimeFragmentDao dayTimeFragmentDao = new DayTimeFragmentDao(appContext);
         CourseDao courseDao = new CourseDao(appContext);
 
-        EverydayTotalTimeServer everydayTotalTimeServer = new EverydayTotalTimeServer(appContext);
-        List<Integer> list = everydayTotalTimeServer.totalTime();
+        List<Integer> list = new ArrayList<Integer>();
+        for (int i = 1; i <= 7; i++) {
+            list.add(100*i/2);
+        }
         for (int i = 0; i < list.size() ; i++) {
             Log.d("eeee","星期"+(i+1)+"有"+list.get(i)+"分钟可以支配");
         }
 
-        EverydayTotalTimeServer everydayTotalTimeServer1 = new EverydayTotalTimeServer(appContext);
-        everydayTotalTimeServer1.setEmergencyTime(3);
-        everydayTotalTimeServer1.setStudyTime(7);
+        EverydayTotalTimeServer everydayTotalTimeServer = new EverydayTotalTimeServer(appContext);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = null;
         Date date2 = null;
@@ -60,7 +63,9 @@ public class ExampleInstrumentedTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Map<Integer,Integer> map1 = everydayTotalTimeServer1.emergencyTime(date1,date2);
+        Map<Integer,Integer> emergencyMap = everydayTotalTimeServer.emergencyTime(date1,date2);
+
+
 
 
     }

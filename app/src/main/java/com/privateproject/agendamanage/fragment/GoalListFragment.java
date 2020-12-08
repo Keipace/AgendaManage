@@ -18,6 +18,7 @@ import com.diegodobelo.expandingview.ExpandingList;
 import com.privateproject.agendamanage.MainActivity;
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.activity.DayTimeSelectActivity;
+import com.privateproject.agendamanage.activity.TimeLineChartActivity;
 import com.privateproject.agendamanage.activity.WeekTimeActivity;
 import com.privateproject.agendamanage.activity.WeekTimeEditChoiseActivity;
 import com.privateproject.agendamanage.bean.DayTimeFragment;
@@ -57,6 +58,16 @@ public class GoalListFragment extends Fragment {
             public void onClick(View v) {
                 // 直接跳转到课程表页面
                 Intent intent = new Intent(getContext(), WeekTimeActivity.class);
+                startActivity(intent);
+            }
+        });
+        //查看折线图按钮
+        Button checkTimeLineChartBtn = view.findViewById(R.id.fragmentGoalList_timelinechart_btn);
+        checkTimeLineChartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 直接跳转到折线图页面
+                Intent intent = new Intent(getContext(), TimeLineChartActivity.class);
                 startActivity(intent);
             }
         });
