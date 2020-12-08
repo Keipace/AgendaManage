@@ -130,7 +130,7 @@ public class PlanNode {
         } else {
             this.startTime = start;
             this.endTime = end;
-            this.duringDay = TimeUtil.subDate(this.endTime, this.startTime);
+            this.duringDay = TimeUtil.subDate(this.endTime, this.startTime)+1;
         }
     }
 
@@ -151,6 +151,7 @@ public class PlanNode {
     * 如果没有子节点，则需要指定预估时间量，即children参数类型为Integer类型
     * 如果有子节点，则子节点指向多个PlanNode，即children参数类型为List<PlanNode>*/
     public void setChildren(boolean hasChildren, Object children) {
+        this.hasChildren = hasChildren;
         if (hasChildren) {
             if (children != null && children instanceof List) {
                 List<PlanNode> tmpChildren = (List<PlanNode>)children;
@@ -169,7 +170,6 @@ public class PlanNode {
                 throw new RuntimeException("传入参数的类型应该是Integer类型");
             }
         }
-        this.hasChildren = hasChildren;
     }
 
     public boolean isHasChildren() {

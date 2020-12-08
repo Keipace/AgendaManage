@@ -48,4 +48,6 @@ dependencies {
     implementation 'com.j256.ormlite:ormlite-core:5.0'
     // 导入ExpandingList
     implementation 'com.diegodobelo.expandingview:expanding-view:0.9.4'
+    // 导入
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
 }

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/itemPlanNode_container"
-    android:layout_margin="10dp"
+    android:layout_marginBottom="10dp"
     android:padding="10dp"
     android:background="#ccc"
     android:layout_height="wrap_content">
@@ -25,12 +25,24 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/itemPlanNode_childrenCount_textView"
+        android:id="@+id/itemPlanNode_childrenCountTitle_textView"
         app:layout_constraintLeft_toLeftOf="@id/itemPlanNode_title_textView"
         app:layout_constraintTop_toBottomOf="@id/itemPlanNode_title_textView"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
-        android:text="子节点数量"
+        android:text="子节点数量:"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemPlanNode_childrenCount_textView"
+        app:layout_constraintTop_toTopOf="@id/itemPlanNode_childrenCountTitle_textView"
+        app:layout_constraintBottom_toBottomOf="@id/itemPlanNode_childrenCountTitle_textView"
+        app:layout_constraintLeft_toRightOf="@id/itemPlanNode_childrenCountTitle_textView"
+        android:layout_marginLeft="5dp"
+        android:text="数量"
         android:textColor="@color/black"
         />
 
@@ -74,11 +86,25 @@
         android:layout_height="wrap_content"
         android:id="@+id/itemPlanNode_duringDay_textView"
         app:layout_constraintLeft_toLeftOf="@id/itemPlanNode_startTime_textView"
-        app:layout_constraintRight_toRightOf="@id/itemPlanNode_endTime_textView"
+        app:layout_constraintRight_toLeftOf="@id/itemPlanNode_duringDayTitle_textView"
         app:layout_constraintTop_toTopOf="@id/itemPlanNode_childrenCount_textView"
         app:layout_constraintBottom_toBottomOf="@id/itemPlanNode_childrenCount_textView"
-        android:layout_marginTop="5dp"
-        android:text="天数"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:layout_marginRight="5dp"
+        android:text="n"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemPlanNode_duringDayTitle_textView"
+        app:layout_constraintTop_toTopOf="@id/itemPlanNode_duringDay_textView"
+        app:layout_constraintBottom_toBottomOf="@id/itemPlanNode_duringDay_textView"
+        app:layout_constraintLeft_toRightOf="@id/itemPlanNode_duringDay_textView"
+        app:layout_constraintRight_toRightOf="@id/itemPlanNode_endTime_textView"
+        android:layout_marginLeft="5dp"
+        android:text="天"
         android:textColor="@color/black"
         />
 
