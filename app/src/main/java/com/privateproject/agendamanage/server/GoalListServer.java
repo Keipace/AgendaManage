@@ -1,9 +1,13 @@
 package com.privateproject.agendamanage.server;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.diegodobelo.expandingview.ExpandingItem;
@@ -12,13 +16,19 @@ import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.activity.DayTargetInfoActivity;
 import com.privateproject.agendamanage.activity.TargetInfoActivity;
 import com.privateproject.agendamanage.bean.DayTarget;
+import com.privateproject.agendamanage.bean.PlanNode;
 import com.privateproject.agendamanage.bean.Target;
 import com.privateproject.agendamanage.customDialog.DayTargetDialog;
 import com.privateproject.agendamanage.customDialog.TargetDialog;
+import com.privateproject.agendamanage.databinding.DialogAddPlannodeBinding;
 import com.privateproject.agendamanage.db.DayTargetDao;
+import com.privateproject.agendamanage.db.PlanNodeDao;
 import com.privateproject.agendamanage.db.TargetDao;
 import com.privateproject.agendamanage.utils.ComponentUtil;
+import com.privateproject.agendamanage.utils.Time;
+import com.privateproject.agendamanage.utils.TimeUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.text.ParseException;
 import java.util.List;
@@ -30,15 +40,18 @@ public class GoalListServer {
     private List<DayTarget> dayTargets;
     private Context context;
 
+    private PlanNodeDao planNodeDao;
+
     public GoalListServer(Context context) {
         this.targetDao = new TargetDao(context);
         this.dayTargetDao=new DayTargetDao(context);
         this.targets = targetDao.selectAll();
         this.dayTargets = dayTargetDao.selectAll();
         this.context=context;
+        this.planNodeDao = new PlanNodeDao(context);
     }
 
-    public void createTargetItem(ExpandingList expandingList) {
+    public void createTargetItem(ExpandingList expandingList, OnItemClick onItemClick) {
         ExpandingItem targetItem=expandingList.createNewItem(R.layout.expanding_layout);
         if (targetItem != null) {
             //为header设置头像和头像的颜色
@@ -50,7 +63,7 @@ public class GoalListServer {
             targetItem.createSubItems(this.targets.size());
             for (int i = 0; i < targetItem.getSubItemsCount(); i++) {
                 View view=targetItem.getSubItemView(i);
-                configureTargetItem(view, i, targetItem);
+                configureTargetItem(view, i, targetItem, onItemClick);
             }
             // 设置添加按钮的监听器
             targetItem.findViewById(R.id.itemMainHeader_add_imageView).setOnClickListener(new View.OnClickListener() {
@@ -61,7 +74,7 @@ public class GoalListServer {
                         @Override
                         public void itemCreated(String name, String decoration,int position) {
                             View newSubItem =targetItem.createSubItem();
-                            configureTargetItem(newSubItem, position, targetItem);
+                            configureTargetItem(newSubItem, position, targetItem, onItemClick);
                         }
                     });
                 }
@@ -69,7 +82,7 @@ public class GoalListServer {
         }
     }
 
-    private void configureTargetItem(View view, int position, ExpandingItem targetItem) {
+    private void configureTargetItem(View view, int position, ExpandingItem targetItem, OnItemClick onItemClick) {
         // 设置名称
         ((TextView)view.findViewById(R.id.itemMainContent_name_textView)).setText(targets.get(position).getName());
         // 设置删除按钮监听器
@@ -82,6 +95,13 @@ public class GoalListServer {
                 removeTarget(position);
             }
         });
+        // 点击 安排计划 时
+        view.findViewById(R.id.itemMainContent_plan_textView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClick.planTarget(targets.get(position));
+            }
+        });
         // 点击时跳转到详情页
         view.findViewById(R.id.itemMainContent_container_relativeLayout).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +111,48 @@ public class GoalListServer {
                 // 跳转的时候将该child对应的id值传送过去
                 intent.putExtra("id", targets.get(position).getId());
                 context.startActivity(intent);
+            }
+        });
+        // 长按时添加第一层计划节点
+        view.findViewById(R.id.itemMainContent_container_relativeLayout).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                View root = LayoutInflater.from(context).inflate(R.layout.dialog_add_plannode, null);
+                MaterialEditText nameEditText = root.findViewById(R.id.addPlanDialog_name_MaterialEditText);
+                EditText decoration = root.findViewById(R.id.addPlanDialog_decoration_editText);
+                EditText startDate = root.findViewById(R.id.addPlanDialog_startDate_editText);
+                EditText endDate = root.findViewById(R.id.addPlanDialog_endDate_editText);
+                Switch setTimeNeeded = root.findViewById(R.id.addPlanDialog_setTimeNeeded_switch);
+                setTimeNeeded.setVisibility(View.GONE);
+                TimeUtil.setDateStartToEnd(context, startDate, endDate, true);
+                AlertDialog dialog = new AlertDialog.Builder(context).setTitle("添加计划")
+                        .setView(root)
+                        .setPositiveButton("确定", null)
+                        .setNegativeButton("取消", null).create();
+                dialog.show();
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String decor = decoration.getText().toString();
+                        if (nameEditText.getText().toString().equals("") ||
+                            startDate.getText().toString().equals("") ||
+                            endDate.getText().toString().equals("")) {
+                            ToastUtil.newToast(context, "请输入完整信息！");
+                            return;
+                        }
+                        if (decor.equals("")) {
+                            decor = PlanNode.DEFAULT_DECORATION;
+                        }
+                        PlanNode planNode = new PlanNode(nameEditText.getText().toString(), decor,
+                                startDate.getText().toString(),
+                                endDate.getText().toString(),
+                                targets.get(position));
+                        planNodeDao.addPlanNode(planNode);
+                        targets = targetDao.selectAll();
+                        dialog.dismiss();
+                    }
+                });
+                return true;
             }
         });
     }
@@ -245,8 +307,11 @@ public class GoalListServer {
         dayTargetDialog.show();
     }
 
-    interface OnItemCreated {
+    public interface OnItemCreated {
         void itemCreated(String name, String decoration, int position);
     }
 
+    public interface OnItemClick {
+        void planTarget(Target topTarget);
+    }
 }
