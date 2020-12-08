@@ -121,7 +121,14 @@ public class EverydayTotalTimeServer {
         editor.commit();
     }
 
-    // 返回应急时间列表
+    /*
+    * 计算从dateStart开始到dateEnd几天内的应急时间量
+    * 返回应急时间量的Map，Map中的key表示距离dateStart几天即偏移量，表示dateStart当天时key为0；value表示这一天有多少的分钟的应急时间量
+    * Map中只存有应急时间量的那一天，不存没有应急时间量的天
+    *
+    * 比如：从2020-10-01到2020-10-31这段时间的应急时间量有
+    * 2020-10-01:15min、2020-10-04:60min、2020-10-11:75min
+    * 则Map中存有<0,15>、<3,60>、<10,75>*/
     public Map<Integer, Integer> emergencyTime(Date dateStart, Date dateEnd) {
         // 获取存储在文件中 应急时间比例
         SharedPreferences sharedPreferences = context.getSharedPreferences("TimeServer", Context.MODE_PRIVATE);

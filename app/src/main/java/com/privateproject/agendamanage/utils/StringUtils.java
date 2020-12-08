@@ -34,4 +34,14 @@ public class StringUtils {
         });
     }
 
+    public static Integer[] splitIds(String ids) {
+        if(ids==null || ids.equals(""))
+            return null;
+        String[] tmp = ids.split(",");
+        Integer[] result = new Integer[tmp.length];
+        for (int i = 0; i < tmp.length; i++) {
+            result[i] = Integer.parseInt(tmp[i]);
+        }
+        return result;
+    }
 }

@@ -38,7 +38,7 @@ public class GoalListServer {
         this.context=context;
     }
 
-    public void createTargetItem(ExpandingList expandingList) {
+    public void createTargetItem(ExpandingList expandingList, OnItemClick onItemClick) {
         ExpandingItem targetItem=expandingList.createNewItem(R.layout.expanding_layout);
         if (targetItem != null) {
             //为header设置头像和头像的颜色
@@ -50,7 +50,7 @@ public class GoalListServer {
             targetItem.createSubItems(this.targets.size());
             for (int i = 0; i < targetItem.getSubItemsCount(); i++) {
                 View view=targetItem.getSubItemView(i);
-                configureTargetItem(view, i, targetItem);
+                configureTargetItem(view, i, targetItem, onItemClick);
             }
             // 设置添加按钮的监听器
             targetItem.findViewById(R.id.itemMainHeader_add_imageView).setOnClickListener(new View.OnClickListener() {
@@ -61,7 +61,7 @@ public class GoalListServer {
                         @Override
                         public void itemCreated(String name, String decoration,int position) {
                             View newSubItem =targetItem.createSubItem();
-                            configureTargetItem(newSubItem, position, targetItem);
+                            configureTargetItem(newSubItem, position, targetItem, onItemClick);
                         }
                     });
                 }
@@ -69,7 +69,7 @@ public class GoalListServer {
         }
     }
 
-    private void configureTargetItem(View view, int position, ExpandingItem targetItem) {
+    private void configureTargetItem(View view, int position, ExpandingItem targetItem, OnItemClick onItemClick) {
         // 设置名称
         ((TextView)view.findViewById(R.id.itemMainContent_name_textView)).setText(targets.get(position).getName());
         // 设置删除按钮监听器
@@ -80,6 +80,13 @@ public class GoalListServer {
                 targetItem.removeSubItem(view);
                 // 删除数据
                 removeTarget(position);
+            }
+        });
+        // 点击 安排计划 时
+        view.findViewById(R.id.itemMainContent_plan_textView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClick.planTarget(targets.get(position));
             }
         });
         // 点击时跳转到详情页
@@ -245,8 +252,11 @@ public class GoalListServer {
         dayTargetDialog.show();
     }
 
-    interface OnItemCreated {
+    public interface OnItemCreated {
         void itemCreated(String name, String decoration, int position);
     }
 
+    public interface OnItemClick {
+        void planTarget(Target topTarget);
+    }
 }
