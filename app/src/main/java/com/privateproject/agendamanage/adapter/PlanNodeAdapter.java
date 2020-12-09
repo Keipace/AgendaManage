@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -226,6 +227,8 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
         public TextView startTime, endTime;
         public TextView duringDay;
 
+        public ImageView imageDelete;
+        public ImageView imageEdit;
         public PlanNodeViewHolder(@NonNull View itemView) {
             super(itemView);
             constraintLayout = itemView.findViewById(R.id.itemPlanNode_container);
@@ -235,6 +238,9 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
             endTime = itemView.findViewById(R.id.itemPlanNode_endTime_textView);
             duringDay = itemView.findViewById(R.id.itemPlanNode_duringDay_textView);
             childrenCountTitle = itemView.findViewById(R.id.itemPlanNode_childrenCountTitle_textView);
+
+            imageDelete = itemView.findViewById(R.id.itemPlanNode_delete_imageView);
+            imageEdit = itemView.findViewById(R.id.itemPlanNode_edit_imageView);
         }
     }
 }
