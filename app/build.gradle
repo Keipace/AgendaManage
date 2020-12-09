@@ -48,7 +48,11 @@ dependencies {
     implementation 'com.j256.ormlite:ormlite-core:5.0'
     // 导入ExpandingList
     implementation 'com.diegodobelo.expandingview:expanding-view:0.9.4'
-    // 导入
+
+    // 导入折线图的UI
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
+    //MaterialEditText(输入框)
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
 
     //滑动
