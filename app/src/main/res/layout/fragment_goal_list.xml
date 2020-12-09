@@ -45,6 +45,13 @@
             android:layout_height="0.5dp"
             android:background="@color/greenblue"
             />
+        <Button
+            android:id="@+id/fragmentGoalList_timelinechart_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="剩余时间折线图"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/fragmentGoalList_emergencySelect_btn"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.diegodobelo.expandingview.ExpandingList

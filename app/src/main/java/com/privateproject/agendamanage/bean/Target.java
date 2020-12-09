@@ -1,6 +1,8 @@
 package com.privateproject.agendamanage.bean;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
@@ -64,6 +66,9 @@ public class Target {
     private int importance;
     @DatabaseField(columnName = "time_predo")
     private Date timePreDo;
+
+    @ForeignCollectionField(eager = false)
+    private ForeignCollection<PlanNode> planNodes;
 
     private Target() {}
 
@@ -174,6 +179,10 @@ public class Target {
 
     public void setTimePreDo(Date timePreDo) {
         this.timePreDo = timePreDo;
+    }
+
+    public ForeignCollection<PlanNode> getPlanNodes() {
+        return planNodes;
     }
 
     @Override

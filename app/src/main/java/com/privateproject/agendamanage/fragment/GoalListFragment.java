@@ -1,31 +1,45 @@
 package com.privateproject.agendamanage.fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.diegodobelo.expandingview.ExpandingList;
+import com.privateproject.agendamanage.MainActivity;
 import com.privateproject.agendamanage.R;
+import com.privateproject.agendamanage.activity.DayTimeSelectActivity;
+import com.privateproject.agendamanage.activity.TimeLineChartActivity;
 import com.privateproject.agendamanage.activity.WeekTimeActivity;
-import com.privateproject.agendamanage.customDialog.CenterDialog;
+import com.privateproject.agendamanage.activity.WeekTimeEditChoiseActivity;
+import com.privateproject.agendamanage.bean.DayTimeFragment;
 import com.privateproject.agendamanage.databinding.FragmentGoalListEmergencyBinding;
+import com.privateproject.agendamanage.db.DayTimeFragmentDao;
 import com.privateproject.agendamanage.server.EverydayTotalTimeServer;
 import com.privateproject.agendamanage.server.GoalListServer;
 import com.privateproject.agendamanage.utils.ComponentUtil;
 import com.privateproject.agendamanage.utils.StringUtils;
 import com.privateproject.agendamanage.utils.ToastUtil;
 
+import java.util.List;
 
 public class GoalListFragment extends Fragment {
     private ExpandingList expandingList;
     private GoalListServer listServer;
+    private GoalListServer.OnItemClick onItemClick;
+
+    public GoalListFragment(GoalListServer.OnItemClick onItemClick) {
+        this.onItemClick = onItemClick;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,7 +54,7 @@ public class GoalListFragment extends Fragment {
         expandingList=view.findViewById(R.id.fragmentGoalList_listContainer_expandingList);
         //创建两个item，分别显示目标区和打卡区
         listServer=new GoalListServer(getContext());
-        listServer.createTargetItem(expandingList);
+        listServer.createTargetItem(expandingList, onItemClick);
         listServer.createDayTargetItem(expandingList);
         // 添加课程表 按钮
         Button setCourseBtn = view.findViewById(R.id.fragmentGoalList_setCourse_btn);
@@ -49,6 +63,16 @@ public class GoalListFragment extends Fragment {
             public void onClick(View v) {
                 // 直接跳转到课程表页面
                 Intent intent = new Intent(getContext(), WeekTimeActivity.class);
+                startActivity(intent);
+            }
+        });
+        //查看折线图按钮
+        Button checkTimeLineChartBtn = view.findViewById(R.id.fragmentGoalList_timelinechart_btn);
+        checkTimeLineChartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 直接跳转到折线图页面
+                Intent intent = new Intent(getContext(), TimeLineChartActivity.class);
                 startActivity(intent);
             }
         });

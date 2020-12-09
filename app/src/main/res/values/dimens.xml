@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="font_large_size">22sp</dimen>
     <dimen name="font_size">16sp</dimen>
     <dimen name="font_small_size">12sp</dimen>
     <dimen name="page_padding">20dp</dimen>

@@ -7,15 +7,19 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
 
+import com.privateproject.agendamanage.bean.Target;
 import com.privateproject.agendamanage.databinding.ActivityMainBinding;
 import com.privateproject.agendamanage.fragment.FragmentTest;
 import com.privateproject.agendamanage.fragment.GoalListFragment;
+import com.privateproject.agendamanage.fragment.PlanTargetFragment;
+import com.privateproject.agendamanage.server.GoalListServer;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding pageXml;
 
     // 第一个页面
     private GoalListFragment goalListFragment;
+    private PlanTargetFragment planTargetFragment;
     // 第二个页面
     private FragmentTest fragmentTest;
 
@@ -78,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public static boolean isShowPlan = false;
     //进行选中Tab的处理
     private void selectTab(int i) {
         //获取FragmentTransaction对象
@@ -86,8 +91,34 @@ public class MainActivity extends AppCompatActivity {
         hideFragments(transaction);
         switch (i) {
             case 0: //显示第一个选项卡
+                if (isShowPlan) {
+                    transaction.show(planTargetFragment).commitAllowingStateLoss();
+                    break;
+                }
                 if (goalListFragment == null) { //第一次显示第一个选项卡
-                    goalListFragment = new GoalListFragment();
+                    goalListFragment = new GoalListFragment(new GoalListServer.OnItemClick() {
+                        @Override
+                        public void planTarget(Target topTarget) {
+                            FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+                            hideFragments(transaction1);
+                            if (planTargetFragment==null) {
+                                planTargetFragment = new PlanTargetFragment(topTarget, MainActivity.this, new PlanTargetFragment.OnFragmentExit() {
+                                    @Override
+                                    public void exit() {
+                                        isShowPlan = false;
+                                        FragmentTransaction transaction2 = getSupportFragmentManager().beginTransaction();
+                                        hideFragments(transaction2);
+                                        selectTab(0);
+                                        planTargetFragment = null;
+                                    }
+                                });
+                                transaction1.add(R.id.mianActivity_container_contrainlayout, planTargetFragment).commitAllowingStateLoss();
+                            } else {
+                                transaction1.show(planTargetFragment).commitAllowingStateLoss();
+                            }
+                            isShowPlan = true;
+                        }
+                    });
                     transaction.add(R.id.mianActivity_container_contrainlayout, goalListFragment).commitAllowingStateLoss();
                 } else { //返回第一个选项卡
                     transaction.show(goalListFragment).commitAllowingStateLoss();
@@ -111,6 +142,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if (goalListFragment != null) {
             transaction.hide(goalListFragment);
+        }
+        if (planTargetFragment != null) {
+            transaction.hide(planTargetFragment);
         }
     }
 
