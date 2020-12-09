@@ -10,16 +10,30 @@
         android:id="@+id/WeekTimeActivity_bar_contrainlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_header"
+        android:padding="5dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            app:layout_constraintTop_toTopOf="@id/WeekActivity_toTimeFrag_btn"
+            app:layout_constraintBottom_toBottomOf="@id/WeekActivity_toTimeFrag_btn"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:id="@+id/iv_back"
+            android:layout_width="70dp"
+            android:layout_height="0dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/classroom_back_but_defaults" />
 
-        <Button
+        <com.github.rubensousa.raiflatbutton.RaiflatButton
+            android:background="@drawable/bg_raiflat_button"
             android:id="@+id/WeekActivity_toTimeFrag_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="修改时间段"
-            app:layout_constraintLeft_toLeftOf="parent"
+            android:textStyle="bold"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

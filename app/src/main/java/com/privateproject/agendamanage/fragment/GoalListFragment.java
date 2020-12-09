@@ -1,35 +1,27 @@
 package com.privateproject.agendamanage.fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.diegodobelo.expandingview.ExpandingList;
-import com.privateproject.agendamanage.MainActivity;
 import com.privateproject.agendamanage.R;
-import com.privateproject.agendamanage.activity.DayTimeSelectActivity;
 import com.privateproject.agendamanage.activity.WeekTimeActivity;
-import com.privateproject.agendamanage.activity.WeekTimeEditChoiseActivity;
-import com.privateproject.agendamanage.bean.DayTimeFragment;
+import com.privateproject.agendamanage.customDialog.CenterDialog;
 import com.privateproject.agendamanage.databinding.FragmentGoalListEmergencyBinding;
-import com.privateproject.agendamanage.db.DayTimeFragmentDao;
 import com.privateproject.agendamanage.server.EverydayTotalTimeServer;
 import com.privateproject.agendamanage.server.GoalListServer;
 import com.privateproject.agendamanage.utils.ComponentUtil;
 import com.privateproject.agendamanage.utils.StringUtils;
 import com.privateproject.agendamanage.utils.ToastUtil;
 
-import java.util.List;
 
 public class GoalListFragment extends Fragment {
     private ExpandingList expandingList;
@@ -68,13 +60,17 @@ public class GoalListFragment extends Fragment {
                 FragmentGoalListEmergencyBinding dialogBinding = FragmentGoalListEmergencyBinding.inflate(getLayoutInflater());
                 StringUtils.setMoveSPaceListener(dialogBinding.emergencyStudyTimeEt);
                 StringUtils.setMoveSPaceListener(dialogBinding.emergencyEmergencyEt);
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("设置应急时间量")
-                        .setView(dialogBinding.getRoot())
-                        .setNegativeButton("取消", null)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                CenterDialog builder = new CenterDialog(getContext(),R.style.BottomDialog,"Bottom");
+                builder.setTitle("应急时间量").setView(dialogBinding.getRoot())
+                        .setCancelBtn("x", new CenterDialog.IOnCancelListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void OnCancel(CenterDialog dialog) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setConfirmBtn("√", new CenterDialog.IOnConfirmListener() {
+                            @Override
+                            public void OnConfirm(CenterDialog dialog) {
                                 ComponentUtil.requestFocus(dialogBinding.getRoot());
                                 String studyStr = dialogBinding.emergencyStudyTimeEt.getText().toString();
                                 String emergencyStr = dialogBinding.emergencyEmergencyEt.getText().toString();
@@ -88,8 +84,7 @@ public class GoalListFragment extends Fragment {
                                     everydayTotalTimeServer.setEmergency(studyInt*60, emergencyInt*60);
                                 }
                             }
-                        })
-                        .create().show();
+                        }).show();
             }
         });
     }

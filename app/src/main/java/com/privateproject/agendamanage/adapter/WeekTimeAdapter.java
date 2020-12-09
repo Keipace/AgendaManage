@@ -1,7 +1,6 @@
 package com.privateproject.agendamanage.adapter;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -11,13 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.activity.WeekTimeEditChoiseActivity;
 import com.privateproject.agendamanage.bean.Course;
 import com.privateproject.agendamanage.bean.DayTimeFragment;
+import com.privateproject.agendamanage.customDialog.CenterDialog;
 import com.privateproject.agendamanage.databinding.ItemWeekTimeAddLayoutBinding;
 import com.privateproject.agendamanage.db.CourseDao;
 import com.privateproject.agendamanage.db.DayTimeFragmentDao;
@@ -114,13 +113,18 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
                     } else {
                         ItemWeekTimeAddLayoutBinding dialogBinding = ItemWeekTimeAddLayoutBinding.inflate(context.getLayoutInflater());
                         //添加每周事件
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        CenterDialog builder = new CenterDialog(context,R.style.DayTargetDialog);
                         builder.setTitle("添加每周事件")
                                 .setView(dialogBinding.getRoot())
-                                .setNegativeButton("取消", null)
-                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                .setCancelBtn("取消", new CenterDialog.IOnCancelListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                                    public void OnCancel(CenterDialog dialog) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setConfirmBtn("确定", new CenterDialog.IOnConfirmListener() {
+                                    @Override
+                                    public void OnConfirm(CenterDialog dialog) {
                                         //将新的Course添加至数据库
                                         String name = dialogBinding.itemWeekTimeAddCourseNameEt.getText().toString();
                                         String address = dialogBinding.itemWeekTimeAddAddressEt.getText().toString();
@@ -129,9 +133,7 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
                                         refreshFormData();
                                         adapter.notifyDataSetChanged();
                                     }
-
-                                })
-                                .create().show();
+                                }).show();
                     }
                 }
 
@@ -218,7 +220,6 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
             // button显示课程的名称
             button.setText(tmp);
         }
-        button.setText(str);
     }
 
     private boolean hasCourse(int row, int col) {

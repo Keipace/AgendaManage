@@ -47,8 +47,6 @@ public class ExampleInstrumentedTest {
         }
 
         EverydayTotalTimeServer everydayTotalTimeServer1 = new EverydayTotalTimeServer(appContext);
-        everydayTotalTimeServer1.setEmergencyTime(3);
-        everydayTotalTimeServer1.setStudyTime(7);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = null;
         Date date2 = null;

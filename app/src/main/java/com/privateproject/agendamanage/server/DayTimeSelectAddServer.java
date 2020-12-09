@@ -6,8 +6,10 @@ import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.adapter.DayTimeSelectRecycleAdapter;
 import com.privateproject.agendamanage.bean.DayTimeFragment;
+import com.privateproject.agendamanage.customDialog.CenterDialog;
 import com.privateproject.agendamanage.databinding.ItemDaytimeAddLayoutBinding;
 import com.privateproject.agendamanage.db.DayTimeFragmentDao;
 import com.privateproject.agendamanage.utils.ComponentUtil;
@@ -26,40 +28,41 @@ public class DayTimeSelectAddServer {
         ComponentUtil.EditTextEnable(false, addTimePageXml.daytimeAddBegintimeEdit);
         ComponentUtil.EditTextEnable(false, addTimePageXml.daytimeAddEndtimeEdit);
         // 显示弹出框
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        AlertDialog alertDialog = builder.setTitle("设置时间段")
+        CenterDialog dialog = new CenterDialog(context, R.style.DayTargetDialog);
+        dialog.setTitle("设置时间段")
                 .setView(addTimePageXml.getRoot())
-                .setNegativeButton("取消", null)
-                .setPositiveButton("确定", null)
-                .create();
-        alertDialog.show();
-        // 设置弹出框的确定按钮
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String[] times = {addTimePageXml.daytimeAddBegintimeEdit.getText().toString(), addTimePageXml.daytimeAddEndtimeEdit.getText().toString()};
-                if (times[0].equals("")||times[1].equals("")){
-                    ToastUtil.newToast(context,"数据不能为空");
-                }else {
-                    List<DayTimeFragment> dayTimeFragmentList = dao.selectAll();
-                    //判断是否是修改时间段
-                    if(position!=-1){
-                        dayTimeFragmentList.remove(position);
+                .setCancelBtn("x", new CenterDialog.IOnCancelListener() {
+                    @Override
+                    public void OnCancel(CenterDialog dialog) {
+                        dialog.dismiss();
                     }
-                    //判断选择的时间段与已有的时间段是否冲突
-                    if (AppearConflict(dayTimeFragmentList,times)){
-                        //冲突出现时弹出的提示框
-                        ConflictAlerDialog(context);
-                        alertDialog.dismiss();
-                    }else {
-                        //数据改变，刷新页面
-                        AddDatas(dayTimeFragmentList,dao,times);
-                        adapter.refresh();
+                })
+                .setConfirmBtn("√", new CenterDialog.IOnConfirmListener() {
+                    @Override
+                    public void OnConfirm(CenterDialog dialog) {
+                        String[] times = {addTimePageXml.daytimeAddBegintimeEdit.getText().toString(), addTimePageXml.daytimeAddEndtimeEdit.getText().toString()};
+                        if (times[0].equals("")||times[1].equals("")){
+                            ToastUtil.newToast(context,"数据不能为空");
+                        }else {
+                            List<DayTimeFragment> dayTimeFragmentList = dao.selectAll();
+                            //判断是否是修改时间段
+                            if(position!=-1){
+                                dayTimeFragmentList.remove(position);
+                            }
+                            //判断选择的时间段与已有的时间段是否冲突
+                            if (AppearConflict(dayTimeFragmentList,times)){
+                                //冲突出现时弹出的提示框
+                                ConflictAlerDialog(context);
+                                dialog.dismiss();
+                            }else {
+                                //数据改变，刷新页面
+                                AddDatas(dayTimeFragmentList,dao,times);
+                                adapter.refresh();
+                            }
+                            dialog.dismiss();
+                        }
                     }
-                    alertDialog.dismiss();
-                }
-            }
-        });
+                }).show();
     }
 
     private static void ConflictAlerDialog(Context context){

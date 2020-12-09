@@ -38,6 +38,7 @@ public class WeekTimeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.fragmentWeekTime_list_recyclerView);
         recyclerView.setAdapter(this.adapter);
+
     }
 
     public void refresh() {
