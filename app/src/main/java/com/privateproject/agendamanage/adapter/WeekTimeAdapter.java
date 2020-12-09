@@ -217,7 +217,6 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
         for (int i = 0; i < courses.size(); i++) {
             tmp += courses.get(i).toString();
         }
-
         // 根据字符串来设置button的背景颜色
         String newString = tmp.replaceAll("[\n, ]+", "");
         if (newString != null && !newString.equals("")) {
@@ -231,6 +230,7 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
             // button显示课程的名称
             button.setText(tmp);
         }
+
     }
 
     private boolean hasCourse(int row, int col) {
