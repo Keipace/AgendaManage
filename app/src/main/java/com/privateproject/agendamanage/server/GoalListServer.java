@@ -16,8 +16,10 @@ import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.activity.DayTargetInfoActivity;
 import com.privateproject.agendamanage.activity.TargetInfoActivity;
 import com.privateproject.agendamanage.bean.DayTarget;
-import com.privateproject.agendamanage.bean.PlanNode;
 import com.privateproject.agendamanage.bean.Target;
+import com.privateproject.agendamanage.customDialog.CenterDialog;
+import com.privateproject.agendamanage.databinding.ItemMainAdddaytargetBinding;
+import com.privateproject.agendamanage.databinding.ItemMainAddtargetBinding;
 import com.privateproject.agendamanage.customDialog.DayTargetDialog;
 import com.privateproject.agendamanage.customDialog.TargetDialog;
 import com.privateproject.agendamanage.databinding.DialogAddPlannodeBinding;
@@ -165,23 +167,25 @@ public class GoalListServer {
     }
 
     private void showInsertTargetDialog(final OnItemCreated positive){
+        targetBinding=ItemMainAddtargetBinding.inflate(LayoutInflater.from(context));
         // 新建弹出框
-        TargetDialog targetDialog=new TargetDialog(context, R.style.DayTargetDialog);
+        CenterDialog targetDialog=new CenterDialog(context, R.style.DayTargetDialog);
         // 设置标题、取消按钮、确定按钮
-        targetDialog.setTargetTitle("打卡").setCancelBtn("×", new TargetDialog.IOnCancelListener() {
+        targetDialog.setTitle("目标").setView(targetBinding.getRoot())
+                .setCancelBtn("×", new CenterDialog.IOnCancelListener() {
             @Override
-            public void OnCancel(TargetDialog dialog) {
+            public void OnCancel(CenterDialog dialog) {
                 dialog.dismiss();
             }
-        }).setConfirmBtn("√", new TargetDialog.IOnConfirmListener() {
+        }).setConfirmBtn("√", new CenterDialog.IOnConfirmListener() {
             // 点击添加弹出框的确定按钮时
             @Override
-            public void OnConfirm(TargetDialog dialog) {
+            public void OnConfirm(CenterDialog dialog) {
                 // 将焦点获取到确定按钮上
                 ComponentUtil.requestFocus(targetDialog.confirmBtn);
                 // 获取输入的名称和描述
-                String name = targetDialog.targetName.getText().toString();
-                String decoration = targetDialog.targetDecoration.getText().toString();
+                String name = targetBinding.targetNameEditText.getText().toString();
+                String decoration = targetBinding.targetDecorationEditText.getText().toString();
                 // 判断必要项是否有空的，有空则不存
                 if(name.equals("")){
                     // 如果用户输入的信息不完整就提示
@@ -269,23 +273,25 @@ public class GoalListServer {
     }
 
     private void showInsertDayTargetDialog(final OnItemCreated positive){
+        daytargetBinding = ItemMainAdddaytargetBinding.inflate(LayoutInflater.from(context));
         // 新建弹出框
-        DayTargetDialog dayTargetDialog=new DayTargetDialog(context, R.style.DayTargetDialog);
+        CenterDialog dayTargetDialog=new CenterDialog(context, R.style.DayTargetDialog);
         // 设置弹出框的标题、取消和确定按钮
-        dayTargetDialog.setDayTargetTitle("打卡").setCancelBtn("×", new DayTargetDialog.IOnCancelListener() {
+        dayTargetDialog.setTitle("打卡").setView(daytargetBinding.getRoot())
+                .setCancelBtn("×", new CenterDialog.IOnCancelListener() {
             @Override
-            public void OnCancel(DayTargetDialog dialog) {
+            public void OnCancel(CenterDialog dialog) {
                 dialog.dismiss();
             }
-        }).setConfirmBtn("√", new DayTargetDialog.IOnConfirmListener() {
+        }).setConfirmBtn("√", new CenterDialog.IOnConfirmListener() {
             // 点击添加弹出框的确定按钮时
             @Override
-            public void OnConfirm(DayTargetDialog dialog) {
+            public void OnConfirm(CenterDialog dialog) {
                 // 将焦点获取到确定按钮上
                 ComponentUtil.requestFocus(dayTargetDialog.confirmBtn);
                 // 获取输入的名称和描述
-                String name = dayTargetDialog.dayTargetDayName.getText().toString();
-                String decoration = dayTargetDialog.dayTargetDayDecoration.getText().toString();
+                String name = daytargetBinding.daytargetDayNameEditText.getText().toString();
+                String decoration = daytargetBinding.daytargetDayDecorationEditText.getText().toString();
                 // 判断必要项是否有空的，有空则不存
                 if(name.equals("")){
                     // 如果用户输入的信息不完整就提示
@@ -307,11 +313,8 @@ public class GoalListServer {
         dayTargetDialog.show();
     }
 
-    public interface OnItemCreated {
+    interface OnItemCreated {
         void itemCreated(String name, String decoration, int position);
     }
 
-    public interface OnItemClick {
-        void planTarget(Target topTarget);
-    }
 }

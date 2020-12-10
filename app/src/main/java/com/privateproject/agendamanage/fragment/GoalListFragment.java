@@ -84,13 +84,17 @@ public class GoalListFragment extends Fragment {
                 FragmentGoalListEmergencyBinding dialogBinding = FragmentGoalListEmergencyBinding.inflate(getLayoutInflater());
                 StringUtils.setMoveSPaceListener(dialogBinding.emergencyStudyTimeEt);
                 StringUtils.setMoveSPaceListener(dialogBinding.emergencyEmergencyEt);
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("设置应急时间量")
-                        .setView(dialogBinding.getRoot())
-                        .setNegativeButton("取消", null)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                CenterDialog builder = new CenterDialog(getContext(),R.style.BottomDialog,"Bottom");
+                builder.setTitle("应急时间量").setView(dialogBinding.getRoot())
+                        .setCancelBtn("x", new CenterDialog.IOnCancelListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void OnCancel(CenterDialog dialog) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setConfirmBtn("√", new CenterDialog.IOnConfirmListener() {
+                            @Override
+                            public void OnConfirm(CenterDialog dialog) {
                                 ComponentUtil.requestFocus(dialogBinding.getRoot());
                                 String studyStr = dialogBinding.emergencyStudyTimeEt.getText().toString();
                                 String emergencyStr = dialogBinding.emergencyEmergencyEt.getText().toString();
@@ -104,8 +108,7 @@ public class GoalListFragment extends Fragment {
                                     everydayTotalTimeServer.setEmergency(studyInt*60, emergencyInt*60);
                                 }
                             }
-                        })
-                        .create().show();
+                        }).show();
             }
         });
     }

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/daytime_select_container"
+    android:padding="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -14,7 +15,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <CheckBox
+    <com.rey.material.widget.RadioButton
+        style="@style/Material.Drawable.RadioButton"
         android:id="@+id/daytime_select_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
