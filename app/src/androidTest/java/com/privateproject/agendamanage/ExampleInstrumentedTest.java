@@ -23,7 +23,6 @@ import org.junit.runner.RunWith;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +41,8 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.privateproject.agendamanage", appContext.getPackageName());
+        DayTimeFragmentDao dayTimeFragmentDao = new DayTimeFragmentDao(appContext);
+        CourseDao courseDao = new CourseDao(appContext);
 
         TargetDao targetDao = new TargetDao(appContext);
         Target target = new Target("测试");

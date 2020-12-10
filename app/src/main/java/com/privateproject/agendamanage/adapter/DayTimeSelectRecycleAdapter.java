@@ -1,39 +1,25 @@
 package com.privateproject.agendamanage.adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.privateproject.agendamanage.R;
-import com.privateproject.agendamanage.activity.DayTimeSelectActivity;
 import com.privateproject.agendamanage.bean.DayTimeFragment;
 import com.privateproject.agendamanage.databinding.ActivityDayTimeSelectBinding;
-import com.privateproject.agendamanage.databinding.ItemDaytimeAddLayoutBinding;
 import com.privateproject.agendamanage.db.DayTimeFragmentDao;
 import com.privateproject.agendamanage.server.DayTimeSelectAddServer;
-import com.privateproject.agendamanage.utils.ComponentUtil;
 import com.privateproject.agendamanage.utils.Time;
-import com.privateproject.agendamanage.utils.TimeUtil;
-import com.privateproject.agendamanage.utils.ToastUtil;
 import com.privateproject.agendamanage.viewHolder.DayTimeSelectViewHolder;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSelectViewHolder.DayTimeSelectTextViewRecycleViewHolder> {
     private Context context;
@@ -42,6 +28,10 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
     private List<DayTimeFragment> dayTimeFragmentList;
     private ActivityDayTimeSelectBinding binding;
     private List<String> temp;
+    //扇形图时间差和名称
+    private List<Integer> timeLength;
+    private List<String> timeName;
+    private List<Boolean> timeIdentify;
 
     public DayTimeSelectRecycleAdapter(Context context,ActivityDayTimeSelectBinding binding) {
         this.context = context;
@@ -50,7 +40,12 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
         this.items = new ArrayList<DayTimeSelectViewHolder.DayTimeSelectTextViewRecycleViewHolder>();
         this.binding = binding;
         this.temp = new ArrayList<String>();
+        this.timeName=new ArrayList<String>();
+        this.timeLength=new ArrayList<Integer>();
+        this.timeIdentify=new ArrayList<Boolean>();
     }
+
+
 
     @NonNull
     @Override
@@ -151,6 +146,76 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
             }
         });
 
+        //计算时间段差
+        Time endTime=Time.parseTime(dayTimeFragmentList.get(position).getEnd());
+        Time startTime=Time.parseTime(dayTimeFragmentList.get(position).getStart());
+        int cha=endTime.subOfMinute(startTime);
+
+        if (dayTimeFragmentList.size()>1){
+            if (position==0){//首个时间差
+                String topName="00:00-"+dayTimeFragmentList.get(position).getStart();
+                int topcha=startTime.subOfMinute(new Time());
+                Time nextStartTime=Time.parseTime(dayTimeFragmentList.get(position+1).getStart());
+                String nextName=dayTimeFragmentList.get(position).getEnd()+"-"+dayTimeFragmentList.get(position+1).getStart();
+                int nextcha=nextStartTime.subOfMinute(endTime);
+                timeLength.add(topcha);//添加首个时间差
+                timeName.add(topName);//添加首个时间差名称
+                timeIdentify.add(false);//添加首个时间差标识
+                timeLength.add(cha);//添加当前时间差
+                timeName.add(dayTimeFragmentList.get(position).toString());
+                timeIdentify.add(true);
+                timeLength.add(nextcha);//添加与下一个时间差的时间差
+                timeName.add(nextName);
+                timeIdentify.add(false);
+            }else if(position==dayTimeFragmentList.size()-1){//最后一个时间差
+                String lastName=dayTimeFragmentList.get(position).getEnd()+"-24:00";
+                Time lastTime=new Time();
+                lastTime.setHour(23);
+                lastTime.setMinute(59);
+                int lastcha=lastTime.subOfMinute(endTime);
+                timeLength.add(cha);
+                timeIdentify.add(true);
+                timeLength.add(lastcha);
+                timeIdentify.add(false);
+                timeName.add(dayTimeFragmentList.get(position).toString());
+                timeName.add(lastName);
+            }else {
+                Time nextStartTime=Time.parseTime(dayTimeFragmentList.get(position+1).getStart());
+                String nextName=dayTimeFragmentList.get(position).getEnd()+"-"+dayTimeFragmentList.get(position+1).getStart();
+                int nextcha=nextStartTime.subOfMinute(endTime);
+                timeLength.add(cha);
+                timeIdentify.add(true);
+                timeLength.add(nextcha);
+                timeIdentify.add(false);
+                timeName.add(dayTimeFragmentList.get(position).toString());
+                timeName.add(nextName);
+            }
+        }else if (dayTimeFragmentList.size()==1){
+            String topName="00:00-"+dayTimeFragmentList.get(position).getStart();
+            String lastName=dayTimeFragmentList.get(position).getEnd()+"-24:00";
+            Time lastTime=new Time();
+            lastTime.setHour(23);
+            lastTime.setMinute(59);
+            int topcha=startTime.subOfMinute(new Time());
+            int lastcha=lastTime.subOfMinute(endTime);
+            timeLength.add(topcha);//添加首个时间差
+            timeIdentify.add(false);
+            timeLength.add(cha);//添加当前时间差
+            timeIdentify.add(true);
+            timeLength.add(lastcha);//添加与末尾时间差
+            timeIdentify.add(false);
+            timeName.add(topName);
+            timeName.add(dayTimeFragmentList.get(position).toString());
+            timeName.add(lastName);
+
+        }
+
+        //向扇形图填充数据
+        binding.mPieChart.setDatas(timeLength,timeIdentify);
+        binding.mPieChart.setTexts(timeName);
+        binding.mPieChart.invalidate();
+
+
     }
     @Override
     public int getItemCount() {
@@ -166,6 +231,8 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
     public void refresh() {
         isRestart = true;
         this.dayTimeFragmentList = dao.selectAll();
+        this.timeLength=new ArrayList<Integer>();
+        this.timeName=new ArrayList<String>();
         notifyDataSetChanged();
     }
     public void isVisible(boolean isvisible){

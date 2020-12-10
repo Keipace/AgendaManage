@@ -126,19 +126,15 @@ public class PlanNodeDao {
     }
 
     public PlanNode addChild(PlanNode parent, PlanNode child) {
-        if (parent.isHasChildren()) {
-            if (child != null) {
-                if (parent.getChildren()==null) {
-                    parent.setChildren(true, new ArrayList<PlanNode>());
-                }
-                addPlanNode(child);
-                List<PlanNode> planNodes = parent.getChildren();
-                planNodes.add(child);
-                parent.setChildren(true, planNodes);
-                updatePlanNode(parent);
+        if (child!=null) {
+            if (!parent.isHasChildren() || parent.getChildren()==null) {
+                parent.setChildren(true, new ArrayList<PlanNode>());
             }
-        } else {
-            throw new RuntimeException("当前PlanNode对象没有子节点");
+            addPlanNode(child);
+            List<PlanNode> planNodes = parent.getChildren();
+            planNodes.add(child);
+            parent.setChildren(true, planNodes);
+            updatePlanNode(parent);
         }
         return parent;
     }

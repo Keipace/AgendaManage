@@ -20,6 +20,7 @@ import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.bean.PlanNode;
 import com.privateproject.agendamanage.bean.Target;
 import com.privateproject.agendamanage.db.PlanNodeDao;
+import com.privateproject.agendamanage.server.PlanNodeServer;
 import com.privateproject.agendamanage.utils.TimeUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -151,7 +152,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
                             Integer time = Integer.parseInt(timeNeed.getText().toString());
                             tmp.setChildren(false, time);
                             dao.updatePlanNode(tmp);
-                            refresh();
+                            refreshList();
                             dialog.dismiss();
                             return;
                         }
@@ -171,11 +172,25 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
                                 endDate.getText().toString());
                         dao.addPlanNode(planNode);
                         dao.addChild(planNodes.get(position), planNode);
-                        refresh();
+                        refreshList();
                         dialog.dismiss();
                     }
                 });
                 return true;
+            }
+        });
+
+        PlanNodeServer planNodeServer = new PlanNodeServer(context);
+        PlanNodeServer.DataChangeListener dataChangeListener = new PlanNodeServer.DataChangeListener() {
+            @Override
+            public void refresh() {
+                refreshList();
+            }
+        };
+        holder.imageEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                planNodeServer.showEditDialog(tmp,dataChangeListener);
             }
         });
         //点击删除图标，删除此节点及其所包含的子节点
@@ -221,7 +236,9 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
         notifyDataSetChanged();
     }
 
-    public void refresh() {
+
+
+    public void refreshList() {
         if (this.parent==null) {
             this.planNodes = new ArrayList<>(this.topParent.getPlanNodes());
         } else {
