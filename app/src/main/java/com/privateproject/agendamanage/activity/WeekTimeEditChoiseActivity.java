@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.privateproject.agendamanage.R;
-import com.privateproject.agendamanage.adapter.WeekTimeAdapter;
 import com.privateproject.agendamanage.bean.Course;
 import com.privateproject.agendamanage.db.CourseDao;
 

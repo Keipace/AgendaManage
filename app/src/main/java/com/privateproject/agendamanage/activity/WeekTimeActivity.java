@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.privateproject.agendamanage.R;
-import com.privateproject.agendamanage.adapter.DayTimeSelectRecycleAdapter;
-import com.privateproject.agendamanage.adapter.WeekTimeAdapter;
 import com.privateproject.agendamanage.bean.DayTimeFragment;
 import com.privateproject.agendamanage.db.DayTimeFragmentDao;
 import com.privateproject.agendamanage.fragment.WeekTimeFragment;
