@@ -178,6 +178,15 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
                 return true;
             }
         });
+        //点击删除图标，删除此节点及其所包含的子节点
+        holder.imageDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deletePlanNodes(planNodes.get(position));
+                ToastUtil.newToast(context,"删除成功");
+                refresh();
+            }
+        });
     }
 
     @Override
@@ -242,5 +251,13 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
             imageDelete = itemView.findViewById(R.id.itemPlanNode_delete_imageView);
             imageEdit = itemView.findViewById(R.id.itemPlanNode_edit_imageView);
         }
+    }
+    private void deletePlanNodes(PlanNode planNode){
+        if (planNode.getChildren() != null&&planNode.getChildren().size() !=0){
+            for (int i = 0; i < planNode.getChildren().size(); i++) {
+                deletePlanNodes(planNode.getChildren().get(i));
+            }
+        }
+        dao.deletePlanNodeById(planNode);
     }
 }
