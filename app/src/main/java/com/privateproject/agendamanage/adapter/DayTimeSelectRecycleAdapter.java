@@ -233,6 +233,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
         this.dayTimeFragmentList = dao.selectAll();
         this.timeLength=new ArrayList<Integer>();
         this.timeName=new ArrayList<String>();
+        this.timeIdentify=new ArrayList<Boolean>();
         notifyDataSetChanged();
     }
     public void isVisible(boolean isvisible){

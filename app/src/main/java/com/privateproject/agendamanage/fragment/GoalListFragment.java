@@ -22,6 +22,7 @@ import com.privateproject.agendamanage.activity.TimeLineChartActivity;
 import com.privateproject.agendamanage.activity.WeekTimeActivity;
 import com.privateproject.agendamanage.activity.WeekTimeEditChoiseActivity;
 import com.privateproject.agendamanage.bean.DayTimeFragment;
+import com.privateproject.agendamanage.customDialog.CenterDialog;
 import com.privateproject.agendamanage.databinding.FragmentGoalListEmergencyBinding;
 import com.privateproject.agendamanage.db.DayTimeFragmentDao;
 import com.privateproject.agendamanage.server.EverydayTotalTimeServer;

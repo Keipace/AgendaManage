@@ -4,14 +4,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.privateproject.agendamanage.R;
-import com.privateproject.agendamanage.adapter.DayTimeSelectRecycleAdapter;
-import com.privateproject.agendamanage.adapter.WeekTimeAdapter;
+
 import com.privateproject.agendamanage.bean.DayTimeFragment;
 import com.privateproject.agendamanage.db.DayTimeFragmentDao;
 import com.privateproject.agendamanage.fragment.WeekTimeFragment;
@@ -37,6 +38,16 @@ public class WeekTimeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //返回按钮
+        ImageButton imageButton=findViewById(R.id.iv_back);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
         boolean isTimeFragmentNone = false;
         // 查询数据库判断是否有时间段

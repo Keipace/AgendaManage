@@ -16,23 +16,19 @@ import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.activity.DayTargetInfoActivity;
 import com.privateproject.agendamanage.activity.TargetInfoActivity;
 import com.privateproject.agendamanage.bean.DayTarget;
+import com.privateproject.agendamanage.bean.PlanNode;
 import com.privateproject.agendamanage.bean.Target;
 import com.privateproject.agendamanage.customDialog.CenterDialog;
 import com.privateproject.agendamanage.databinding.ItemMainAdddaytargetBinding;
 import com.privateproject.agendamanage.databinding.ItemMainAddtargetBinding;
-import com.privateproject.agendamanage.customDialog.DayTargetDialog;
-import com.privateproject.agendamanage.customDialog.TargetDialog;
-import com.privateproject.agendamanage.databinding.DialogAddPlannodeBinding;
 import com.privateproject.agendamanage.db.DayTargetDao;
 import com.privateproject.agendamanage.db.PlanNodeDao;
 import com.privateproject.agendamanage.db.TargetDao;
 import com.privateproject.agendamanage.utils.ComponentUtil;
-import com.privateproject.agendamanage.utils.Time;
 import com.privateproject.agendamanage.utils.TimeUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-import java.text.ParseException;
 import java.util.List;
 
 public class GoalListServer {
@@ -41,7 +37,8 @@ public class GoalListServer {
     private List<Target> targets;
     private List<DayTarget> dayTargets;
     private Context context;
-
+    private ItemMainAddtargetBinding targetBinding;
+    private ItemMainAdddaytargetBinding daytargetBinding;
     private PlanNodeDao planNodeDao;
 
     public GoalListServer(Context context) {
@@ -51,6 +48,7 @@ public class GoalListServer {
         this.dayTargets = dayTargetDao.selectAll();
         this.context=context;
         this.planNodeDao = new PlanNodeDao(context);
+
     }
 
     public void createTargetItem(ExpandingList expandingList, OnItemClick onItemClick) {
@@ -315,6 +313,9 @@ public class GoalListServer {
 
     interface OnItemCreated {
         void itemCreated(String name, String decoration, int position);
+    }
+    public interface OnItemClick {
+        void planTarget(Target topTarget);
     }
 
 }
