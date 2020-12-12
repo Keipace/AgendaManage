@@ -14,7 +14,6 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class LineChartBean {
     private LineChart lineChart;
@@ -23,13 +22,13 @@ public class LineChartBean {
     private XAxis xAxis;
     private LineData lineData;
     private LineDataSet lineDataSet;
-    private Map<String,Integer> surplusTimeMap;
+    private List<Integer> surplusTimeList;
     private List<Date> dateList;
 
     //一条曲线
-    public LineChartBean(LineChart mLineChart, String name, int color, Map<String,Integer> surplusTimeMap, List<Date> dateList) {
+    public LineChartBean(LineChart mLineChart, String name, int color, List<Integer> surplusTimeList, List<Date> dateList) {
         this.lineChart = mLineChart;
-        this.surplusTimeMap = surplusTimeMap;
+        this.surplusTimeList = surplusTimeList;
         this.dateList = dateList;
         leftAxis = lineChart.getAxisLeft();
         rightAxis = lineChart.getAxisRight();
@@ -64,7 +63,11 @@ public class LineChartBean {
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return dateList.get((int)value % dateList.size()).toString();
+                if (value<0||value>dateList.size()){
+                    return "";
+                }else {
+                    return dateList.get((int)value % dateList.size()).toString();
+                }
             }
         });
 
@@ -75,9 +78,6 @@ public class LineChartBean {
 
     /**
      * 初始化折线(一条线)
-     *
-     * @param name
-     * @param color
      */
     private void initLineDataSet(String name, int color) {
 
@@ -98,11 +98,6 @@ public class LineChartBean {
         lineChart.invalidate();
     }
 
-    /**
-     * 动态添加数据（一条折线图）
-     *
-     * @param number
-     */
     public void addEntry() {
 
         //最开始的时候才添加 lineDataSet（一个lineDataSet 代表一条线）
@@ -110,8 +105,8 @@ public class LineChartBean {
             lineData.addDataSet(lineDataSet);
         }
         lineChart.setData(lineData);
-        for (String date:this.surplusTimeMap.keySet()){
-            Entry entry = new Entry(lineDataSet.getEntryCount(), this.surplusTimeMap.get(date));
+        for (int i = 0; i < surplusTimeList.size(); i++) {
+            Entry entry = new Entry(lineDataSet.getEntryCount(), this.surplusTimeList.get(i));
             lineData.addEntry(entry, 0);
             //通知数据已经改变
             lineData.notifyDataChanged();
@@ -124,10 +119,6 @@ public class LineChartBean {
     }
     /**
      * 设置Y轴值
-     *
-     * @param max
-     * @param min
-     * @param labelCount
      */
     public void setYAxis(float max, float min, int labelCount) {
         if (max < min) {
@@ -145,9 +136,6 @@ public class LineChartBean {
 
     /**
      * 设置高限制线
-     *
-     * @param high
-     * @param name
      */
     public void setHightLimitLine(float high, String name, int color) {
         if (name == null) {
@@ -164,9 +152,6 @@ public class LineChartBean {
 
     /**
      * 设置低限制线
-     *
-     * @param low
-     * @param name
      */
     public void setLowLimitLine(int low, String name) {
         if (name == null) {
@@ -181,8 +166,6 @@ public class LineChartBean {
 
     /**
      * 设置描述信息
-     *
-     * @param str
      */
     public void setDescription(String str) {
         Description description = new Description();

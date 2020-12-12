@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 
 import com.privateproject.agendamanage.bean.Course;
 import com.privateproject.agendamanage.bean.DayTimeFragment;
-import com.privateproject.agendamanage.databinding.ActivityTimeLineChartBinding;
 import com.privateproject.agendamanage.db.CourseDao;
 import com.privateproject.agendamanage.db.DayTimeFragmentDao;
 import com.privateproject.agendamanage.utils.Time;
@@ -38,6 +37,7 @@ public class EverydayTotalTimeServer {
         this.context = context;
         this.dayTimeFragmentDao = new DayTimeFragmentDao(context);
         this.courseDao = new CourseDao(context);
+        this.totalTimes = totalTime();
     }
 
     // 计算总时间量
@@ -69,7 +69,7 @@ public class EverydayTotalTimeServer {
                     // 星期几
                     int col = courseList.get(i).getCol();
                     // 该课程在第row个时间段，计算该时间段的时间量
-                    int row = courseList.get(i).getRow();
+                    int row = courseList.get(i).getRow()-1;
                     int timeFragment = Time.parseTime(dayTimeFragmentList.get(row).getEnd()).
                             subOfMinute(Time.parseTime(dayTimeFragmentList.get(row).getStart()));
                     switch (col) {
@@ -221,39 +221,37 @@ public class EverydayTotalTimeServer {
     }
 
     //返回剩余时间量的集合
-    public Map<String, Integer> surplusTime(Date surplusStartDate, Date emergencyStartDate, Date surplusEndDate){
+    public List<Integer> surplusTime(Date surplusStartDate, Date emergencyStartDate, Date surplusEndDate){
 
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             //获取应急时间Map
             Map<Integer,Integer> emergencyTimeMap  = emergencyTime(emergencyStartDate,surplusEndDate);
             //创建Map集合
-            Map<String, Integer> surplusTimeMap = new HashMap<String, Integer>();
+            List<Integer> surplusTimeList = new ArrayList<Integer>();
             //获得日期列表
             List<Date> dateList = dateList(surplusStartDate,surplusEndDate);
             //判断当前日期是周几(周日返回7)
             int thisday = dayForWeek(surplusStartDate);
-//            //获得总时间量
+            //获得总时间量
             List<Integer> totalTime = totalTime();
             //为剩余时间Map集合传值（未减去应急时间）
             for (int i = 0; i <dateList.size() ; i++) {
-                surplusTimeMap.put(dateList.get(i).toString(),totalTime.get(thisday));
+                surplusTimeList.add(totalTime.get(thisday-1));
                 if (thisday == 7){
-                    thisday = 0;
+                    thisday = 1;
                 }
                 thisday++;
             }
             //循环，如果偏移量nowDateToEmergencyDate存在应急时间Map中的keySet中
-            for (String date : surplusTimeMap.keySet()) {
-                int nowDateToEmergencyDate = differentDays(simpleDateFormat.parse(date),emergencyStartDate);
+            for (int i = 0; i < surplusTimeList.size(); i++) {
+                int nowDateToEmergencyDate = differentDays(emergencyStartDate,dateList.get(i));
                 if (emergencyTimeMap.containsKey(nowDateToEmergencyDate)){
-                    surplusTimeMap.put(date, surplusTimeMap.get(date)-emergencyTimeMap.get(nowDateToEmergencyDate));
+                    surplusTimeList.set(i,surplusTimeList.get(i)-emergencyTimeMap.get(nowDateToEmergencyDate));
                 }
             }
-            //返回剩余时间Map集合
-            return surplusTimeMap;
-        } catch (ParseException e) {
-            e.printStackTrace();
+            //返回剩余时间Lsit列表
+            return surplusTimeList;
         } catch (Exception e) {
             e.printStackTrace();
         }
