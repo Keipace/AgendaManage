@@ -20,6 +20,7 @@ import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.bean.PlanNode;
 import com.privateproject.agendamanage.bean.Target;
 import com.privateproject.agendamanage.db.PlanNodeDao;
+import com.privateproject.agendamanage.db.TargetDao;
 import com.privateproject.agendamanage.server.PlanNodeServer;
 import com.privateproject.agendamanage.utils.TimeUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
@@ -37,6 +38,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
     private Context context;
     private Target topParent;
     private PlanNodeDao dao;
+    private TargetDao targetDao;
 
     private Stack<PlanNode> stack;
     private PlanNode parent;
@@ -55,6 +57,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
         this.path = topParent.getName()+":";
         this.pathShow = pathShow;
         this.pathShow.setText(this.path);
+        this.targetDao = new TargetDao(context);
     }
 
     @NonNull
@@ -197,9 +200,16 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
         holder.imageDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deletePlanNodes(planNodes.get(position));
+                if (parent==null) {
+                // 第一层删除时
+                    deleteFirstLevelPlanNode(planNodes.get(position));
+                    topParent = targetDao.selectById(topParent.getId());
+                } else {
+                // 其他层删除时
+                    parent = deletePlanNodes(parent, planNodes.get(position));
+                }
                 ToastUtil.newToast(context,"删除成功");
-                refresh();
+                refreshList();
             }
         });
     }
@@ -269,12 +279,23 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
             imageEdit = itemView.findViewById(R.id.itemPlanNode_edit_imageView);
         }
     }
-    private void deletePlanNodes(PlanNode planNode){
-        if (planNode.getChildren() != null&&planNode.getChildren().size() !=0){
+
+
+    private PlanNode deletePlanNodes(PlanNode parentOf, PlanNode planNode){
+        if (planNode.isHasChildren()&&planNode.getChildren() != null&&planNode.getChildren().size() !=0){
             for (int i = 0; i < planNode.getChildren().size(); i++) {
-                deletePlanNodes(planNode.getChildren().get(i));
+                deletePlanNodes(planNode, planNode.getChildren().get(i));
             }
         }
-        dao.deletePlanNodeById(planNode);
+        return dao.deleteChild(parentOf, planNode);
+    }
+
+    private void deleteFirstLevelPlanNode(PlanNode planNode) {
+        if (planNode.isHasChildren()&&planNode.getChildren() != null&&planNode.getChildren().size() !=0){
+            for (int i = 0; i < planNode.getChildren().size(); i++) {
+                deleteFirstLevelPlanNode(planNode.getChildren().get(i));
+            }
+        }
+        dao.deletePlanNodeById(planNode.getId());
     }
 }
