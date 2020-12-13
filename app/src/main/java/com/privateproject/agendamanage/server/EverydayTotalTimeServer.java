@@ -8,9 +8,7 @@ import com.privateproject.agendamanage.bean.DayTimeFragment;
 import com.privateproject.agendamanage.db.CourseDao;
 import com.privateproject.agendamanage.db.DayTimeFragmentDao;
 import com.privateproject.agendamanage.utils.Time;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -144,8 +142,8 @@ public class EverydayTotalTimeServer {
     public Map<Integer, Integer> emergencyTime(Date dateStart, Date dateEnd) {
         // 获取存储在文件中 应急时间比例
         SharedPreferences sharedPreferences = context.getSharedPreferences("TimeServer", Context.MODE_PRIVATE);
-        int emergencyTime = sharedPreferences.getInt("studyTime", -1);
-        int studyTime = sharedPreferences.getInt("emergencyTime", -1);
+        int emergencyTime = sharedPreferences.getInt("emergencyTime", -1);
+        int studyTime = sharedPreferences.getInt("studyTime", -1);
         if (emergencyTime==-1 || studyTime==-1) {
             throw new RuntimeException("请先设置应急时间的比例");
         }
@@ -167,8 +165,9 @@ public class EverydayTotalTimeServer {
                 //如果最后一天时间不够应急时间量
                 if (getTotalTimeOfDay(i) < emergencyTime) {
                     //如果最后一天不够应急时间则往前分
-                    int timeNeed = emergencyTime;//还需要分的应急时间
-                    int dayNeed = i;//分到第几天了
+                    emergencyTimeMap.put(i,getTotalTimeOfDay(i)-sumtime+timeCell);
+                    int timeNeed = emergencyTime-(getTotalTimeOfDay(i)-sumtime+timeCell);//还需要分的应急时间
+                    int dayNeed = i-1;//分到第几天了
                     while (timeNeed > 0) {
                         if (getTotalTimeOfDay(dayNeed) >= timeNeed) {
                             emergencyTimeMap.put(dayNeed, timeNeed);
@@ -182,12 +181,11 @@ public class EverydayTotalTimeServer {
                         }
                         dayNeed = dayNeed - 1;
                     }
-
-                    sumtime = 0;
+                    sumtime = sumtime-timeCell;
                 } else {//如果当天应急时间量够
                     //此时需需判断是否超过timeCell
                     emergencyTimeMap.put(i, emergencyTime);
-                    sumtime = getTotalTimeOfDay(i) - emergencyTime;
+                    sumtime = getTotalTimeOfDay(i) - timeCell;
                     while (sumtime>=timeCell){ // 防止一天可以分多次应急时间量
                         emergencyTimeMap.put(i, emergencyTimeMap.get(i)+emergencyTime);
                         sumtime = sumtime - timeCell;
@@ -245,7 +243,7 @@ public class EverydayTotalTimeServer {
             }
             //循环，如果偏移量nowDateToEmergencyDate存在应急时间Map中的keySet中
             for (int i = 0; i < surplusTimeList.size(); i++) {
-                int nowDateToEmergencyDate = differentDays(emergencyStartDate,dateList.get(i));
+                int nowDateToEmergencyDate = differentDays(emergencyStartDate,dateList.get(i))-1;
                 if (emergencyTimeMap.containsKey(nowDateToEmergencyDate)){
                     surplusTimeList.set(i,surplusTimeList.get(i)-emergencyTimeMap.get(nowDateToEmergencyDate));
                 }

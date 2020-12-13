@@ -37,6 +37,22 @@ public class PlanNodeDao {
     // 通过course对象的id属性值来删除course数据
     public void deletePlanNodeById(PlanNode planNode) {
         try {
+            PlanNode parent = selectParent(planNode);
+            if (parent!=null) {
+                String childrenStr = parent.getChildrenIds();
+                Integer[] ids = StringUtils.splitIds(childrenStr);
+                Integer childId = planNode.getId();
+                String resultStr = "";
+                for (int i = 0; i < ids.length; i++) {
+                    if (ids[i].equals(childId)) {
+                        continue;
+                    } else {
+                        resultStr += ids[i]+",";
+                    }
+                }
+                planNode.setChildrenIds(resultStr);
+                updatePlanNode(planNode);
+            }
             dao.delete(planNode);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -103,7 +119,11 @@ public class PlanNodeDao {
             QueryBuilder<PlanNode, Integer> queryBuilder = dao.queryBuilder();
             queryBuilder.where().eq("hasChildren", true)
                                 .and().like("childrenIds", "%"+child.getId()+"%");
-            parent = queryBuilder.query().get(0);
+            List<PlanNode> tmpParent = queryBuilder.query();
+            if (tmpParent==null||tmpParent.size()==0) {
+                return parent;
+            }
+            parent = tmpParent.get(0);
             initPlanNode(parent);
         } catch (SQLException e) {
             e.printStackTrace();

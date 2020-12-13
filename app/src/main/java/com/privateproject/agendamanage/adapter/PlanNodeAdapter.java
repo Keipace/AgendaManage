@@ -199,7 +199,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
             public void onClick(View v) {
                 deletePlanNodes(planNodes.get(position));
                 ToastUtil.newToast(context,"删除成功");
-                refresh();
+                refreshList();
             }
         });
     }
@@ -242,6 +242,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
         if (this.parent==null) {
             this.planNodes = new ArrayList<>(this.topParent.getPlanNodes());
         } else {
+            this.parent = this.dao.selectById(this.parent.getId());
             this.planNodes = this.parent.getChildren();
         }
         notifyDataSetChanged();
@@ -270,11 +271,12 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
         }
     }
     private void deletePlanNodes(PlanNode planNode){
-        if (planNode.getChildren() != null&&planNode.getChildren().size() !=0){
+        if (planNode.isHasChildren()&&planNode.getChildren() != null&&planNode.getChildren().size() !=0){
             for (int i = 0; i < planNode.getChildren().size(); i++) {
                 deletePlanNodes(planNode.getChildren().get(i));
             }
         }
+
         dao.deletePlanNodeById(planNode);
     }
 }

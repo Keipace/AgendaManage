@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,7 +101,7 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
             int col = position%8;
             //显示课程
             WeekTimeViewHolder.WeekTimeCellViewHolder cellViewHolder = (WeekTimeViewHolder.WeekTimeCellViewHolder) holder;
-            setCourse(cellViewHolder.btnCell, row, col);
+
             //添加监听器
             cellViewHolder.btnCell.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -139,7 +140,9 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
                 }
 
             });
-
+            setCourse(cellViewHolder.btnCell, row, col);
+            //以为复用会混乱，所以将复用暂停
+            holder.setIsRecyclable(false);
         }
 
     }
@@ -203,6 +206,7 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
         }
     }
 
+    private int count = 0;
     //显示出Button有字的设置的颜色
     private int colorCount = 0;
     private void setCourse(Button button, int row, int col) {
@@ -229,6 +233,9 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
             colorCount++;
             // button显示课程的名称
             button.setText(tmp);
+            button.setTag(count);
+            Log.d("create", count+"");
+            count++;
         }
 
     }

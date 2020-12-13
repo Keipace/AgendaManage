@@ -16,13 +16,11 @@ import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.activity.DayTargetInfoActivity;
 import com.privateproject.agendamanage.activity.TargetInfoActivity;
 import com.privateproject.agendamanage.bean.DayTarget;
+import com.privateproject.agendamanage.bean.PlanNode;
 import com.privateproject.agendamanage.bean.Target;
 import com.privateproject.agendamanage.customDialog.CenterDialog;
 import com.privateproject.agendamanage.databinding.ItemMainAdddaytargetBinding;
 import com.privateproject.agendamanage.databinding.ItemMainAddtargetBinding;
-import com.privateproject.agendamanage.customDialog.DayTargetDialog;
-import com.privateproject.agendamanage.customDialog.TargetDialog;
-import com.privateproject.agendamanage.databinding.DialogAddPlannodeBinding;
 import com.privateproject.agendamanage.db.DayTargetDao;
 import com.privateproject.agendamanage.db.PlanNodeDao;
 import com.privateproject.agendamanage.db.TargetDao;
@@ -41,6 +39,9 @@ public class GoalListServer {
     private List<Target> targets;
     private List<DayTarget> dayTargets;
     private Context context;
+
+    private ItemMainAddtargetBinding targetBinding;
+    private ItemMainAdddaytargetBinding daytargetBinding;
 
     private PlanNodeDao planNodeDao;
 
@@ -315,6 +316,10 @@ public class GoalListServer {
 
     interface OnItemCreated {
         void itemCreated(String name, String decoration, int position);
+    }
+
+    public interface OnItemClick {
+        void planTarget(Target topTarget);
     }
 
 }

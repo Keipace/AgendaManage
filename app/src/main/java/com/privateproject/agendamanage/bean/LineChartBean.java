@@ -12,6 +12,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +39,17 @@ public class LineChartBean {
         initLineDataSet(name, color);
     }
 
+    public List<String> formatteDate(List<Date> dateList){
+        SimpleDateFormat format = new SimpleDateFormat("MM-dd");
+        List<String> dateStrList = new ArrayList<String>();
+        for (int i = 0; i < dateList.size(); i++) {
+            String date = format.format(dateList.get(i));
+            dateStrList.add(date);
+        }
+        return dateStrList;
+    }
+
+
     /**
      * 初始化LineChar
      */
@@ -54,6 +67,10 @@ public class LineChartBean {
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         legend.setDrawInside(false);
+        //取消Description
+        Description description = new Description();
+        description.setEnabled(false);
+        lineChart.setDescription(description);
 
         //X轴设置显示位置在底部
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -66,7 +83,8 @@ public class LineChartBean {
                 if (value<0||value>dateList.size()){
                     return "";
                 }else {
-                    return dateList.get((int)value % dateList.size()).toString();
+//                    return dateList.get((int)value % dateList.size()).toString();
+                    return formatteDate(dateList).get((int)value % dateList.size());
                 }
             }
         });
