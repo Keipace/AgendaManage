@@ -1,19 +1,13 @@
 package com.privateproject.agendamanage;
 
-import android.content.Context;
-
-import com.privateproject.agendamanage.server.EverydayTotalTimeServer;
-
 import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
 
-import static com.privateproject.agendamanage.server.EverydayTotalTimeServer.dayForWeek;
-import static com.privateproject.agendamanage.server.EverydayTotalTimeServer.differentDays;
+import static com.privateproject.agendamanage.module_weekTime.server.EverydayTotalTimeServer.dayForWeek;
+import static com.privateproject.agendamanage.module_weekTime.server.EverydayTotalTimeServer.differentDays;
 import static org.junit.Assert.*;
 
 /**

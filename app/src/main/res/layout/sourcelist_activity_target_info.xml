@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <ImageView
+        android:id="@+id/targetInfo_back_Button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:padding="10dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/bg_image_button"
+        android:layout_marginRight="50dp"
+        android:src="@drawable/back"/>
+
+    <com.privateproject.agendamanage.module_sourceList.server.ShadowContainer
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        app:containerCornerRadius="20dp"
+        app:containerDeltaLength="40dp"
+        app:containerTopMargin="28dp"
+        app:containerBottomMargin="60dp"
+        app:containerLeftMargin="1dp"
+        app:containerRightMargin="1dp"
+        app:containerShadowColor="@color/gray"
+        app:containerShadowRadius="100dp"
+        app:deltaX="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/target_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_info"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!--    #   id 标识
+                name 名称
+                #   decoration 描述
+                timeNeed 预估所需时间
+                timePlanOver 期待完成时间
+                timeDeadLine 最晚完成时间
+                timeRealOver 实际完成时间
+                #   importance 重要性
+                timePreDo 预实施时间-->
+
+            <!--   name 名称     -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/target_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/bg_top"
+                android:padding="20dp"
+                app:layout_constraintBottom_toTopOf="@id/target_content_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_weight="1.3">
+
+                <TextView
+                    android:id="@+id/targetInfo_name_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="这是目标名称"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/iv_calendar"
+                    app:layout_constraintStart_toStartOf="parent" />
+                <!--预实施时间-->
+                <ImageView
+                    android:id="@+id/iv_calendar"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/calendar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                <TextView
+                    android:id="@+id/targetInfo_timePreDo_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="预实施时间"
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/iv_calendar" />
+
+                <TextView
+                    android:id="@+id/fenge_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="—"
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/targetInfo_timePreDo_textView"
+                    app:layout_constraintRight_toLeftOf="@id/targetInfo_timePlanOver_textView" />
+
+                <TextView
+                    android:id="@+id/targetInfo_timePlanOver_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="期待结束时间"
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/fenge_textView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/target_content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/bg_bottom"
+                android:padding="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/target_name_layout"
+                app:layout_constraintVertical_weight="3">
+
+                <RadioGroup
+                    android:id="@+id/targetInfo_importance_radioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RadioButton
+                        android:id="@+id/targetInfo_high_radioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="3dp"
+                        android:layout_weight="1"
+                        android:enabled="false"
+                        android:text="高"
+                        android:textSize="@dimen/font_size" />
+
+                    <RadioButton
+                        android:id="@+id/targetInfo_middle_radioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="3dp"
+                        android:layout_weight="1"
+                        android:enabled="false"
+                        android:text="中"
+                        android:textSize="@dimen/font_size" />
+
+                    <RadioButton
+                        android:id="@+id/targetInfo_low_radioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:enabled="false"
+                        android:text="低"
+                        android:textSize="@dimen/font_size" />
+                </RadioGroup>
+
+                <!--decoration 描述-->
+                <TextView
+                    android:id="@+id/targetInfo_decoration_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="描  述"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/targetInfo_importance_radioGroup" />
+
+                <TextView
+                    android:id="@+id/targetInfo_decoration_editView"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:text="描述内容"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/targetInfo_decoration_textView" />
+
+
+                <!--timeNeed 预估所需时间-->
+                <TextView
+                    android:id="@+id/targetInfo_timeNeed_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="预估所需时间（小时）："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/font_size"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/targetInfo_decoration_editView" />
+
+                <TextView
+                    android:id="@+id/targetInfo_timeNeed_editView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:text="选择时长"
+                    app:layout_constraintRight_toLeftOf="@id/targetInfo_timeNeed_imageView"
+                    app:layout_constraintTop_toBottomOf="@id/targetInfo_decoration_editView" />
+
+                <ImageView
+                    android:id="@+id/targetInfo_timeNeed_imageView"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginVertical="20dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/toright"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/targetInfo_decoration_editView" />
+                <!--timePlanOver 期待完成时间-->
+                <!--timeDeadLine 最晚完成时间-->
+                <TextView
+                    android:id="@+id/targetInfo_timeDeadLine_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="最晚完成时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/font_size"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/targetInfo_timeNeed_textView" />
+
+                <TextView
+                    android:id="@+id/targetInfo_timeDeadLine_editView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:text="选择时间"
+                    app:layout_constraintRight_toLeftOf="@id/targetInfo_timeDeadLine_imageView"
+                    app:layout_constraintTop_toBottomOf="@id/targetInfo_timeNeed_textView" />
+
+                <ImageView
+                    android:id="@+id/targetInfo_timeDeadLine_imageView"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginVertical="20dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/toright"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/targetInfo_timeNeed_textView" />
+                <!--timePreDo 预实施时间-->
+                <!--timeRealOver 实际完成时间-->
+                <TextView
+                    android:id="@+id/targetInfo_timeRealOver_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="实际完成时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/font_size"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/targetInfo_timeDeadLine_textView" />
+
+                <TextView
+                    android:id="@+id/targetInfo_timeRealOver_editView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:text="选择时间"
+                    app:layout_constraintRight_toLeftOf="@id/targetInfo_timeRealOver_imageView"
+                    app:layout_constraintTop_toBottomOf="@id/targetInfo_timeDeadLine_textView" />
+
+                <ImageView
+                    android:id="@+id/targetInfo_timeRealOver_imageView"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginVertical="20dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/toright"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/targetInfo_timeDeadLine_textView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.privateproject.agendamanage.module_sourceList.server.ShadowContainer>
+
+    <ImageView
+        android:padding="10dp"
+        android:layout_marginLeft="130dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/targetInfo_edit_Button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/edit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@drawable/btn_circle"/>
+    <ImageView
+        android:padding="10dp"
+        android:layout_marginRight="130dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/targetInfo_delete_Button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/delete"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/btn_circle"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

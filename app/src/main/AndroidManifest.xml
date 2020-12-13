@@ -9,14 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.TimeLineChartActivity"></activity>
+        <activity android:name=".module_weekTime.activity.TimeLineChartActivity"></activity>
         <activity
-            android:name=".activity.WeekTimeActivity"
+            android:name=".module_weekTime.activity.WeekTimeActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activity.WeekTimeEditChoiseActivity" />
-        <activity android:name=".activity.DayTargetInfoActivity" />
-        <activity android:name=".activity.TargetInfoActivity" />
-        <activity android:name=".activity.DayTimeSelectActivity" />
+        <activity android:name=".module_weekTime.activity.WeekTimeEditChoiseActivity" />
+        <activity android:name=".module_sourceList.activity.DayTargetInfoActivity" />
+        <activity android:name=".module_sourceList.activity.TargetInfoActivity" />
+        <activity android:name=".module_weekTime.activity.DayTimeSelectActivity" />
         <activity android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".module_sourceList.fragment.GoalListFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragmentGoalList_header_constraintLayout"
+        android:background="@drawable/bg_header"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.diegodobelo.expandingview.ExpandingList
+        android:id="@+id/fragmentGoalList_listContainer_expandingList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:dividerHeight="5dp"
+        android:groupIndicator="@null"
+        android:divider="@null"
+        android:background="@drawable/bg_main"
+        app:layout_constraintTop_toBottomOf="@id/fragmentGoalList_header_constraintLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="30dp"
+        app:fab_addButtonColorNormal="@color/colorAccent"
+        >
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fragmentGoalList_timelinechart_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorPressed="#ffffff"
+            android:src="@drawable/linechart"
+            android:scaleType="fitXY"
+            android:paddingTop="15dp"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="23dp"
+            />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fragmentGoalList_setCourse_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorPressed="#ffffff"
+            android:src="@drawable/classtable"
+            android:paddingTop="15dp"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="23dp"
+            android:scaleType="fitXY"
+            />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fragmentGoalList_emergencySelect_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorPressed="#ffffff"
+            android:src="@drawable/time"
+            android:scaleType="fitXY"
+            android:paddingTop="15dp"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="23dp"
+            />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

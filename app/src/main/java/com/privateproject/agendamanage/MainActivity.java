@@ -7,15 +7,15 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
 
-import com.privateproject.agendamanage.bean.Target;
-import com.privateproject.agendamanage.databinding.ActivityMainBinding;
-import com.privateproject.agendamanage.fragment.FragmentTest;
-import com.privateproject.agendamanage.fragment.GoalListFragment;
-import com.privateproject.agendamanage.fragment.PlanTargetFragment;
-import com.privateproject.agendamanage.server.GoalListServer;
+import com.privateproject.agendamanage.databinding.MainBinding;
+import com.privateproject.agendamanage.db.bean.Target;
+import com.privateproject.agendamanage.module_sourceList.fragment.FragmentTest;
+import com.privateproject.agendamanage.module_sourceList.fragment.GoalListFragment;
+import com.privateproject.agendamanage.module_planTarget.fragment.PlanTargetFragment;
+import com.privateproject.agendamanage.module_sourceList.server.GoalListServer;
 
 public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding pageXml;
+    private MainBinding pageXml;
 
     // 第一个页面
     private GoalListFragment goalListFragment;
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // 初始化页面
         super.onCreate(savedInstanceState);
-        pageXml = ActivityMainBinding.inflate(getLayoutInflater());
+        pageXml = MainBinding.inflate(getLayoutInflater());
         setContentView(pageXml.getRoot());
         // 设置 tag 切换页面的监听器
         setListener();
