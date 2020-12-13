@@ -37,23 +37,7 @@ public class PlanNodeDao {
     // 通过course对象的id属性值来删除course数据
     public void deletePlanNodeById(PlanNode planNode) {
         try {
-            PlanNode parent = selectParent(planNode);
-            if (parent!=null) {
-                String childrenStr = parent.getChildrenIds();
-                Integer[] ids = StringUtils.splitIds(childrenStr);
-                Integer childId = planNode.getId();
-                String resultStr = "";
-                for (int i = 0; i < ids.length; i++) {
-                    if (ids[i].equals(childId)) {
-                        continue;
-                    } else {
-                        resultStr += ids[i]+",";
-                    }
-                }
-                planNode.setChildrenIds(resultStr);
-                updatePlanNode(planNode);
-            }
-            dao.delete(planNode);
+            dao.deleteById(planNode.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -119,11 +103,7 @@ public class PlanNodeDao {
             QueryBuilder<PlanNode, Integer> queryBuilder = dao.queryBuilder();
             queryBuilder.where().eq("hasChildren", true)
                                 .and().like("childrenIds", "%"+child.getId()+"%");
-            List<PlanNode> tmpParent = queryBuilder.query();
-            if (tmpParent==null||tmpParent.size()==0) {
-                return parent;
-            }
-            parent = tmpParent.get(0);
+            parent = queryBuilder.query().get(0);
             initPlanNode(parent);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -134,9 +114,11 @@ public class PlanNodeDao {
     public PlanNode initPlanNode(PlanNode planNode) {
         if (planNode.isHasChildren()) {
             Integer[] ids = StringUtils.splitIds(planNode.getChildrenIds());
-            if (ids==null)
-                return planNode;
             List<PlanNode> planNodes = new ArrayList<PlanNode>();
+            if (ids==null) {
+                planNode.setChildren(true, planNodes);
+                return planNode;
+            }
             for (int i = 0; i < ids.length; i++) {
                 planNodes.add(selectById(ids[i]));
             }
@@ -155,6 +137,30 @@ public class PlanNodeDao {
             planNodes.add(child);
             parent.setChildren(true, planNodes);
             updatePlanNode(parent);
+        }
+        return parent;
+    }
+
+    public PlanNode deleteChild(PlanNode parent, PlanNode child) {
+        if (parent.isHasChildren()) {
+            parent = initPlanNode(parent);
+            if (parent.getChildren()==null || parent.getChildren().size()==0) {
+                return parent;
+            }
+            Integer[] ids = StringUtils.splitIds(parent.getChildrenIds());
+            String result = "";
+            for (int i = 0; i < ids.length; i++) {
+                if (ids[i].equals(child.getId())) {
+                    continue;
+                } else {
+                    result += ids[i]+",";
+                }
+            }
+            parent.setChildrenIds(result);
+            updatePlanNode(parent);
+            deletePlanNodeById(child);
+            initPlanNode(parent);
+            return parent;
         }
         return parent;
     }

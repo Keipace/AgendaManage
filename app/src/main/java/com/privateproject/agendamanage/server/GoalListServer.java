@@ -25,12 +25,10 @@ import com.privateproject.agendamanage.db.DayTargetDao;
 import com.privateproject.agendamanage.db.PlanNodeDao;
 import com.privateproject.agendamanage.db.TargetDao;
 import com.privateproject.agendamanage.utils.ComponentUtil;
-import com.privateproject.agendamanage.utils.Time;
 import com.privateproject.agendamanage.utils.TimeUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-import java.text.ParseException;
 import java.util.List;
 
 public class GoalListServer {
@@ -39,10 +37,8 @@ public class GoalListServer {
     private List<Target> targets;
     private List<DayTarget> dayTargets;
     private Context context;
-
     private ItemMainAddtargetBinding targetBinding;
     private ItemMainAdddaytargetBinding daytargetBinding;
-
     private PlanNodeDao planNodeDao;
 
     public GoalListServer(Context context) {

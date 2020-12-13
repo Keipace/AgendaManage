@@ -15,7 +15,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <ImageView
+        <ImageButton
             app:layout_constraintTop_toTopOf="@id/WeekActivity_toTimeFrag_btn"
             app:layout_constraintBottom_toBottomOf="@id/WeekActivity_toTimeFrag_btn"
             app:layout_constraintLeft_toLeftOf="parent"

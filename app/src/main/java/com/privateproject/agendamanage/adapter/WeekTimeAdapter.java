@@ -85,6 +85,8 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
         }
     }
 
+    private WeekTimeViewHolder.WeekTimeCellViewHolder clickedCell;
+    private int clickedRow=-1,clickedCol=-1;
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == HEAD) {
@@ -106,6 +108,7 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
             cellViewHolder.btnCell.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     if (hasCourse(row, col)) {
                         Intent intent = new Intent(context, WeekTimeEditChoiseActivity.class);
                         intent.putExtra("row", row);
@@ -113,29 +116,70 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
                         context.startActivityForResult(intent, REQUESTCODE_WEEKTIMEEDIT);
 
                     } else {
-                        ItemWeekTimeAddLayoutBinding dialogBinding = ItemWeekTimeAddLayoutBinding.inflate(context.getLayoutInflater());
-                        //添加每周事件
-                        CenterDialog builder = new CenterDialog(context,R.style.DayTargetDialog);
-                        builder.setTitle("添加每周事件")
-                                .setView(dialogBinding.getRoot())
-                                .setCancelBtn("取消", new CenterDialog.IOnCancelListener() {
-                                    @Override
-                                    public void OnCancel(CenterDialog dialog) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .setConfirmBtn("确定", new CenterDialog.IOnConfirmListener() {
-                                    @Override
-                                    public void OnConfirm(CenterDialog dialog) {
-                                        //将新的Course添加至数据库
-                                        String name = dialogBinding.itemWeekTimeAddCourseNameEt.getText().toString();
-                                        String address = dialogBinding.itemWeekTimeAddAddressEt.getText().toString();
-                                        courseDao.addCourse(new Course(name, address, row, col));
-                                        //更新button内容
-                                        refreshFormData();
-                                        adapter.notifyDataSetChanged();
-                                    }
-                                }).show();
+
+                        if (clickedRow==-1||clickedCol==-1) {
+                            // 刚打开页面时点击
+                            // 1.变灰
+                            cellViewHolder.btnCell.setText("+");
+                            cellViewHolder.btnCell.setTextSize(20);
+                            cellViewHolder.btnCell.setTextColor(Color.parseColor("#804C4747"));
+                            GradientDrawable gradientDrawable = new GradientDrawable();
+                            gradientDrawable.setShape(GradientDrawable.RECTANGLE);//形状
+                            gradientDrawable.setCornerRadius(20f);//设置圆角Radius
+                            gradientDrawable.setColor(Color.parseColor("#145A6867"));//颜色
+                            cellViewHolder.btnCell.setBackground(gradientDrawable);
+                            // 2.保存
+                            clickedRow = row;
+                            clickedCol = col;
+                            clickedCell = cellViewHolder;
+                        } else if (row==clickedRow&&col==clickedCol) {
+                            // 第二次点击相同的那一个
+                            //1.显示弹出框
+                            ItemWeekTimeAddLayoutBinding dialogBinding = ItemWeekTimeAddLayoutBinding.inflate(context.getLayoutInflater());
+                            //添加每周事件
+                            CenterDialog builder = new CenterDialog(context, R.style.DayTargetDialog);
+                            builder.setTitle("添加每周事件")
+                                    .setView(dialogBinding.getRoot())
+                                    .setCancelBtn("x", new CenterDialog.IOnCancelListener() {
+                                        @Override
+                                        public void OnCancel(CenterDialog dialog) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setConfirmBtn("√", new CenterDialog.IOnConfirmListener() {
+                                        @Override
+                                        public void OnConfirm(CenterDialog dialog) {
+                                            //将新的Course添加至数据库
+                                            String name = dialogBinding.itemWeekTimeAddCourseNameEt.getText().toString();
+                                            String address = dialogBinding.itemWeekTimeAddAddressEt.getText().toString();
+                                            courseDao.addCourse(new Course(name, address, row, col));
+                                            //更新button内容
+                                            refreshFormData();
+                                            adapter.notifyDataSetChanged();
+                                            builder.dismiss();
+                                        }
+                                    }).show();
+                        } else {
+                            // 第二次点击不同的另一个
+                            // 1.清除之前格的状态
+                            clickedCell.btnCell.setText("");
+                            GradientDrawable gradientDrawable1 = new GradientDrawable();
+                            gradientDrawable1.setColor(Color.parseColor("#00000000"));//颜色
+                            clickedCell.btnCell.setBackground(gradientDrawable1);
+                            // 2.变灰
+                            cellViewHolder.btnCell.setText("+");
+                            cellViewHolder.btnCell.setTextSize(20);
+                            cellViewHolder.btnCell.setTextColor(Color.parseColor("#804C4747"));
+                            GradientDrawable gradientDrawable = new GradientDrawable();
+                            gradientDrawable.setShape(GradientDrawable.RECTANGLE);//形状
+                            gradientDrawable.setCornerRadius(20f);//设置圆角Radius
+                            gradientDrawable.setColor(Color.parseColor("#145A6867"));//颜色
+                            cellViewHolder.btnCell.setBackground(gradientDrawable);
+                            //3.保存
+                            clickedRow = row;
+                            clickedCol = col;
+                            clickedCell = cellViewHolder;
+                        }
                     }
                 }
 
@@ -172,7 +216,7 @@ public class WeekTimeAdapter extends RecyclerView.Adapter {
             // 将一天的时间点连接成时间段字符串
             String[] fragment = new String[dayTimeList.size()];
             for (int i = 0; i < dayTimeList.size(); i++) {
-                fragment[i] = dayTimeList.get(i).toString();
+                fragment[i] = dayTimeList.get(i).getStart().toString()+"\n"+dayTimeList.get(i).getEnd().toString();
             }
             // 初始化数据矩阵，并赋予其第一行和第一列的数据
             for (int i = 0; i < this.datas.length-1; i++) {

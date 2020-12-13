@@ -9,6 +9,7 @@ import android.widget.CompoundButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.rubensousa.raiflatbutton.RaiflatButton;
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.bean.DayTimeFragment;
 import com.privateproject.agendamanage.databinding.ActivityDayTimeSelectBinding;
@@ -115,6 +116,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
                 DayTimeSelectRecycleAdapter.this.temp.clear();
             }
         });
+
         //删除按钮监听器
         binding.daytimeSelectDeleteBotton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,6 +235,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
         this.dayTimeFragmentList = dao.selectAll();
         this.timeLength=new ArrayList<Integer>();
         this.timeName=new ArrayList<String>();
+        this.timeIdentify=new ArrayList<Boolean>();
         notifyDataSetChanged();
     }
     public void isVisible(boolean isvisible){

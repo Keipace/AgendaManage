@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.diegodobelo.expandingview.ExpandingList;
 import com.privateproject.agendamanage.MainActivity;
@@ -58,7 +59,7 @@ public class GoalListFragment extends Fragment {
         listServer.createTargetItem(expandingList, onItemClick);
         listServer.createDayTargetItem(expandingList);
         // 添加课程表 按钮
-        Button setCourseBtn = view.findViewById(R.id.fragmentGoalList_setCourse_btn);
+        ImageButton setCourseBtn = view.findViewById(R.id.fragmentGoalList_setCourse_btn);
         setCourseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +69,7 @@ public class GoalListFragment extends Fragment {
             }
         });
         //查看折线图按钮
-        Button checkTimeLineChartBtn = view.findViewById(R.id.fragmentGoalList_timelinechart_btn);
+        ImageButton checkTimeLineChartBtn = view.findViewById(R.id.fragmentGoalList_timelinechart_btn);
         checkTimeLineChartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +79,7 @@ public class GoalListFragment extends Fragment {
             }
         });
         // 设置应急时间量 按钮的监听器
-        Button emergencyButton = view.findViewById(R.id.fragmentGoalList_emergencySelect_btn);
+        ImageButton emergencyButton = view.findViewById(R.id.fragmentGoalList_emergencySelect_btn);
         emergencyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
