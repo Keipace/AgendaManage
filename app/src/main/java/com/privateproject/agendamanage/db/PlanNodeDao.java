@@ -37,7 +37,7 @@ public class PlanNodeDao {
     // 通过course对象的id属性值来删除course数据
     public void deletePlanNodeById(PlanNode planNode) {
         try {
-            dao.delete(planNode);
+            dao.deleteById(planNode.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -114,9 +114,11 @@ public class PlanNodeDao {
     public PlanNode initPlanNode(PlanNode planNode) {
         if (planNode.isHasChildren()) {
             Integer[] ids = StringUtils.splitIds(planNode.getChildrenIds());
-            if (ids==null)
-                return planNode;
             List<PlanNode> planNodes = new ArrayList<PlanNode>();
+            if (ids==null) {
+                planNode.setChildren(true, planNodes);
+                return planNode;
+            }
             for (int i = 0; i < ids.length; i++) {
                 planNodes.add(selectById(ids[i]));
             }
@@ -135,6 +137,30 @@ public class PlanNodeDao {
             planNodes.add(child);
             parent.setChildren(true, planNodes);
             updatePlanNode(parent);
+        }
+        return parent;
+    }
+
+    public PlanNode deleteChild(PlanNode parent, PlanNode child) {
+        if (parent.isHasChildren()) {
+            parent = initPlanNode(parent);
+            if (parent.getChildren()==null || parent.getChildren().size()==0) {
+                return parent;
+            }
+            Integer[] ids = StringUtils.splitIds(parent.getChildrenIds());
+            String result = "";
+            for (int i = 0; i < ids.length; i++) {
+                if (ids[i].equals(child.getId())) {
+                    continue;
+                } else {
+                    result += ids[i]+",";
+                }
+            }
+            parent.setChildrenIds(result);
+            updatePlanNode(parent);
+            deletePlanNodeById(child);
+            initPlanNode(parent);
+            return parent;
         }
         return parent;
     }

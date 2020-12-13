@@ -199,4 +199,9 @@ public class PlanNode {
     public Target getTopParent() {
         return topParent;
     }
+
+    public void setChildrenIds(String childrenIds) {
+        this.childrenIds = childrenIds;
+    }
+
 }

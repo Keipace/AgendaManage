@@ -48,7 +48,6 @@ public class GoalListServer {
         this.dayTargets = dayTargetDao.selectAll();
         this.context=context;
         this.planNodeDao = new PlanNodeDao(context);
-
     }
 
     public void createTargetItem(ExpandingList expandingList, OnItemClick onItemClick) {
