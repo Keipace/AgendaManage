@@ -2,9 +2,14 @@ package com.privateproject.agendamanage.db.bean;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.privateproject.agendamanage.utils.TimeUtil;
+
+import java.util.Date;
 
 @DatabaseTable
 public class Task {
+    public static final String DEFAULT_PLAN = "无";
+
     @DatabaseField(generatedId = true)
     private Integer id;
     @DatabaseField(canBeNull = false)
@@ -12,29 +17,27 @@ public class Task {
     @DatabaseField
     private String plan;//描述
     @DatabaseField(canBeNull = false)
-    private int offsetDay;//日期偏移量
+    private Date day;//所在日期
     @DatabaseField(foreign = true,canBeNull = false)
-    private DayTimeFragment startTime;//开始时间点
-    @DatabaseField(foreign = true,canBeNull = false)
-    private DayTimeFragment endTime;//结束时间点
+    private DayTimeFragment timeFragment;//所在时间段
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private PlanNode parent;
 
     private Task() {
         super();
     }
 
-    public Task(String name, int offsetDay, DayTimeFragment startTime, DayTimeFragment endTime) {
-        this.name = name;
-        this.offsetDay = offsetDay;
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public Task(String name, String day, DayTimeFragment timeFragment, PlanNode parent) {
+        this(name, DEFAULT_PLAN, day, timeFragment, parent);
     }
 
-    public Task(String name, String plan, int offsetDay, DayTimeFragment startTime, DayTimeFragment endTime) {
+    public Task(String name, String plan, String day, DayTimeFragment timeFragment, PlanNode parent) {
         this.name = name;
         this.plan = plan;
-        this.offsetDay = offsetDay;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.day = TimeUtil.getDate(day);
+        this.timeFragment = timeFragment;
+        this.parent = parent;
     }
 
     public Integer getId() {
@@ -57,27 +60,27 @@ public class Task {
         this.plan = plan;
     }
 
-    public int getOffsetDay() {
-        return offsetDay;
+    public void setDay(Date day) {
+        this.day = day;
     }
 
-    public void setOffsetDay(int offsetDay) {
-        this.offsetDay = offsetDay;
+    public void setDay(String day) {
+        this.day = TimeUtil.getDate(day);
     }
 
-    public DayTimeFragment getStartTime() {
-        return startTime;
+    public Date getDay() {
+        return day;
     }
 
-    public void setStartTime(DayTimeFragment startTime) {
-        this.startTime = startTime;
+    public DayTimeFragment getTimeFragment() {
+        return timeFragment;
     }
 
-    public DayTimeFragment getEndTime() {
-        return endTime;
+    public void setTimeFragment(DayTimeFragment timeFragment) {
+        this.timeFragment = timeFragment;
     }
 
-    public void setEndTime(DayTimeFragment endTime) {
-        this.endTime = endTime;
+    public PlanNode getParent() {
+        return parent;
     }
 }

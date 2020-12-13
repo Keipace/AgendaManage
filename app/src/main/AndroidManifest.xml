@@ -18,7 +18,8 @@
         <activity android:name=".module_sourceList.activity.TargetInfoActivity" />
         <activity android:name=".module_weekTime.activity.DayTimeSelectActivity" />
         <activity android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

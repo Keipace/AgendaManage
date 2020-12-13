@@ -1,6 +1,8 @@
 package com.privateproject.agendamanage.db.bean;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.privateproject.agendamanage.utils.TimeUtil;
 
@@ -47,6 +49,9 @@ public class PlanNode {
     private List<PlanNode> children;
     @DatabaseField
     private int timeNeeded;
+
+    @ForeignCollectionField(eager = false)
+    private ForeignCollection<Task> tasks;
 
     private PlanNode() {}
 
@@ -201,5 +206,9 @@ public class PlanNode {
 
     public void setChildrenIds(String childrenIds) {
         this.childrenIds = childrenIds;
+    }
+
+    public ForeignCollection<Task> getTasks() {
+        return tasks;
     }
 }
