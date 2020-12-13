@@ -199,7 +199,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
             public void onClick(View v) {
                 deletePlanNodes(planNodes.get(position));
                 ToastUtil.newToast(context,"删除成功");
-                refresh();
+                refreshList();
             }
         });
     }

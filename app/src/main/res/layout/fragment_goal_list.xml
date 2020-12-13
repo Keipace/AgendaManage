@@ -16,42 +16,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         >
-        <com.github.rubensousa.raiflatbutton.RaiflatButton
-            android:layout_margin="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/fragmentGoalList_setCourse_btn"
-            android:background="@drawable/bg_raiflat_button"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/header_line"
-            android:text="课程表"
-            />
-        <com.github.rubensousa.raiflatbutton.RaiflatButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_raiflat_button"
-            android:id="@+id/fragmentGoalList_emergencySelect_btn"
-            app:layout_constraintLeft_toRightOf="@id/fragmentGoalList_setCourse_btn"
-            android:layout_margin="10dp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="应急时间量"
-            />
-        <View
-            android:id="@+id/header_line"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/greenblue"
-            />
-        <Button
-            android:id="@+id/fragmentGoalList_timelinechart_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="剩余时间折线图"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/fragmentGoalList_emergencySelect_btn"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.diegodobelo.expandingview.ExpandingList
@@ -65,5 +29,47 @@
         app:layout_constraintTop_toBottomOf="@id/fragmentGoalList_header_constraintLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="30dp"
+        app:fab_addButtonColorNormal="@color/colorAccent"
+        >
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fragmentGoalList_timelinechart_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorPressed="#ffffff"
+            android:src="@drawable/linechart"
+            android:scaleType="fitXY"
+            android:paddingTop="15dp"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="23dp"
+            />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fragmentGoalList_setCourse_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorPressed="#ffffff"
+            android:src="@drawable/classtable"
+            android:paddingTop="15dp"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="23dp"
+            android:scaleType="fitXY"
+            />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fragmentGoalList_emergencySelect_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorPressed="#ffffff"
+            android:src="@drawable/time"
+            android:scaleType="fitXY"
+            android:paddingTop="15dp"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="23dp"
+            />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
