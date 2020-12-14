@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.privateproject.agendamanage.databinding.MainBinding;
 import com.privateproject.agendamanage.db.bean.Target;
+import com.privateproject.agendamanage.db.dao.TargetDao;
 import com.privateproject.agendamanage.module_sourceList.fragment.FragmentTest;
 import com.privateproject.agendamanage.module_sourceList.fragment.GoalListFragment;
 import com.privateproject.agendamanage.module_planTarget.fragment.PlanTargetFragment;
@@ -99,10 +100,11 @@ public class MainActivity extends AppCompatActivity {
                     goalListFragment = new GoalListFragment(new GoalListServer.OnItemClick() {
                         @Override
                         public void planTarget(Target topTarget) {
+                            Target tmp = new TargetDao(MainActivity.this).selectById(topTarget.getId());
                             FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
                             hideFragments(transaction1);
                             if (planTargetFragment==null) {
-                                planTargetFragment = new PlanTargetFragment(topTarget, MainActivity.this, new PlanTargetFragment.OnFragmentExit() {
+                                planTargetFragment = new PlanTargetFragment(tmp, MainActivity.this, new PlanTargetFragment.OnFragmentExit() {
                                     @Override
                                     public void exit() {
                                         isShowPlan = false;

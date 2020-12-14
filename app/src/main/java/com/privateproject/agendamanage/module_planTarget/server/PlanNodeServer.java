@@ -34,7 +34,7 @@ public class PlanNodeServer {
 
     public void showEditDialog(PlanNode parent, DataChangeListener dataChange){
 
-        View root = LayoutInflater.from(context).inflate(R.layout.plantarget_dialog_add_plannode, null);
+        View root = LayoutInflater.from(context).inflate(R.layout.plantarget_dialog_add_plan_node, null);
         MaterialEditText nameEditText = root.findViewById(R.id.addPlanDialog_name_MaterialEditText);
         EditText decoration = root.findViewById(R.id.addPlanDialog_decoration_editText);
         EditText startDate = root.findViewById(R.id.addPlanDialog_startDate_editText);
@@ -143,28 +143,6 @@ public class PlanNodeServer {
 
                     dataChange.refresh();
                     dialog.dismiss();
-//                    if(!parent.isHasChildren()){//最后一个节点
-//                        //修改时间和名称等，变成不是最后一个
-//                        if (setTimeNeeded.isChecked()) {//说明还是最后一个节点
-//
-//                        }else {//说明变为不是最后一个节点
-//                            parent.setChildren(true,new ArrayList<PlanNode>());
-//                        }
-//                    }else {//不是最后一个
-//                        if (parent.getChildren() == null||parent.getChildren().size() == 0){//没有孩子
-//                            //修改名称等，变为最后一个
-//                            if (setTimeNeeded.isChecked()) {//说明变为最后一个
-//
-//                            }else {//不是最后一个
-//
-//                            }
-//
-//                        }else {//有孩子
-//                            //只能修改名称等
-//
-//                        }
-//                    }
-
 
                 }else {//详情状态
 
@@ -218,7 +196,7 @@ public class PlanNodeServer {
     }
 
     public void showAddDialog(PlanNode parent, DataChangeListener dataChange){
-        View root = LayoutInflater.from(context).inflate(R.layout.plantarget_dialog_add_plannode, null);
+        View root = LayoutInflater.from(context).inflate(R.layout.plantarget_dialog_add_plan_node, null);
         MaterialEditText nameEditText = root.findViewById(R.id.addPlanDialog_name_MaterialEditText);
         EditText decoration = root.findViewById(R.id.addPlanDialog_decoration_editText);
         EditText startDate = root.findViewById(R.id.addPlanDialog_startDate_editText);

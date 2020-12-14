@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.module_planTarget.adapter.PlanNodeAdapter;
 import com.privateproject.agendamanage.db.bean.Target;
@@ -39,7 +40,8 @@ public class PlanTargetFragment extends Fragment {
         TextView path = view.findViewById(R.id.planTargetFragment_path_textView);
         TextView back = view.findViewById(R.id.planTargetFragment_back_textView);
         TextView exit = view.findViewById(R.id.planTargetFragment_exit_textView);
-        this.adapter = new PlanNodeAdapter(topTarget, context, path);
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.planTargetFragment_add_FAB);
+        this.adapter = new PlanNodeAdapter(topTarget, context, path, floatingActionButton);
         RecyclerView recyclerView = view.findViewById(R.id.planTargetFragment_list_recyclerView);
         recyclerView.setAdapter(adapter);
 

@@ -116,7 +116,7 @@ public class GoalListServer {
         view.findViewById(R.id.itemMainContent_container_relativeLayout).setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                View root = LayoutInflater.from(context).inflate(R.layout.plantarget_dialog_add_plannode, null);
+                View root = LayoutInflater.from(context).inflate(R.layout.plantarget_dialog_add_plan_node, null);
                 MaterialEditText nameEditText = root.findViewById(R.id.addPlanDialog_name_MaterialEditText);
                 EditText decoration = root.findViewById(R.id.addPlanDialog_decoration_editText);
                 EditText startDate = root.findViewById(R.id.addPlanDialog_startDate_editText);

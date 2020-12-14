@@ -211,4 +211,14 @@ public class PlanNode {
     public ForeignCollection<Task> getTasks() {
         return tasks;
     }
+
+    public int compareTo(PlanNode planNode) {
+        if (this.endTime.before(planNode.startTime)) {
+            return -1;
+        } else if (this.startTime.after(planNode.endTime)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }
