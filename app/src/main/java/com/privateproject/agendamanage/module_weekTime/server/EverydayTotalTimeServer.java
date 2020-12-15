@@ -9,6 +9,7 @@ import com.privateproject.agendamanage.db.dao.CourseDao;
 import com.privateproject.agendamanage.db.dao.DayTimeFragmentDao;
 import com.privateproject.agendamanage.utils.Time;
 import com.privateproject.agendamanage.utils.ToastUtil;
+import com.privateproject.agendamanage.utils.TimeUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +28,10 @@ import java.util.Map;
  * 2020-10-01:15min、2020-10-04:60min、2020-10-11:75min
  * 则Map中存有<0,15>、<3,60>、<10,75>*/
 public class EverydayTotalTimeServer {
+    public static final String KEY_EMERGENCY_START = "emergencyStartDate";
+    public static final String KEY_STUDY_TIME = "studyTime";
+    public static final String KEY_EMERGENCY_TIME = "emergencyTime";
+    public static final String FILENAME_PREFERENCE = "TimeServer";
 
     private Context context;
     private DayTimeFragmentDao dayTimeFragmentDao;
@@ -125,10 +130,10 @@ public class EverydayTotalTimeServer {
 
     // 设置应急时间量的比例,并保存到文件中
     public void setEmergency(int studyInt, int emergencyInt) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("TimeServer", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(FILENAME_PREFERENCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("studyTime", studyInt);
-        editor.putInt("emergencyTime", emergencyInt);
+        editor.putInt(KEY_STUDY_TIME, studyInt);
+        editor.putInt(KEY_EMERGENCY_TIME, emergencyInt);
         editor.commit();
     }
 
@@ -142,9 +147,9 @@ public class EverydayTotalTimeServer {
     * 则Map中存有<0,15>、<3,60>、<10,75>*/
     public Map<Integer, Integer> emergencyTime(Date dateStart, Date dateEnd) {
         // 获取存储在文件中 应急时间比例
-        SharedPreferences sharedPreferences = context.getSharedPreferences("TimeServer", Context.MODE_PRIVATE);
-        int emergencyTime = sharedPreferences.getInt("emergencyTime", -1);
-        int studyTime = sharedPreferences.getInt("studyTime", -1);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(FILENAME_PREFERENCE, Context.MODE_PRIVATE);
+        int emergencyTime = sharedPreferences.getInt(KEY_EMERGENCY_TIME, -1);
+        int studyTime = sharedPreferences.getInt(KEY_STUDY_TIME, -1);
         if (emergencyTime==-1 || studyTime==-1) {
             throw new RuntimeException("请先设置应急时间的比例");
         }
@@ -220,10 +225,9 @@ public class EverydayTotalTimeServer {
     }
 
     //返回剩余时间量的集合
-    public List<Integer> surplusTime(Date surplusStartDate, Date emergencyStartDate, Date surplusEndDate){
-
+    public List<Integer> surplusTime(Date surplusStartDate, Date surplusEndDate){
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date emergencyStartDate = getEmergencyStartDate();
             //获取应急时间Map
             Map<Integer,Integer> emergencyTimeMap  = emergencyTime(emergencyStartDate,surplusEndDate);
             //创建Map集合
@@ -261,6 +265,17 @@ public class EverydayTotalTimeServer {
         return null;
     }
 
+    public void setEmergencyStartDate(Date emergencyStartDate) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(FILENAME_PREFERENCE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_EMERGENCY_START, TimeUtil.getDate(emergencyStartDate));
+        editor.commit();
+    }
+
+    public Date getEmergencyStartDate() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(FILENAME_PREFERENCE, Context.MODE_PRIVATE);
+        return TimeUtil.getDate(sharedPreferences.getString(KEY_EMERGENCY_START, null));
+    }
 
     /**
      * date2比date1多的天数
@@ -312,6 +327,7 @@ public class EverydayTotalTimeServer {
         }
         return dayForWeek;
     }
+
 
 
 }

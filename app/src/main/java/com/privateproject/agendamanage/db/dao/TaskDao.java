@@ -3,9 +3,12 @@ package com.privateproject.agendamanage.db.dao;
 import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.privateproject.agendamanage.db.bean.Course;
 import com.privateproject.agendamanage.db.bean.Task;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 public class TaskDao {
@@ -83,6 +86,18 @@ public class TaskDao {
         List<Task> tasks = null;
         try {
             tasks = dao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tasks;
+    }
+    // 查询数据库中的所有记录，没有查询到时返回null
+    public List<Task> selectDay(Date date) {
+        List<Task> tasks = null;
+        QueryBuilder<Task, Integer> queryBuilder = dao.queryBuilder();
+        try {
+            queryBuilder.where().eq("day", date);
+            tasks = queryBuilder.query();
         } catch (SQLException e) {
             e.printStackTrace();
         }

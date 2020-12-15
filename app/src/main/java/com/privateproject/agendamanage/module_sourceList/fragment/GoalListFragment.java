@@ -98,6 +98,7 @@ public class GoalListFragment extends Fragment {
                                     int emergencyInt = Integer.parseInt(emergencyStr);
                                     everydayTotalTimeServer.setEmergency(studyInt*60, emergencyInt*60);
                                 }
+                                builder.dismiss();
                             }
                         }).show();
             }

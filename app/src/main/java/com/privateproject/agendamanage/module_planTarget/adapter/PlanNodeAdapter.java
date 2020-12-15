@@ -27,6 +27,7 @@ import com.privateproject.agendamanage.utils.TimeUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +38,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
     private String path;
     private TextView pathShow;
     private FloatingActionButton floatingActionButton;
+    private SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
 
     private Context context;
     private Target topParent;
@@ -55,7 +57,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
         this.topParent = topParent;
         if (topParent.getPlanNodes()!=null) {
             this.planNodes = new ArrayList<>(topParent.getPlanNodes());
-            sortPlanNodeList();
+            this.planNodes = this.dao.sortPlanNodeList(this.planNodes);
         }
         this.context = context;
         this.dao = new PlanNodeDao(context);
@@ -84,8 +86,8 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
         PlanNode tmp = this.planNodes.get(position);
         dao.initPlanNode(tmp);
         holder.title.setText(tmp.getName());
-        holder.startTime.setText(TimeUtil.getDate(tmp.getStartTime()));
-        holder.endTime.setText(TimeUtil.getDate(tmp.getEndTime()));
+        holder.startTime.setText(sdf.format(tmp.getStartTime()));
+        holder.endTime.setText(sdf.format(tmp.getEndTime()));
         holder.duringDay.setText(tmp.getDuringDay()+"");
 
         if (tmp.isHasChildren()) {
@@ -106,7 +108,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
                     parent = planNodes.get(position);
                     dao.initPlanNode(parent);
                     planNodes = parent.getChildren();
-                    sortPlanNodeList();
+                    planNodes = dao.sortPlanNodeList(planNodes);
                     notifyDataSetChanged();
                 }
             });
@@ -300,7 +302,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
             this.parent = this.stack.pop();
             this.planNodes = this.parent.getChildren();
         }
-        sortPlanNodeList();
+        this.planNodes = this.dao.sortPlanNodeList(this.planNodes);
         notifyDataSetChanged();
     }
 
@@ -312,7 +314,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
             this.parent = this.dao.selectById(this.parent.getId());
             this.planNodes = this.parent.getChildren();
         }
-        sortPlanNodeList();
+        this.planNodes = this.dao.sortPlanNodeList(this.planNodes);
         notifyDataSetChanged();
     }
 
@@ -358,46 +360,5 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
         dao.deletePlanNodeById(planNode.getId());
     }
 
-    // 对 this.planNodes 进行按照日期进行归并排序
-    private void sortPlanNodeList() {
-        if (this.planNodes.size()!=1) {
-            List<PlanNode> tmpPlanNodes = new ArrayList<PlanNode>(this.planNodes);
-            int n = 1;
-            while (n<this.planNodes.size()) {
-                mergePass(this.planNodes, tmpPlanNodes, n);
-                n*=2;
-                if (n<this.planNodes.size()) {
-                    mergePass(tmpPlanNodes, this.planNodes, n);
-                    n*=2;
-                } else {
-                    this.planNodes = tmpPlanNodes;
-                }
-            }
-        }
-    }
 
-    // 归并排序：一趟归并
-    private void mergePass(List<PlanNode> x, List<PlanNode> y, int n) {
-        for (int i = 0; i < x.size(); i+=2*n) {
-            merge(x, y, i, i+n, n);
-        }
-    }
-
-    // 归并排序：一次归并
-    private void merge(List<PlanNode> x, List<PlanNode> y, int begin1, int begin2, int n) {
-        int i=begin1, j=begin2, k=begin1;
-        while (i<begin1+n && j<begin2+n && j<x.size()) {
-            if (x.get(i).compareTo(x.get(j))==-1) {
-                y.set(k++, x.get(i++));
-            } else {
-                y.set(k++, x.get(j++));
-            }
-        }
-        while (i<begin1+n && i<x.size()) {
-            y.set(k++, x.get(i++));
-        }
-        while (j<begin2+n && j<x.size()) {
-            y.set(k++, x.get(j++));
-        }
-    }
 }

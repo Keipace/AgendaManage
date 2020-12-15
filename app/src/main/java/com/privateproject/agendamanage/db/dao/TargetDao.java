@@ -7,6 +7,7 @@ import com.privateproject.agendamanage.db.bean.PlanNode;
 import com.privateproject.agendamanage.db.bean.Target;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TargetDao {
@@ -90,5 +91,28 @@ public class TargetDao {
         return targets;
     }
 
+    // 利用 深度优先遍历 获取叶节点，返回的PlanNode是按照时间顺序排列的
+    public List<PlanNode> selectLastPlanNode(Target target, Context context) {
+        if (target.getPlanNodes()==null || target.getPlanNodes().size()==0) {
+            return null;
+        }
+        PlanNodeDao planNodeDao = new PlanNodeDao(context);
+        List<PlanNode> firstLevel = new ArrayList<>(target.getPlanNodes());
+        List<PlanNode> saved = new ArrayList<PlanNode>();
+        dfsOfSelectLast(firstLevel, saved, planNodeDao);
+        return saved;
+    }
+
+    private void dfsOfSelectLast(List<PlanNode> parents, List<PlanNode> saved, PlanNodeDao planNodeDao) {
+        parents = PlanNodeDao.sortPlanNodeList(parents);
+        for (int i = 0; i < parents.size(); i++) {
+            parents.set(i, planNodeDao.initPlanNode(parents.get(i)));
+            if (parents.get(i).isHasChildren()) {
+                dfsOfSelectLast(parents.get(i).getChildren(), saved, planNodeDao);
+            } else {
+                saved.add(parents.get(i));
+            }
+        }
+    }
 
 }

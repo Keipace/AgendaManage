@@ -24,7 +24,7 @@ public class Task {
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private PlanNode parent;
 
-    private Task() {
+    public Task() {
         super();
     }
 

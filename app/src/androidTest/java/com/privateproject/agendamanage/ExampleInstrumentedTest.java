@@ -31,20 +31,10 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.privateproject.agendamanage", appContext.getPackageName());
-        DayTimeFragmentDao dayTimeFragmentDao = new DayTimeFragmentDao(appContext);
-        CourseDao courseDao = new CourseDao(appContext);
 
         TargetDao targetDao = new TargetDao(appContext);
-        Target target = new Target("测试");
-        targetDao.addTarget(target);
-
-        PlanNodeDao planNodeDao = new PlanNodeDao(appContext);
-        PlanNode planNode = new PlanNode("计划1", "2020-12-4", "2020-12-5", target);
-        planNodeDao.addPlanNode(planNode);
-        planNodeDao.addChild(planNode, new PlanNode("子计划1", "2020-12-4", "2020-12-4"));
-        planNodeDao.updatePlanNode(planNode);
-
-        List<PlanNode> planNodes = planNodeDao.selectAll();
-        target = targetDao.selectById(target.getId());
+        Target target = targetDao.selectAll().get(0);
+        List<PlanNode> tmp = targetDao.selectLastPlanNode(target, appContext);
+        System.out.println(tmp.size());
     }
 }

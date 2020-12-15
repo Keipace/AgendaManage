@@ -61,7 +61,7 @@ public class TimeLineChartActivity extends AppCompatActivity {
                     Date surplusStartDate = simpleDateFormat.parse(startDate.getText().toString());
                     Date surplusEndDate = simpleDateFormat.parse(endDate.getText().toString());
                     Date emergencyStartDate = simpleDateFormat.parse(emergencyDate.getText().toString());
-                    List<Integer> surplusTimeList = everydayTotalTimeServer.surplusTime(surplusStartDate,emergencyStartDate,surplusEndDate);
+                    List<Integer> surplusTimeList = everydayTotalTimeServer.surplusTime(surplusStartDate,surplusEndDate);
                     List<Date> dateList = everydayTotalTimeServer.dateList(surplusStartDate,surplusEndDate);
                     //判断map集合是否为空
                     if (surplusTimeList == null||surplusTimeList.equals("")){
@@ -88,7 +88,7 @@ public class TimeLineChartActivity extends AppCompatActivity {
                     Date surplusStartDate = simpleDateFormat.parse(startDate.getText().toString());
                     Date surplusEndDate = simpleDateFormat.parse(endDate.getText().toString());
                     Date emergencyStartDate = simpleDateFormat.parse(emergencyDate.getText().toString());
-                    List<Integer> surplusTimeList = everydayTotalTimeServer.surplusTime(surplusStartDate,emergencyStartDate,surplusEndDate);
+                    List<Integer> surplusTimeList = everydayTotalTimeServer.surplusTime(surplusStartDate,surplusEndDate);
                     List<Date> dateList = everydayTotalTimeServer.dateList(surplusStartDate,surplusEndDate);
                     //判断map集合是否为空
                     if (surplusTimeList == null||surplusTimeList.equals("")){
@@ -98,7 +98,7 @@ public class TimeLineChartActivity extends AppCompatActivity {
                         Map<Integer,String> x = new HashMap<Integer, String>();
                         //y轴Map集合
                         Map<Integer,Integer> y = new HashMap<Integer, Integer>();
-                        List<String> dateStrList = formatteDate(dateList);
+                        List<String> dateStrList = formatDate(dateList);
                         //填充x轴数据
                         for (int i = 0; i < dateList.size(); i++) {
                             x.put(i,dateStrList.get(i));
@@ -121,7 +121,7 @@ public class TimeLineChartActivity extends AppCompatActivity {
 
     }
 
-    public List<String> formatteDate(List<Date> dateList){
+    public List<String> formatDate(List<Date> dateList){
         SimpleDateFormat format = new SimpleDateFormat("MM-dd");
         List<String> dateStrList = new ArrayList<String>();
         for (int i = 0; i < dateList.size(); i++) {
