@@ -112,48 +112,6 @@ public class GoalListServer {
                 context.startActivity(intent);
             }
         });
-        // 长按时添加第一层计划节点
-        view.findViewById(R.id.itemMainContent_container_relativeLayout).setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                View root = LayoutInflater.from(context).inflate(R.layout.plantarget_dialog_add_plan_node, null);
-                MaterialEditText nameEditText = root.findViewById(R.id.addPlanDialog_name_MaterialEditText);
-                EditText decoration = root.findViewById(R.id.addPlanDialog_decoration_editText);
-                EditText startDate = root.findViewById(R.id.addPlanDialog_startDate_editText);
-                EditText endDate = root.findViewById(R.id.addPlanDialog_endDate_editText);
-                Switch setTimeNeeded = root.findViewById(R.id.addPlanDialog_setTimeNeeded_switch);
-                setTimeNeeded.setVisibility(View.GONE);
-                TimeUtil.setDateStartToEnd(context, startDate, endDate, true);
-                AlertDialog dialog = new AlertDialog.Builder(context).setTitle("添加计划")
-                        .setView(root)
-                        .setPositiveButton("确定", null)
-                        .setNegativeButton("取消", null).create();
-                dialog.show();
-                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String decor = decoration.getText().toString();
-                        if (nameEditText.getText().toString().equals("") ||
-                            startDate.getText().toString().equals("") ||
-                            endDate.getText().toString().equals("")) {
-                            ToastUtil.newToast(context, "请输入完整信息！");
-                            return;
-                        }
-                        if (decor.equals("")) {
-                            decor = PlanNode.DEFAULT_DECORATION;
-                        }
-                        PlanNode planNode = new PlanNode(nameEditText.getText().toString(), decor,
-                                startDate.getText().toString(),
-                                endDate.getText().toString(),
-                                targets.get(position));
-                        planNodeDao.addPlanNode(planNode);
-                        targets = targetDao.selectAll();
-                        dialog.dismiss();
-                    }
-                });
-                return true;
-            }
-        });
     }
 
     // 从数据库和list中删除指定的target
