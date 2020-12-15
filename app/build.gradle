@@ -66,4 +66,6 @@ dependencies {
 
     //菜单按钮
     implementation 'com.getbase:floatingactionbutton:1.10.1'
+    //气泡对话框
+    compile 'com.github.xujiaji:happy-bubble:1.1.4'
 }

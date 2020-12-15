@@ -3,6 +3,7 @@ package com.privateproject.agendamanage.db.dao;
 import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
+import com.privateproject.agendamanage.db.bean.PlanNode;
 import com.privateproject.agendamanage.db.bean.Target;
 
 import java.sql.SQLException;
@@ -88,5 +89,6 @@ public class TargetDao {
         }
         return targets;
     }
+
 
 }

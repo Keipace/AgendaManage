@@ -260,7 +260,11 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
                     dao.addChild(parent, planNode);
                 }
 
-                // 5.刷新列表和页面
+                // 5.修改target的stateSave属性,并保存到数据库
+                topParent.setStateSave(false);
+                targetDao.updateTarget(topParent);
+
+               // 6.刷新列表和页面
                 refreshList();
                 dialog.dismiss();
             }

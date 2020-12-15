@@ -66,6 +66,8 @@ public class Target {
     private int importance;
     @DatabaseField(columnName = "time_predo")
     private Date timePreDo;
+    @DatabaseField
+    private boolean stateSave = true;
 
     @ForeignCollectionField(eager = false)
     private ForeignCollection<PlanNode> planNodes;
@@ -153,6 +155,13 @@ public class Target {
 
     public void setTimeRealOver(Date timeRealOver) {
         this.timeRealOver = timeRealOver;
+    }
+
+    public void setStateSave(boolean stateSave) {
+        this.stateSave = stateSave;
+    }
+    public boolean isStateSave() {
+        return stateSave;
     }
 
     public String getImportance() {

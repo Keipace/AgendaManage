@@ -8,6 +8,7 @@ import com.privateproject.agendamanage.db.bean.DayTimeFragment;
 import com.privateproject.agendamanage.db.dao.CourseDao;
 import com.privateproject.agendamanage.db.dao.DayTimeFragmentDao;
 import com.privateproject.agendamanage.utils.Time;
+import com.privateproject.agendamanage.utils.ToastUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -233,6 +234,10 @@ public class EverydayTotalTimeServer {
             int thisday = dayForWeek(surplusStartDate);
             //获得总时间量
             List<Integer> totalTime = totalTime();
+            if (totalTime == null||totalTime.size() == 0){
+                ToastUtil.newToast(context,"还未设置时间段，请先去设置时间段！");
+                return null;
+            }
             //为剩余时间Map集合传值（未减去应急时间）
             for (int i = 0; i <dateList.size() ; i++) {
                 surplusTimeList.add(totalTime.get(thisday-1));
