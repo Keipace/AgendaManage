@@ -28,6 +28,7 @@ import com.privateproject.agendamanage.utils.ToastUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 
@@ -206,7 +207,39 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
                     time = Integer.parseInt(timeNeed.getText().toString());
                 }
 
-                // 2.创建相应状态的planNode并修改父节点
+                // 2.判断设置的开始日期和结束日期是否和已有的兄弟节点冲突
+                Date start = TimeUtil.getDate(startDateString);
+                Date end = TimeUtil.getDate(endDateString);
+                int i;
+                for (i = 0; i < planNodes.size(); i++) {
+                    if (start.before(planNodes.get(i).getEndTime())) {
+                        if (end.before(planNodes.get(i).getStartTime())) {
+                            break;
+                        } else {
+                            ToastUtil.newToast(context, "选择的时间段与已有的时间段冲突！");
+                            return;
+                        }
+                    }
+                }
+
+                // 3.判断设置的开始日期和结束日期是否超出父亲节点的范围（第一层添加时不用考虑）
+                if (parent!=null) {
+                    if (i==0) {
+                        // 如果插入的节点是第一个节点，则第一个节点的开始日期不能超出父亲节点的开始日期
+                        if (start.before(parent.getStartTime())) {
+                            ToastUtil.newToast(context, "开始日期超出了上层计划的开始日期:"+TimeUtil.getDate(parent.getStartTime()));
+                            return;
+                        }
+                    } else if (i==planNodes.size()) {
+                        // 如果插入的节点是最后一个节点，则最后一个节点的结束日期不能超出父亲节点的结束日期
+                        if (end.after(parent.getEndTime())) {
+                            ToastUtil.newToast(context, "结束日期超出了上层计划的结束日期:"+TimeUtil.getDate(parent.getEndTime()));
+                            return;
+                        }
+                    }
+                }
+
+                // 4.创建相应状态的planNode并修改父节点
                 PlanNode planNode;
                 // 用户设置的是所需时间量
                 if (parent==null) {
@@ -227,7 +260,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
                     dao.addChild(parent, planNode);
                 }
 
-                //3.刷新列表和页面
+                // 5.刷新列表和页面
                 refreshList();
                 dialog.dismiss();
             }

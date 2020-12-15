@@ -88,12 +88,12 @@ public class TimeUtil {
                         if (isStart && !startEditText.getText().toString().equals("")) {
                             String[] tmp = startEditText.getText().toString().split("-");
                             calendar.set(Integer.parseInt(tmp[0]),
-                                    Integer.parseInt(tmp[1]),
+                                    Integer.parseInt(tmp[1])-1,
                                     Integer.parseInt(tmp[2]));
                         } else if (!isStart && !endEditText.getText().toString().equals("")){
                             String[] tmp = endEditText.getText().toString().split("-");
                             calendar.set(Integer.parseInt(tmp[0]),
-                                    Integer.parseInt(tmp[1]),
+                                    Integer.parseInt(tmp[1])-1,
                                     Integer.parseInt(tmp[2]));
                         }
                     }
