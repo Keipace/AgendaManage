@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5"
+    android:orientation="vertical">
+
+
+    <TextView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/tv_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="15dp" />
+
+    <com.github.rubensousa.raiflatbutton.RaiflatButton
+        android:id="@+id/jumpBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/bg_raiflat_button"
+        android:text="跳转日期"
+        app:layout_constraintBottom_toTopOf="@+id/weekbar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <com.github.rubensousa.raiflatbutton.RaiflatButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/jumpTodayBtn"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bg_calendar_today_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="20dp"
+        android:text="今"
+        android:textSize="30sp"
+        android:textColor="@color/colorPrimary"
+        />
+
+
+    <com.necer.view.WeekBar
+        android:id="@+id/weekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorWhite"
+        android:textColor="#666666"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_result" />
+
+    <com.necer.calendar.Miui10Calendar
+        android:id="@+id/viewScheduleFragment_Calendar"
+        app:layout_constraintTop_toBottomOf="@id/weekbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:showNumberBackground="true"
+        app:solarTextBold="true">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:src="@drawable/down"
+                android:scaleType="centerInside"
+                android:id="@+id/viewScheduleFragment_foldBtn"/>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorGray">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/calendar_recycleView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    />
+
+            </androidx.core.widget.NestedScrollView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </com.necer.calendar.Miui10Calendar>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

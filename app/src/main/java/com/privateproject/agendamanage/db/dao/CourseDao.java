@@ -102,4 +102,17 @@ public class CourseDao {
         return result;
     }
 
+    // 查询数据库中的所有记录，没有查询到时返回null
+    public List<Course> selectByWeekDay(int col) {
+        List<Course> result = null;
+        QueryBuilder<Course, Integer> queryBuilder = dao.queryBuilder();
+        try {
+            queryBuilder.where().eq("col", col);
+            result = queryBuilder.query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }
