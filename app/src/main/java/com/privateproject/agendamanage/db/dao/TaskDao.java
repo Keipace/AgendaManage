@@ -103,4 +103,16 @@ public class TaskDao {
         }
         return tasks;
     }
+
+    public List<Task> selectDuringDay(Date start, Date end) {
+        List<Task> tasks = null;
+        QueryBuilder<Task, Integer> queryBuilder = dao.queryBuilder();
+        try {
+            queryBuilder.where().between("day", start, end);
+            tasks = queryBuilder.query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tasks;
+    }
 }

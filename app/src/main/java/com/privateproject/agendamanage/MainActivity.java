@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     //其他页面
     private FragmentTest fragmentTest;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // 初始化页面
@@ -84,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         pageXml.mianActivityQingdanBtn.transitionToStart();
                         pageXml.mianActivityRichengBtn.transitionToStart();
                         pageXml.mianActivityTongjiBtn.transitionToStart();
+                        selectTab(3);
                         break;
                 }
             }
@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case 2: //显示其他选项卡
+            case 3:
                 if (fragmentTest == null) { //第一次显示第二个选项卡
                     fragmentTest = new FragmentTest();
                     transaction.add(R.id.mianActivity_container_contrainlayout, fragmentTest).commitAllowingStateLoss();

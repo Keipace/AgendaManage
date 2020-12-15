@@ -155,7 +155,7 @@ public class GoalListServer {
                             EverydayTotalTimeServer everydayTotalTimeServer = new EverydayTotalTimeServer(context);
                             for (int i = 0; i < lastPlanNodeList.size(); i++) {
                                 //调用surplusTime（开始日期，应急时间开始日期，结束日期）获得此PlanNode所在日期的 每 日 剩 余 时 间 量
-                                List<Integer> surplusTimeList = everydayTotalTimeServer.surplusTime(lastPlanNodeList.get(i).getStartTime(),lastPlanNodeList.get(i).getStartTime(),lastPlanNodeList.get(i).getEndTime());
+                                List<Integer> surplusTimeList = everydayTotalTimeServer.surplusTime(lastPlanNodeList.get(i).getStartTime(), lastPlanNodeList.get(i).getEndTime());
                                 if (surplusTimeList == null||surplusTimeList.size() == 0){
                                     ToastUtil.newToast(context,"还未设置时间段，请先去设置时间段！");
                                     return;

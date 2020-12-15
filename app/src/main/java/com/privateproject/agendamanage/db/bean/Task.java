@@ -18,13 +18,13 @@ public class Task {
     private String plan;//描述
     @DatabaseField(canBeNull = false)
     private Date day;//所在日期
-    @DatabaseField(foreign = true,canBeNull = false)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private DayTimeFragment timeFragment;//所在时间段
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private PlanNode parent;
 
-    public Task() {
+    private Task() {
         super();
     }
 

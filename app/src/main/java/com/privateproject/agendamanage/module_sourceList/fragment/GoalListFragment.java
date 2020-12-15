@@ -1,5 +1,7 @@
 package com.privateproject.agendamanage.module_sourceList.fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,7 @@ import com.privateproject.agendamanage.module_weekTime.server.EverydayTotalTimeS
 import com.privateproject.agendamanage.module_sourceList.server.GoalListServer;
 import com.privateproject.agendamanage.utils.ComponentUtil;
 import com.privateproject.agendamanage.utils.StringUtils;
+import com.privateproject.agendamanage.utils.TimeUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
 
 public class GoalListFragment extends Fragment {
@@ -75,6 +78,21 @@ public class GoalListFragment extends Fragment {
                 WeektimeFragmentGoalListEmergencyBinding dialogBinding = WeektimeFragmentGoalListEmergencyBinding.inflate(getLayoutInflater());
                 StringUtils.setMoveSPaceListener(dialogBinding.emergencyStudyTimeEt);
                 StringUtils.setMoveSPaceListener(dialogBinding.emergencyEmergencyEt);
+                ComponentUtil.EditTextEnable(false, dialogBinding.emergencyStartDateEt);
+                TimeUtil.setOnDateTouchListener(getContext(), dialogBinding.emergencyStartDateEt, true);
+
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EverydayTotalTimeServer.FILENAME_PREFERENCE, Context.MODE_PRIVATE);
+                int setStudyTime = sharedPreferences.getInt(EverydayTotalTimeServer.KEY_STUDY_TIME, -1);
+                int setEmergencyTime = sharedPreferences.getInt(EverydayTotalTimeServer.KEY_EMERGENCY_TIME, -1);
+                String setEmergencyStart = sharedPreferences.getString(EverydayTotalTimeServer.KEY_EMERGENCY_START, null);
+                if (setStudyTime!=-1 && setEmergencyTime!=-1) {
+                    dialogBinding.emergencyStudyTimeEt.setText(setStudyTime/60+"");
+                    dialogBinding.emergencyEmergencyEt.setText(setEmergencyTime/60+"");
+                }
+                if (setEmergencyStart!=null) {
+                    dialogBinding.emergencyStartDateEt.setText(setEmergencyStart);
+                }
+
                 CenterDialog builder = new CenterDialog(getContext(),R.style.BottomDialog,"Bottom");
                 builder.setTitle("应急时间量").setView(dialogBinding.getRoot())
                         .setCancelBtn("x", new CenterDialog.IOnCancelListener() {
@@ -89,14 +107,15 @@ public class GoalListFragment extends Fragment {
                                 ComponentUtil.requestFocus(dialogBinding.getRoot());
                                 String studyStr = dialogBinding.emergencyStudyTimeEt.getText().toString();
                                 String emergencyStr = dialogBinding.emergencyEmergencyEt.getText().toString();
-
-                                if(studyStr.equals("") || emergencyStr.equals("")){
+                                String emergencyStartStr = dialogBinding.emergencyStartDateEt.getText().toString();
+                                if(studyStr.equals("") || emergencyStr.equals("") || emergencyStartStr.equals("")){
                                     ToastUtil.newToast(getContext(),"请您填完整信息哦！！！");
                                 }else {
                                     EverydayTotalTimeServer everydayTotalTimeServer = new EverydayTotalTimeServer(getContext());
                                     int studyInt = Integer.parseInt(studyStr);
                                     int emergencyInt = Integer.parseInt(emergencyStr);
                                     everydayTotalTimeServer.setEmergency(studyInt*60, emergencyInt*60);
+                                    everydayTotalTimeServer.setEmergencyStartDate(emergencyStartStr);
                                 }
                                 builder.dismiss();
                             }
