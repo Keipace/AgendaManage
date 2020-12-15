@@ -57,7 +57,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
         this.topParent = topParent;
         if (topParent.getPlanNodes()!=null) {
             this.planNodes = new ArrayList<>(topParent.getPlanNodes());
-            this.dao.sortPlanNodeList(this.planNodes);
+            this.planNodes = this.dao.sortPlanNodeList(this.planNodes);
         }
         this.context = context;
         this.dao = new PlanNodeDao(context);
@@ -108,7 +108,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
                     parent = planNodes.get(position);
                     dao.initPlanNode(parent);
                     planNodes = parent.getChildren();
-                    dao.sortPlanNodeList(planNodes);
+                    planNodes = dao.sortPlanNodeList(planNodes);
                     notifyDataSetChanged();
                 }
             });
@@ -298,7 +298,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
             this.parent = this.stack.pop();
             this.planNodes = this.parent.getChildren();
         }
-        this.dao.sortPlanNodeList(this.planNodes);
+        this.planNodes = this.dao.sortPlanNodeList(this.planNodes);
         notifyDataSetChanged();
     }
 
@@ -310,7 +310,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
             this.parent = this.dao.selectById(this.parent.getId());
             this.planNodes = this.parent.getChildren();
         }
-        this.dao.sortPlanNodeList(this.planNodes);
+        this.planNodes = this.dao.sortPlanNodeList(this.planNodes);
         notifyDataSetChanged();
     }
 

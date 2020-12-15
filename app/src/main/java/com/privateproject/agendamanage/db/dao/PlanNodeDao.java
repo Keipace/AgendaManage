@@ -166,7 +166,7 @@ public class PlanNodeDao {
     }
 
     // 对 planNodes 进行按照日期进行归并排序
-    public static void sortPlanNodeList(List<PlanNode> planNodes) {
+    public static List<PlanNode> sortPlanNodeList(List<PlanNode> planNodes) {
         if (planNodes.size()!=1) {
             List<PlanNode> tmpPlanNodes = new ArrayList<PlanNode>(planNodes);
             int n = 1;
@@ -181,6 +181,7 @@ public class PlanNodeDao {
                 }
             }
         }
+        return planNodes;
     }
 
     // 归并排序：一趟归并
