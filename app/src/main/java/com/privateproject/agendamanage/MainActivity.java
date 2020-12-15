@@ -14,6 +14,7 @@ import com.privateproject.agendamanage.module_sourceList.fragment.FragmentTest;
 import com.privateproject.agendamanage.module_sourceList.fragment.GoalListFragment;
 import com.privateproject.agendamanage.module_planTarget.fragment.PlanTargetFragment;
 import com.privateproject.agendamanage.module_sourceList.server.GoalListServer;
+import com.privateproject.agendamanage.module_viewSchedule.fragment.ViewScheduleFragment;
 
 public class MainActivity extends AppCompatActivity {
     private MainBinding pageXml;
@@ -21,8 +22,13 @@ public class MainActivity extends AppCompatActivity {
     // 第一个页面
     private GoalListFragment goalListFragment;
     private PlanTargetFragment planTargetFragment;
+
     // 第二个页面
+    private ViewScheduleFragment viewScheduleFragment;
+
+    //其他页面
     private FragmentTest fragmentTest;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                         pageXml.mianActivityQingdanBtn.transitionToStart();
                         pageXml.mianActivityRichengBtn.transitionToStart();
                         pageXml.mianActivityMeBtn.transitionToStart();
+                        selectTab(2);
                         break;
                     case R.id.mianActivity_me_btn:
                         //我 页面
@@ -127,6 +134,14 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case 1: //显示第二个选项卡
+                if (viewScheduleFragment == null) { //第一次显示第二个选项卡
+                    viewScheduleFragment = new ViewScheduleFragment();
+                    transaction.add(R.id.mianActivity_container_contrainlayout, viewScheduleFragment).commitAllowingStateLoss();
+                } else { //返回第二个选项卡
+                    transaction.show(viewScheduleFragment).commitAllowingStateLoss();
+                }
+                break;
+            case 2: //显示其他选项卡
                 if (fragmentTest == null) { //第一次显示第二个选项卡
                     fragmentTest = new FragmentTest();
                     transaction.add(R.id.mianActivity_container_contrainlayout, fragmentTest).commitAllowingStateLoss();
@@ -147,6 +162,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if (planTargetFragment != null) {
             transaction.hide(planTargetFragment);
+        }
+        if (viewScheduleFragment != null) {
+            transaction.hide(viewScheduleFragment);
         }
     }
 
