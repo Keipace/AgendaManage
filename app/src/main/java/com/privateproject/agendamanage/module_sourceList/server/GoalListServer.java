@@ -163,7 +163,7 @@ public class GoalListServer {
                                 //每日剩余时间量相加
                                 int allSurplusTime = 0;
                                 for (int j = 0; j < surplusTimeList.size(); j++) {
-                                    allSurplusTime = allSurplusTime + surplusTimeList.get(i);
+                                    allSurplusTime = allSurplusTime + surplusTimeList.get(j);
                                 }
                                 if (allSurplusTime <= lastPlanNodeList.get(i).getTimeNeeded()){
                                     savePlanNodeDialog();
@@ -171,6 +171,14 @@ public class GoalListServer {
                                 }
                             }
                             ToastUtil.newToast(context,"保存成功");
+                            /*获得末节点的时间和
+                              1.初始化target的timeNeed属性
+                              2.填充target的timeNeed属性
+                             */
+                            targets.get(position).setTimeNeed(0);
+                            for (int i = 0; i < lastPlanNodeList.size(); i++) {
+                                targets.get(position).setTimeNeed(targets.get(position).getTimeNeed()+lastPlanNodeList.get(i).getTimeNeeded());
+                            }
                             //提示图标消失
                             warningImageView.setVisibility(View.GONE);
                             //stateSave属性设为true，并修改数据库

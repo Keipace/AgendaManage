@@ -11,6 +11,8 @@ import com.privateproject.agendamanage.db.bean.DayTarget;
 import com.privateproject.agendamanage.db.bean.Target;
 import com.privateproject.agendamanage.db.dao.DayTargetDao;
 import com.privateproject.agendamanage.db.dao.TargetDao;
+import com.privateproject.agendamanage.utils.ComponentUtil;
+import com.privateproject.agendamanage.utils.TimeUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
 
 import java.text.SimpleDateFormat;
@@ -106,7 +108,8 @@ public class InfoPageServer {
         }
     }
 
-
+    //设置 编译/返回 按钮 的识别变量
+    private boolean save = false;
 
     public void setTargetInfoPageContent(int id) {
         // 根据id查询数据库
@@ -122,13 +125,36 @@ public class InfoPageServer {
             }
         });
 
-        // 设置 编辑 按钮的监听器
-        targetPageBinding.targetInfoEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtil.newToast(targetContext,"编辑");
-            }
-        });
+        if (this.save){
+            //改变常量属性值
+            this.save = false;
+            //设置 保存 按钮监听器
+            targetPageBinding.targetInfoEditButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //组件不可以被点击
+                    ischecked(false);
+                    targetPageBinding.targetInfoEditButton.setImageResource(R.drawable.edit);
+                }
+            });
+        }else {
+            //改变常量属性值
+            this.save = true;
+            // 设置 编辑 按钮的监听器
+            targetPageBinding.targetInfoEditButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //组件可以被点击
+                    ischecked(true);
+                    //为日期选择组件设置监听器
+                    TimeUtil.setDateStartToEnd(targetContext, targetPageBinding.targetInfoTimePreDoEditText, targetPageBinding.targetInfoTimePlanOverEditText, true);
+                    TimeUtil.setDateStartToEnd(targetContext, targetPageBinding.targetInfoTimePlanOverEditText, targetPageBinding.targetInfoTimeDeadLineEditView, true);
+                    ToastUtil.newToast(targetContext,"编辑");
+                    targetPageBinding.targetInfoEditButton.setImageResource(R.drawable.target_info_save);
+
+                }
+            });
+        }
     }
 
     //显示出target的信息（用作还未存到数据库时）
@@ -180,6 +206,12 @@ public class InfoPageServer {
             default:
                 return;
         }
+    }
+
+    public void ischecked(boolean ischecked){
+        ComponentUtil.EditTextEnable(ischecked, targetPageBinding.targetInfoTimePreDoEditText);
+        ComponentUtil.EditTextEnable(ischecked, targetPageBinding.targetInfoTimePlanOverEditText);
+        ComponentUtil.EditTextEnable(ischecked, targetPageBinding.targetInfoTimeDeadLineEditView);
     }
 
 }
