@@ -216,5 +216,14 @@ public class TimeUtil {
         return sdf.format(date);
     }
 
+    // 在当前日期的基础上偏移n天（正数表示未来的几天，负数表示过去的几天）
+    public static Date getOffCurrentDate(int n) {
+        Date today = new Date();//获取今天的日期
+        Calendar c = Calendar.getInstance();
+        c.setTime(today);
+        c.add(Calendar.DAY_OF_MONTH, n);
+        Date result= c.getTime();//这是明天
+        return result;
+    }
 
 }
