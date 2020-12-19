@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/swipeLayout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+        <!-- Bottom View Start-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="#fff"
+            android:id="@+id/bottom_wrapper"
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/viewSchedule_itemShowTask_delete_imageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/delete"
+                android:background="#ff0000"
+                android:scaleType="fitXY"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/viewSchedule_itemShowTask_edit_imageView"/>
+            <ImageView
+                android:id="@+id/viewSchedule_itemShowTask_edit_imageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/edit"
+                android:background="#ffa500"
+                android:scaleType="fitXY"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/viewSchedule_itemShowTask_delete_imageView"
+                app:layout_constraintRight_toRightOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Bottom View End-->
+
+        <!-- Surface View Start -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:padding="5dp"
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <!--What you want to show in SurfaceView-->
+            <TextView
+                android:id="@+id/viewSchedule_itemShowTask_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="预习高数第一章第一节"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@id/viewSchedule_itemShowTask_decoration_tv"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/viewSchedule_itemShowTask_decoration_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:maxEms="15"
+                android:maxLines="1"
+                android:text="预习的时候要注意总结并做错题顶顶顶顶"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewSchedule_itemShowTask_name_tv" />
+
+            <TextView
+                android:id="@+id/viewSchedule_itemShowTask_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="(2020-10-11)"
+                android:textSize="12dp"
+                app:layout_constraintBottom_toBottomOf="@id/viewSchedule_itemShowTask_name_tv"
+                app:layout_constraintLeft_toRightOf="@id/viewSchedule_itemShowTask_name_tv"
+                app:layout_constraintTop_toTopOf="@id/viewSchedule_itemShowTask_name_tv" />
+
+            <TextView
+                android:id="@+id/viewSchedule_itemShowTask_timeNeed_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="300"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toTopOf="@id/viewSchedule_itemShowTask_dayFragment_tv"
+                app:layout_constraintRight_toLeftOf="@id/viewSchedule_itemShowTask_minute_tv"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/viewSchedule_itemShowTask_dayFragment_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(20:00-21:00)"
+                app:layout_constraintTop_toBottomOf="@id/viewSchedule_itemShowTask_timeNeed_tv"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@id/viewSchedule_itemShowTask_timeNeed_tv"
+                app:layout_constraintRight_toRightOf="@id/viewSchedule_itemShowTask_minute_tv"/>
+
+            <TextView
+                android:id="@+id/viewSchedule_itemShowTask_minute_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="分钟"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@id/viewSchedule_itemShowTask_timeNeed_tv"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/viewSchedule_itemShowTask_timeNeed_tv" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Surface View End -->
+    </com.daimajia.swipe.SwipeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

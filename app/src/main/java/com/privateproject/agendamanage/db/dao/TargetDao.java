@@ -3,6 +3,8 @@ package com.privateproject.agendamanage.db.dao;
 import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.privateproject.agendamanage.db.bean.Course;
 import com.privateproject.agendamanage.db.bean.PlanNode;
 import com.privateproject.agendamanage.db.bean.Target;
 
@@ -85,6 +87,19 @@ public class TargetDao {
         List<Target> targets = null;
         try {
             targets = dao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return targets;
+    }
+
+    //查询所有stateSave为true的target
+    public List<Target> selectAllTtue() {
+        List<Target> targets = null;
+        try {
+            QueryBuilder<Target, Integer> queryBuilder = dao.queryBuilder();
+            queryBuilder.where().eq("stateSave",true);
+            targets = queryBuilder.query();
         } catch (SQLException e) {
             e.printStackTrace();
         }
