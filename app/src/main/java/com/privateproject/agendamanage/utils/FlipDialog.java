@@ -12,7 +12,6 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -21,7 +20,6 @@ import com.privateproject.agendamanage.R;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class FlipDialog extends Dialog implements View.OnClickListener {
@@ -31,6 +29,7 @@ public class FlipDialog extends Dialog implements View.OnClickListener {
     private PickerView startHour,startMinute,endHour,endMinute;
     private String startHourStr="12",startMinuteStr="30",endHourStr="12",endMinuteStr="30";
     private Time startTime,endTime;
+    private String taskNameStr,taskDescStr;
     private MaterialEditText taskName;
     private EditText taskDeco;
     private ConstraintLayout container;
@@ -62,6 +61,15 @@ public class FlipDialog extends Dialog implements View.OnClickListener {
         this.context=context;
     }
 
+    public FlipDialog(@NonNull Context context,String taskNameStr,String taskDecoStr){
+        super(context);
+        this.context=context;
+        this.taskNameStr=taskNameStr;
+        this.taskDescStr=taskDecoStr;
+
+    }
+
+
     public FlipDialog setCancelBtn(IOnCancelListener listener) {
         this.cancelListener = listener;
         return this;
@@ -92,6 +100,11 @@ public class FlipDialog extends Dialog implements View.OnClickListener {
         taskName=findViewById(R.id.setTaskDialog_name_MaterialEditText);
         taskDeco=findViewById(R.id.setTaskDialog_decoration_editText);
 
+        if(taskNameStr!=null&&taskDescStr!=null){
+            taskName.setText(taskNameStr);
+            taskDeco.setText(taskDescStr);
+        }
+
         setTime.setOnClickListener(this);
         back.setOnClickListener(this);
         cancelBtn.setOnClickListener(this);
@@ -111,8 +124,6 @@ public class FlipDialog extends Dialog implements View.OnClickListener {
         startMinute.setData(minutes);
         endHour.setData(data);
         endMinute.setData(minutes);
-
-
 
         Window dialogWindow = getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();

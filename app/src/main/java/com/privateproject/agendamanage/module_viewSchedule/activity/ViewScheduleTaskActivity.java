@@ -25,6 +25,7 @@ import com.privateproject.agendamanage.db.dao.PlanNodeDao;
 import com.privateproject.agendamanage.db.dao.TaskDao;
 import com.privateproject.agendamanage.module_weekTime.server.EverydayTotalTimeServer;
 
+import java.text.BreakIterator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,6 +47,8 @@ public class ViewScheduleTaskActivity extends AppCompatActivity {
     private int colNum=0;
     private Object[][] datas;
     RecyclerView recycler;
+    private TextView remianTv;
+    private MyTaskAdapter myTaskAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +61,7 @@ public class ViewScheduleTaskActivity extends AppCompatActivity {
 
         TextView planNodeNameTv = findViewById(R.id.viewSchedule_task_planNodeName_tv);
         TextView timeNeedTv = findViewById(R.id.viewSchedule_task_timeNeed_tv);
-        TextView remianTv = findViewById(R.id.viewSchedule_task_remianTime_tv);
+        remianTv = findViewById(R.id.viewSchedule_task_remianTime_tv);
         planNodeNameTv.setText(planNode.getName());
         timeNeedTv.setText("共需"+planNode.getTimeNeeded()+"分钟");
         remianTv.setText("还需分配"+remianTime(planNode)+"分钟");
@@ -87,17 +90,12 @@ public class ViewScheduleTaskActivity extends AppCompatActivity {
         for (int i = 0; i < colNum-1; i++) {
             datas[0][i+1] = dateStrs.get(i);
         }
-        //初始化Cell
-        for (int i = 1; i < rowNum; i++) {
-            for (int j = 1; j < colNum; j++) {
-                datas[i][j] = timeMinutes(dayTimeList.get(i-1).getStart(),dayTimeList.get(i-1).getEnd());
-            }
-        }
+
         initCourseAndTask();
         recycler = findViewById(R.id.viewSchedule_task_list_recyclerView);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this,colNum);
         recycler.setLayoutManager(layoutManager);
-        MyTaskAdapter myTaskAdapter = new MyTaskAdapter();
+        myTaskAdapter = new MyTaskAdapter();
         recycler.setAdapter(myTaskAdapter);
     }
 
@@ -201,6 +199,12 @@ public class ViewScheduleTaskActivity extends AppCompatActivity {
     }
 
     public void initCourseAndTask(){
+        //初始化Cell
+        for (int i = 1; i < rowNum; i++) {
+            for (int j = 1; j < colNum; j++) {
+                datas[i][j] = timeMinutes(dayTimeList.get(i-1).getStart(),dayTimeList.get(i-1).getEnd());
+            }
+        }
         CourseDao courseDao = new CourseDao(this);
         TaskDao taskDao = new TaskDao(this);
         for (int i = 0; i < dateList.size(); i++) {//循环天
@@ -270,5 +274,13 @@ public class ViewScheduleTaskActivity extends AppCompatActivity {
             remainMinutes -= taskList.get(i).getMintime();
         }
         return remainMinutes;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        remianTv.setText("还需分配"+remianTime(planNode)+"分钟");
+        initCourseAndTask();
+        myTaskAdapter.notifyDataSetChanged();
     }
 }

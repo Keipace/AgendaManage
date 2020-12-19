@@ -10,10 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,12 +30,8 @@ import com.privateproject.agendamanage.db.bean.Task;
 import com.privateproject.agendamanage.db.dao.TargetDao;
 import com.privateproject.agendamanage.db.dao.TaskDao;
 import com.privateproject.agendamanage.module_viewSchedule.activity.ViewSchedulePlanNodeActivity;
-import com.privateproject.agendamanage.module_viewSchedule.activity.ViewScheduleTaskActivity;
 import com.privateproject.agendamanage.module_viewSchedule.adapter.ViewScheduleAdapter;
 import com.privateproject.agendamanage.module_viewSchedule.adapter.ViewSchedulePlanNodeAdapter;
-import com.privateproject.agendamanage.utils.FlipDialog;
-import com.privateproject.agendamanage.utils.Time;
-import com.privateproject.agendamanage.utils.ToastUtil;
 
 import org.joda.time.LocalDate;
 
@@ -172,6 +165,7 @@ public class ViewScheduleFragment extends Fragment {
         adapter.setCourseAndTaskList(adapter.init());
         adapter.notifyDataSetChanged();
         initPlanNode();
+        messageNumber.setText(initPlanNode()+"");
     }
 
 
@@ -186,7 +180,8 @@ public class ViewScheduleFragment extends Fragment {
                 List<PlanNode> targetPlanNodes = targetDao.selectLastPlanNode(trueTargets.get(i),getContext());
                 if(targetPlanNodes!=null && targetPlanNodes.size()!=0){
                     for (int j = 0; j < targetPlanNodes.size(); j++) {
-                        if (ViewSchedulePlanNodeAdapter.isNumWitToday(targetPlanNodes.get(j).getStartTime(),30)){
+                        if (ViewSchedulePlanNodeAdapter.isNumWitToday(targetPlanNodes.get(j).getStartTime(),30)
+                                &&remianTime(targetPlanNodes.get(j))!=0){
                             monthPlanNodes.add(targetPlanNodes.get(j));
                         }
                     }

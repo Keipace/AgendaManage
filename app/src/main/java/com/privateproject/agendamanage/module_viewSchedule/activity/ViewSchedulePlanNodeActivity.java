@@ -61,6 +61,12 @@ public class ViewSchedulePlanNodeActivity extends FragmentActivity {
             viewSchedulePlanNodeAdapter = new ViewSchedulePlanNodeAdapter(getContext(),getArguments().getInt(ARG_SECTION_NUMER));
             recyclerView.setAdapter(viewSchedulePlanNodeAdapter);
         }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            viewSchedulePlanNodeAdapter.refreshPlanNodeAdapter();
+        }
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter{
@@ -77,4 +83,6 @@ public class ViewSchedulePlanNodeActivity extends FragmentActivity {
             return 3;
         }
     }
+
+
 }

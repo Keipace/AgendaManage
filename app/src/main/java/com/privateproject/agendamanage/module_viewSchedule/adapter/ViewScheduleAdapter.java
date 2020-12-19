@@ -93,11 +93,6 @@ public class ViewScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return super.getItemViewType(position);
-    }
-
-    @Override
     public int getItemCount() {
         return courseAndTaskList.size()+dayTimeFragmentList.size();
     }
