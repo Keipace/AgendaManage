@@ -1,5 +1,7 @@
 package com.privateproject.agendamanage.db.bean;
 
+import androidx.annotation.Nullable;
+
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -249,6 +251,10 @@ public class PlanNode {
         }
     }
 
+    public void setRecommended(Date recommendStartTime, Date recommendEndTime) {
+        setRecommended(TimeUtil.getDate(recommendStartTime), TimeUtil.getDate(recommendEndTime));
+    }
+
     // 取消推荐日期
     public void cancelRecommended() {
         this.isRecommended = false;
@@ -266,6 +272,10 @@ public class PlanNode {
         return isRecommended;
     }
 
+    public void setRecommended(boolean recommended) {
+        isRecommended = recommended;
+    }
+
     public Date getRecommendStartTime() {
         return recommendStartTime;
     }
@@ -276,5 +286,15 @@ public class PlanNode {
 
     public int getRecommendDuringDay() {
         return recommendDuringDay;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof PlanNode) {
+            PlanNode planNode = (PlanNode)obj;
+            if (this.id.equals(planNode.id))
+                return true;
+        }
+        return false;
     }
 }
