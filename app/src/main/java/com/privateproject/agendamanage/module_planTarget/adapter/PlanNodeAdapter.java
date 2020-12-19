@@ -154,6 +154,24 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
                 refreshList();
             }
         });
+        //如果有推荐方法，显示相关的UI及内容
+        showRecommendUI(holder, tmp);
+        //长按推荐页面布局，作用为使用推荐方案按钮
+        holder.recommendContainer.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                //把推荐方案变为可执行方案
+                planNodes.get(position).saveRecommended();
+                //更改文本框的数据
+                holder.startTime.setText(sdf.format(tmp.getStartTime()));
+                holder.endTime.setText(sdf.format(tmp.getEndTime()));
+                holder.duringDay.setText(tmp.getDuringDay()+"");
+                holder.recommendContainer.setVisibility(View.GONE);
+                //更改数据库
+                dao.updatePlanNode(planNodes.get(position));
+                return true;
+            }
+        });
     }
 
     private void onAddDialogPositiveBtnClick() {
@@ -319,8 +337,8 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
     }
 
     static class PlanNodeViewHolder extends RecyclerView.ViewHolder {
-        public ConstraintLayout constraintLayout;
-        public TextView title, childrenCount, childrenCountTitle;
+        public ConstraintLayout constraintLayout,recommendContainer;
+        public TextView title, childrenCount, childrenCountTitle,recommmendStartTime,recommendEndTime,recommendDruingDay;
         public TextView startTime, endTime;
         public TextView duringDay;
 
@@ -338,6 +356,23 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
 
             imageDelete = itemView.findViewById(R.id.itemPlanNode_delete_imageView);
             imageEdit = itemView.findViewById(R.id.itemPlanNode_edit_imageView);
+
+            //推荐的组件(默认不显示)
+            recommendContainer = itemView.findViewById(R.id.itemPlanNode_recommend_container);
+            recommmendStartTime = itemView.findViewById(R.id.itemPlanNode_recommend_startTime_textView);
+            recommendEndTime = itemView.findViewById(R.id.itemPlanNode_recommend_endTime_textView);
+            recommendDruingDay = itemView.findViewById(R.id.itemPlanNode_recommend_duringDay_textView);
+
+
+        }
+    }
+
+    private void showRecommendUI(PlanNodeAdapter.PlanNodeViewHolder holder, PlanNode planNode){
+        if (planNode.isRecommended()){
+            holder.recommmendStartTime.setText(planNode.getRecommendStartTime().toString());
+            holder.recommendEndTime.setText(planNode.getRecommendEndTime().toString());
+            holder.recommendDruingDay.setText(planNode.getRecommendDuringDay());
+            holder.recommendContainer.setVisibility(View.VISIBLE);
         }
     }
 
