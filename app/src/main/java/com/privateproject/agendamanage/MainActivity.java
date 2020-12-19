@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(pageXml.getRoot());
         // 设置 tag 切换页面的监听器
         setListener();
-        // 默认打开时显示第一个页面
-        pageXml.mianActivityQingdanBtn.transitionToEnd();
-        selectTab(0);//默认选中第一个Tab，即清单
+//        // 默认打开时显示第一个页面
+//        pageXml.mianActivityQingdanBtn.transitionToEnd();
+//        selectTab(0);//默认选中第一个Tab，即清单
     }
 
     private void setListener() {
@@ -100,6 +100,11 @@ public class MainActivity extends AppCompatActivity {
         switch (i) {
             case 0: //显示第一个选项卡
                 if (isShowPlan) {
+                    if (planTargetFragment==null){
+                        isShowPlan=false;
+                        selectTab(0);
+                        return;
+                    }
                     transaction.show(planTargetFragment).commitAllowingStateLoss();
                     break;
                 }
@@ -169,4 +174,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 默认打开时显示第一个页面
+        pageXml.mianActivityQingdanBtn.transitionToEnd();
+        selectTab(0);//默认选中第一个Tab，即清单
+    }
 }

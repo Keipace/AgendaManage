@@ -251,6 +251,10 @@ public class PlanNode {
         }
     }
 
+    public void setRecommended(Date recommendStartTime, Date recommendEndTime) {
+        setRecommended(TimeUtil.getDate(recommendStartTime), TimeUtil.getDate(recommendEndTime));
+    }
+
     // 取消推荐日期
     public void cancelRecommended() {
         this.isRecommended = false;

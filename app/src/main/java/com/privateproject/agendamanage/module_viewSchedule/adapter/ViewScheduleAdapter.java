@@ -35,7 +35,6 @@ public class ViewScheduleAdapter extends RecyclerView.Adapter<ViewScheduleAdapte
         this.taskDao = new TaskDao(context);
         this.courseAndTaskList = init();
     }
-
     public List<Map<String, String>> getCourseAndTaskList() {
         return courseAndTaskList;
     }
@@ -63,6 +62,11 @@ public class ViewScheduleAdapter extends RecyclerView.Adapter<ViewScheduleAdapte
     public void onBindViewHolder(@NonNull ViewScheduleHolder holder, int position) {
         holder.data.setText(courseAndTaskList.get(position).get("name"));
         holder.desc.setText(courseAndTaskList.get(position).get("des"));
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 
     @Override

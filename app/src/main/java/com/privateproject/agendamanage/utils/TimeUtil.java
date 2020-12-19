@@ -206,7 +206,7 @@ public class TimeUtil {
         return result;
     }
 
-    // 计算end对应的日期距离start对应的日期
+    // 计算end对应的日期距离start对应的日期，如1号到3号有2天
     public static int subDate(Date start, Date end) {
         long diff = end.getTime() - start.getTime();
         return (int)(diff/(1000*60*60*24));
@@ -226,4 +226,11 @@ public class TimeUtil {
         return result;
     }
 
+    // 在baseDate的基础上偏移n天（正数表示未来的几天，负数表示过去的几天）
+    public static Date getOffDate(Date baseDate, int off) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(baseDate);
+        c.add(Calendar.DAY_OF_MONTH, off);
+        return c.getTime();
+    }
 }
