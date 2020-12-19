@@ -16,69 +16,69 @@ import com.privateproject.agendamanage.module_weekTime.adapter.DayTimeSelectRecy
 import com.privateproject.agendamanage.db.bean.DayTimeFragment;
 import com.privateproject.agendamanage.db.dao.DayTimeFragmentDao;
 import com.privateproject.agendamanage.module_weekTime.server.DayTimeSelectAddServer;
-import com.privateproject.agendamanage.module_weekTime.viewHolder.DayTimeViewHolder;
 import com.privateproject.agendamanage.utils.PieChartView;
 import com.privateproject.agendamanage.utils.ToastUtil;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class DayTimeSelectActivity extends AppCompatActivity {
     public static final int RESULTCODE_CREATETIME = 1;
 
-    private WeektimeActivityDayTimeSelectBinding timebinding;
+    private RaiflatButton addTimeButton, backButton, deleteTimeButton;
+    private Button arrowLeftButton, arrRightButton;
+    private RecyclerView selectTimeRecycleView;
+    private PieChartView mPieChart;
     private DayTimeFragmentDao dao;
 
-    public class DayTimeViewHolder{
-        public Button leftBtn;
-        public Button rightBtn;
-        public PieChartView pieChart;
-        public Button addBtn;
-        public RaiflatButton cancelBtn;
-        public RaiflatButton deleteBtn;
-        public RecyclerView recyclerList;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        timebinding = WeektimeActivityDayTimeSelectBinding.inflate(LayoutInflater.from(this));
-        setContentView(timebinding.getRoot());
+        setContentView(R.layout.weektime_activity_day_time_select);
         dao = new DayTimeFragmentDao(this);
-        DayTimeViewHolder holder=new DayTimeViewHolder();
-        //View v = LayoutInflater.from(DayTimeSelectActivity.this).inflate(R.layout.weektime_activity_day_time_select,null);
-        holder.leftBtn=findViewById(R.id.daytime_select_arrow_left_botton);
-        holder.rightBtn=findViewById(R.id.daytime_select_arrow_right_botton);
-        holder.pieChart=findViewById(R.id.mPieChart);
-        holder.cancelBtn=findViewById(R.id.daytime_select_back_botton);
-        holder.deleteBtn=findViewById(R.id.daytime_select_delete_botton);
-        holder.addBtn=findViewById(R.id.daytime_select_add_botton);
-        holder.recyclerList=findViewById(R.id.daytime_select_recyclelist);
 
         // 使用intent来控制是否点击的是 返回 按钮
         Intent intent = getIntent();
         intent.putExtra("isBack", true);
         setResult(RESULTCODE_CREATETIME, intent);
 
+        //初始化组件
+        arrowLeftButton = findViewById(R.id.daytime_select_arrow_left_botton);
+        arrRightButton = findViewById(R.id.daytime_select_arrow_right_botton);
+
+        addTimeButton = findViewById(R.id.daytime_select_add_botton);
+        backButton = findViewById(R.id.daytime_select_back_botton);
+        deleteTimeButton = findViewById(R.id.daytime_select_delete_botton);
+
+        selectTimeRecycleView = findViewById(R.id.daytime_select_recyclelist);
+
+        mPieChart = findViewById(R.id.mPieChart);
+
+        List<RaiflatButton> buttons = new ArrayList<RaiflatButton>();
+        buttons.add(addTimeButton);
+        buttons.add(backButton);
+        buttons.add(deleteTimeButton);
+
         // 显示时间段的列表
-        DayTimeSelectRecycleAdapter adapter = new DayTimeSelectRecycleAdapter(DayTimeSelectActivity.this,holder);
-        holder.recyclerList.setAdapter(adapter);
+        DayTimeSelectRecycleAdapter adapter = new DayTimeSelectRecycleAdapter(DayTimeSelectActivity.this, buttons, mPieChart);
+        selectTimeRecycleView.setAdapter(adapter);
 
         //添加按钮监听器
-        holder.addBtn.setOnClickListener(new View.OnClickListener() {
+        addTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DayTimeSelectAddServer.TimeSelectAlerDialog(DayTimeSelectActivity.this,dao,adapter,-1);
             }
         });
         // 返回 按钮监听器
-        holder.leftBtn.setOnClickListener(new View.OnClickListener() {
+        arrowLeftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
         // 确定 按钮监听器
-        holder.rightBtn.setOnClickListener(new View.OnClickListener() {
+        arrRightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 List<DayTimeFragment> dayTimeFragmentList = dao.selectAll();
@@ -90,7 +90,6 @@ public class DayTimeSelectActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
 }

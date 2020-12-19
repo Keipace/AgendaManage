@@ -15,8 +15,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <com.rey.material.widget.RadioButton
-        style="@style/Material.Drawable.RadioButton"
+    <com.rey.material.widget.CheckBox
+        style="@style/Material.Drawable.CheckBox"
         android:id="@+id/daytime_select_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
