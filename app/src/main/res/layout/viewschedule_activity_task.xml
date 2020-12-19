@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/viewSchedule_task_planNodeName_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="复习高数第一章"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/viewSchedule_task_timeNeed_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="共需110分钟"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/viewSchedule_task_planNodeName_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+    <TextView
+        android:id="@+id/viewSchedule_task_remianTime_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="还需分配60分钟"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/viewSchedule_task_timeNeed_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@id/viewSchedule_task_remianTime_tv"
+        android:background="#000"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/viewSchedule_task_list_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewSchedule_task_remianTime_tv">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

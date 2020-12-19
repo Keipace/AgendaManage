@@ -19,36 +19,15 @@
             app:met_floatingLabel="highlight"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/surplustime_first_text"/>
+            app:layout_constraintRight_toLeftOf="@id/surplustime_split_text"/>
         <TextView
-            android:id="@+id/surplustime_first_text"
+            android:id="@+id/surplustime_split_text"
             android:layout_width="wrap_content"
             android:layout_height="55dp"
             android:text="—"
             android:gravity="center"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/surplustime_startdate_edittext"
-            app:layout_constraintRight_toLeftOf="@id/surplustime_emergencydate_edittext"/>
-
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/surplustime_emergencydate_edittext"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="应急开始日期"
-            android:gravity="center"
-            app:met_floatingLabel="highlight"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/surplustime_first_text"
-            app:layout_constraintRight_toLeftOf="@id/surplustime_second_text"/>
-
-        <TextView
-            android:id="@+id/surplustime_second_text"
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:text="—"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/surplustime_emergencydate_edittext"
             app:layout_constraintRight_toLeftOf="@id/surplustime_enddate_edittext"/>
 
         <com.rengwuxian.materialedittext.MaterialEditText
@@ -59,7 +38,7 @@
             android:gravity="center"
             app:met_floatingLabel="highlight"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/surplustime_second_text"
+            app:layout_constraintLeft_toRightOf="@id/surplustime_split_text"
             app:layout_constraintRight_toRightOf="parent"/>
 
         <com.github.mikephil.charting.charts.LineChart

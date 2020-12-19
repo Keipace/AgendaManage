@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="#fff"
+    android:padding="10dp"
+    android:id="@+id/viewSchedule_itemPlanNode_layout">
+
+    <TextView
+        android:id="@+id/viewSchedule_itemPlanNode_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="复习数学第一章"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/viewSchedule_itemPlanNode_decoration_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/viewSchedule_itemPlanNode_decoration_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:maxEms="15"
+        android:maxLines="1"
+        android:text="复习的时候要注意总结并做错题顶顶顶顶"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewSchedule_itemPlanNode_name_tv" />
+
+    <TextView
+        android:id="@+id/viewSchedule_itemPlanNode_daytime_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="(10-11~10-13)"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/viewSchedule_itemPlanNode_name_tv"
+        app:layout_constraintLeft_toRightOf="@id/viewSchedule_itemPlanNode_name_tv"
+        app:layout_constraintTop_toTopOf="@id/viewSchedule_itemPlanNode_name_tv" />
+
+    <TextView
+        android:id="@+id/viewSchedule_itemPlanNode_timeNeed_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="300"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@id/viewSchedule_itemPlanNode_remainTime_tv"
+        app:layout_constraintRight_toLeftOf="@id/viewSchedule_itemPlanNode_minute_tv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/viewSchedule_itemPlanNode_minute_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:text="分钟"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@id/viewSchedule_itemPlanNode_timeNeed_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/viewSchedule_itemPlanNode_timeNeed_tv" />
+    <TextView
+        android:id="@+id/viewSchedule_itemPlanNode_remainTime_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="还需分配60分钟"
+        android:textSize="10sp"
+        app:layout_constraintTop_toBottomOf="@id/viewSchedule_itemPlanNode_timeNeed_tv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/viewSchedule_itemPlanNode_timeNeed_tv"
+        app:layout_constraintRight_toRightOf="@id/viewSchedule_itemPlanNode_minute_tv"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

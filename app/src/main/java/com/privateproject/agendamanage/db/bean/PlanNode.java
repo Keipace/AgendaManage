@@ -1,9 +1,12 @@
 package com.privateproject.agendamanage.db.bean;
 
+import androidx.annotation.Nullable;
+
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.privateproject.agendamanage.utils.Time;
 import com.privateproject.agendamanage.utils.TimeUtil;
 
 import java.util.Date;
@@ -37,6 +40,15 @@ public class PlanNode {
     private Date endTime;
     @DatabaseField
     private int duringDay;
+
+    @DatabaseField
+    private boolean isRecommended = false;
+    @DatabaseField
+    private Date recommendStartTime;
+    @DatabaseField
+    private Date recommendEndTime;
+    @DatabaseField
+    private int recommendDuringDay;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Target topParent;
@@ -134,7 +146,7 @@ public class PlanNode {
         } else {
             this.startTime = start;
             this.endTime = end;
-            this.duringDay = TimeUtil.subDate(this.endTime, this.startTime)+1;
+            this.duringDay = TimeUtil.subDate(this.startTime, this.endTime)+1;
         }
     }
 
@@ -220,5 +232,69 @@ public class PlanNode {
         } else {
             return 0;
         }
+    }
+
+    // 设置推荐日期
+    public void setRecommended(String recommendStartTime, String recommendEndTime) {
+        if (recommendStartTime==null || recommendEndTime==null)
+            throw new RuntimeException("开始时间或结束时间不能为空！");
+        Date start = TimeUtil.getDate(recommendStartTime);
+        Date end = TimeUtil.getDate(recommendEndTime);
+        // 开始时间不能早于结束时间
+        if (TimeUtil.compareDate(start, end) > 0) {
+            throw new RuntimeException("开始时间不能早于结束时间");
+        } else {
+            this.isRecommended = true;
+            this.recommendStartTime = start;
+            this.recommendEndTime = end;
+            this.recommendDuringDay = TimeUtil.subDate(this.recommendStartTime, this.recommendEndTime)+1;
+        }
+    }
+
+    public void setRecommended(Date recommendStartTime, Date recommendEndTime) {
+        setRecommended(TimeUtil.getDate(recommendStartTime), TimeUtil.getDate(recommendEndTime));
+    }
+
+    // 取消推荐日期
+    public void cancelRecommended() {
+        this.isRecommended = false;
+    }
+
+    // 保存推荐日期
+    public void saveRecommended() {
+        this.isRecommended = false;
+        this.startTime = this.recommendStartTime;
+        this.endTime = this.recommendEndTime;
+        this.duringDay = this.recommendDuringDay;
+    }
+
+    public boolean isRecommended() {
+        return isRecommended;
+    }
+
+    public void setRecommended(boolean recommended) {
+        isRecommended = recommended;
+    }
+
+    public Date getRecommendStartTime() {
+        return recommendStartTime;
+    }
+
+    public Date getRecommendEndTime() {
+        return recommendEndTime;
+    }
+
+    public int getRecommendDuringDay() {
+        return recommendDuringDay;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof PlanNode) {
+            PlanNode planNode = (PlanNode)obj;
+            if (this.id.equals(planNode.id))
+                return true;
+        }
+        return false;
     }
 }

@@ -41,16 +41,11 @@ public class TimeLineChartActivity extends AppCompatActivity {
 
         EverydayTotalTimeServer everydayTotalTimeServer = new EverydayTotalTimeServer(TimeLineChartActivity.this);
         startDate = findViewById(R.id.surplustime_startdate_edittext);
-        startDate.setText("2020-12-07");
         endDate = findViewById(R.id.surplustime_enddate_edittext);
-        endDate.setText("2020-12-13");
-        emergencyDate = findViewById(R.id.surplustime_emergencydate_edittext);
-        emergencyDate.setText("2020-12-07");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         //设置日期选择框
         TimeUtil.setDateStartToEnd(TimeLineChartActivity.this,startDate,endDate,true);
-        TimeUtil.setDateStartToEnd(TimeLineChartActivity.this,emergencyDate,startDate,true);
 
         Button lineChartBtn = findViewById(R.id.surplustime_line_chart_btn);
         lineChartBtn.setOnClickListener(new View.OnClickListener() {
@@ -58,13 +53,15 @@ public class TimeLineChartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //获得者线图的开始日期和结束日期
                 try {
+                    if (startDate.getText().toString().equals("") || endDate.getText().toString().equals("")) {
+                        ToastUtil.newToast(TimeLineChartActivity.this, "请选择日期！");
+                    }
                     Date surplusStartDate = simpleDateFormat.parse(startDate.getText().toString());
                     Date surplusEndDate = simpleDateFormat.parse(endDate.getText().toString());
-                    Date emergencyStartDate = simpleDateFormat.parse(emergencyDate.getText().toString());
-                    List<Integer> surplusTimeList = everydayTotalTimeServer.surplusTime(surplusStartDate,emergencyStartDate,surplusEndDate);
+                    List<Integer> surplusTimeList = everydayTotalTimeServer.surplusTime(surplusStartDate,surplusEndDate);
                     List<Date> dateList = everydayTotalTimeServer.dateList(surplusStartDate,surplusEndDate);
                     //判断map集合是否为空
-                    if (surplusTimeList == null||surplusTimeList.equals("")){
+                    if (surplusTimeList == null||surplusTimeList.size()==0){
                         ToastUtil.newToast(TimeLineChartActivity.this,"必要数据未填充");
                     }else {
                         LineChart lineChart = findViewById(R.id.surplustime_line_chart);
@@ -85,20 +82,22 @@ public class TimeLineChartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //获得柱状图的开始日期和结束日期
                 try {
+                    if (startDate.getText().toString().equals("") || endDate.getText().toString().equals("")) {
+                        ToastUtil.newToast(TimeLineChartActivity.this, "请选择日期！");
+                    }
                     Date surplusStartDate = simpleDateFormat.parse(startDate.getText().toString());
                     Date surplusEndDate = simpleDateFormat.parse(endDate.getText().toString());
-                    Date emergencyStartDate = simpleDateFormat.parse(emergencyDate.getText().toString());
-                    List<Integer> surplusTimeList = everydayTotalTimeServer.surplusTime(surplusStartDate,emergencyStartDate,surplusEndDate);
+                    List<Integer> surplusTimeList = everydayTotalTimeServer.surplusTime(surplusStartDate,surplusEndDate);
                     List<Date> dateList = everydayTotalTimeServer.dateList(surplusStartDate,surplusEndDate);
                     //判断map集合是否为空
-                    if (surplusTimeList == null||surplusTimeList.equals("")){
+                    if (surplusTimeList == null||surplusTimeList.size()==0){
                         ToastUtil.newToast(TimeLineChartActivity.this,"必要数据未填充");
                     }else {
                         //x轴Map集合
                         Map<Integer,String> x = new HashMap<Integer, String>();
                         //y轴Map集合
                         Map<Integer,Integer> y = new HashMap<Integer, Integer>();
-                        List<String> dateStrList = formatteDate(dateList);
+                        List<String> dateStrList = formatDate(dateList);
                         //填充x轴数据
                         for (int i = 0; i < dateList.size(); i++) {
                             x.put(i,dateStrList.get(i));
@@ -121,7 +120,7 @@ public class TimeLineChartActivity extends AppCompatActivity {
 
     }
 
-    public List<String> formatteDate(List<Date> dateList){
+    public List<String> formatDate(List<Date> dateList){
         SimpleDateFormat format = new SimpleDateFormat("MM-dd");
         List<String> dateStrList = new ArrayList<String>();
         for (int i = 0; i < dateList.size(); i++) {

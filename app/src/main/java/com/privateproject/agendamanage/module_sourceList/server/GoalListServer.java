@@ -7,19 +7,26 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.diegodobelo.expandingview.ExpandingItem;
 import com.diegodobelo.expandingview.ExpandingList;
+import com.privateproject.agendamanage.MainActivity;
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.databinding.SourcelistItemMainAdddaytargetBinding;
 import com.privateproject.agendamanage.databinding.SourcelistItemMainAddtargetBinding;
+import com.privateproject.agendamanage.module_planTarget.adapter.NoTimeLastPlanNodeAdapter;
 import com.privateproject.agendamanage.module_sourceList.activity.DayTargetInfoActivity;
 import com.privateproject.agendamanage.module_sourceList.activity.TargetInfoActivity;
 import com.privateproject.agendamanage.db.bean.DayTarget;
 import com.privateproject.agendamanage.db.bean.PlanNode;
 import com.privateproject.agendamanage.db.bean.Target;
+import com.privateproject.agendamanage.module_weekTime.server.DayTimeSelectAddServer;
+import com.privateproject.agendamanage.module_weekTime.server.EverydayTotalTimeServer;
 import com.privateproject.agendamanage.utils.CenterDialog;
 import com.privateproject.agendamanage.db.dao.DayTargetDao;
 import com.privateproject.agendamanage.db.dao.PlanNodeDao;
@@ -28,7 +35,11 @@ import com.privateproject.agendamanage.utils.ComponentUtil;
 import com.privateproject.agendamanage.utils.TimeUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.xujiaji.happybubble.BubbleDialog;
 
+import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GoalListServer {
@@ -92,6 +103,105 @@ public class GoalListServer {
                 targetItem.removeSubItem(view);
                 // 删除数据
                 removeTarget(position);
+            }
+        });
+
+        // 鼠标点击提示图标时
+        ImageView warningImageView = view.findViewById(R.id.itemMainContent_warning_imageView);
+        // 初始化target时提示图标是否显示
+        if (targets.get(position).isStateSave())
+            warningImageView.setVisibility(View.GONE);
+        else warningImageView.setVisibility(View.VISIBLE);
+        warningImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // 1.如果存在 没有时间量的末节点 则弹出框列出那些节点（节点名和路径）
+
+                // 2.时间不符合剩余时间量要求，则弹出框提示
+
+                // 3.没问题时正常保存
+
+                //加载页面
+                View dialogView = LayoutInflater.from(context).inflate(R.layout.plantarget_dialog_bubble_target,null);
+                //气泡弹出框
+                BubbleDialog bubbleDialog = new BubbleDialog(context)
+                        .addContentView(dialogView)
+                        .setClickedView(warningImageView)
+                        .setPosition(BubbleDialog.Position.BOTTOM)
+                        .setOffsetY(-8)
+                        .calBar(true);
+                bubbleDialog.show();
+                //获取跳转文本的监听器
+                TextView textView = dialogView.findViewById(R.id.bubble_dialog_jump_textView);
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bubbleDialog.dismiss();
+                        //处理保存逻辑代码
+                        //获得target的planNodes,也就是第一代PlanNode
+                        List<PlanNode> planNodes = new ArrayList<>(targets.get(position).getPlanNodes());
+                        //初始化list保存最后一个planNode设置的时间
+                        List<PlanNode> lastPlanNodeList = new ArrayList<PlanNode>();
+                        //初始化list保存最后一个但未设置时间的planNode
+                        List<PlanNode> lastPlanNodeNoSetTime = new ArrayList<PlanNode>();
+                        for (int i = 0; i < planNodes.size(); i++) {
+                            //为lastPlanNodeList填充数据
+                            searchLastPlanNode(planNodes.get(i),lastPlanNodeList,lastPlanNodeNoSetTime);
+                        }
+                        //如果列表为空，证明用户已设置所有最后节点的时间，进行2选项判断
+                        if (lastPlanNodeNoSetTime == null||lastPlanNodeNoSetTime.size() == 0){
+                            //获得每天剩余的时间总量
+                            EverydayTotalTimeServer everydayTotalTimeServer = new EverydayTotalTimeServer(context);
+                            for (int i = 0; i < lastPlanNodeList.size(); i++) {
+                                //调用surplusTime（开始日期，应急时间开始日期，结束日期）获得此PlanNode所在日期的 每 日 剩 余 时 间 量
+                                List<Integer> surplusTimeList = everydayTotalTimeServer.surplusTime(lastPlanNodeList.get(i).getStartTime(), lastPlanNodeList.get(i).getEndTime());
+                                if (surplusTimeList == null||surplusTimeList.size() == 0){
+                                    ToastUtil.newToast(context,"还未设置时间段，请先去设置时间段！");
+                                    return;
+                                }
+                                //每日剩余时间量相加
+                                int allSurplusTime = 0;
+                                for (int j = 0; j < surplusTimeList.size(); j++) {
+                                    allSurplusTime = allSurplusTime + surplusTimeList.get(j);
+                                }
+                                if (allSurplusTime <= lastPlanNodeList.get(i).getTimeNeeded()){
+                                    savePlanNodeDialog();
+                                    return;
+                                }
+                            }
+                            ToastUtil.newToast(context,"保存成功");
+                            /*获得末节点的时间和
+                              1.初始化target的timeNeed属性
+                              2.填充target的timeNeed属性
+                             */
+                            targets.get(position).setTimeNeed(0);
+                            for (int i = 0; i < lastPlanNodeList.size(); i++) {
+                                targets.get(position).setTimeNeed(targets.get(position).getTimeNeed()+lastPlanNodeList.get(i).getTimeNeeded());
+                            }
+                            //提示图标消失
+                            warningImageView.setVisibility(View.GONE);
+                            //stateSave属性设为true，并修改数据库
+                            targets.get(position).setStateSave(true);
+                            targetDao.updateTarget(targets.get(position));
+                        }else {  //列表不为空，为用户弹出提示框，显示为设置时间的最后节点
+                            //初始化adapter
+                            NoTimeLastPlanNodeAdapter adapter = new NoTimeLastPlanNodeAdapter(context,lastPlanNodeNoSetTime);
+                            //加载界面
+                            View noTimePlanNode = LayoutInflater.from(context).inflate(R.layout.plantarget_dialog_notime_plannode,null);
+                            RecyclerView recyclerView = noTimePlanNode.findViewById(R.id.notime_plannode_recycle);
+                            //设置Adapter
+                            recyclerView.setAdapter(adapter);
+                            //创建弹出框
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setTitle("提示")
+                                    .setView(noTimePlanNode)
+                                    .setNegativeButton("确定",null)
+                                    .create().show();
+                        }
+
+                    }
+                });
             }
         });
         // 点击 安排计划 时
@@ -275,5 +385,34 @@ public class GoalListServer {
     public interface OnItemClick {
         void planTarget(Target topTarget);
     }
-
+    //查询所有的最后一个PlanNode，并保存到列表中
+    public void searchLastPlanNode(PlanNode planNode, List<PlanNode> lastPlanNodeList, List<PlanNode> lastPlanNodeNoSetTime){
+        this.planNodeDao.initPlanNode(planNode);
+        if (planNode.isHasChildren()&&planNode.getChildren() != null&&planNode.getChildren().size() !=0){
+            for (int i = 0; i < planNode.getChildren().size(); i++) {
+                searchLastPlanNode(planNode.getChildren().get(i),lastPlanNodeList,lastPlanNodeNoSetTime);
+            }
+        }
+        if (!planNode.isHasChildren())           //如果没有孩子，返回它的时间
+            lastPlanNodeList.add(planNode);
+        if (planNode.isHasChildren()&&(planNode.getChildren() == null||planNode.getChildren().size() == 0))
+            lastPlanNodeNoSetTime.add(planNode);
+    }
+    //保存出现错误时出现dialog弹出框
+    public void savePlanNodeDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("提示")
+                .setMessage("你输入的计划有冲突，请重新安排，或者使用我们推荐的方案？")
+                .setNegativeButton("使用推荐方案", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //实现推荐方案代码
+                        /*
+                        to do...
+                         */
+                    }
+                })
+                .setPositiveButton("自己调整",null)
+                .create().show();
+    }
 }

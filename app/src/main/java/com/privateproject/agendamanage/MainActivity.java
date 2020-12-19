@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     //其他页面
     private FragmentTest fragmentTest;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // 初始化页面
@@ -38,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(pageXml.getRoot());
         // 设置 tag 切换页面的监听器
         setListener();
-        // 默认打开时显示第一个页面
-        pageXml.mianActivityQingdanBtn.transitionToEnd();
-        selectTab(0);//默认选中第一个Tab，即清单
+//        // 默认打开时显示第一个页面
+//        pageXml.mianActivityQingdanBtn.transitionToEnd();
+//        selectTab(0);//默认选中第一个Tab，即清单
     }
 
     private void setListener() {
@@ -84,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         pageXml.mianActivityQingdanBtn.transitionToStart();
                         pageXml.mianActivityRichengBtn.transitionToStart();
                         pageXml.mianActivityTongjiBtn.transitionToStart();
+                        selectTab(3);
                         break;
                 }
             }
@@ -100,6 +100,11 @@ public class MainActivity extends AppCompatActivity {
         switch (i) {
             case 0: //显示第一个选项卡
                 if (isShowPlan) {
+                    if (planTargetFragment==null){
+                        isShowPlan=false;
+                        selectTab(0);
+                        return;
+                    }
                     transaction.show(planTargetFragment).commitAllowingStateLoss();
                     break;
                 }
@@ -142,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case 2: //显示其他选项卡
+            case 3:
                 if (fragmentTest == null) { //第一次显示第二个选项卡
                     fragmentTest = new FragmentTest();
                     transaction.add(R.id.mianActivity_container_contrainlayout, fragmentTest).commitAllowingStateLoss();
@@ -168,4 +174,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 默认打开时显示第一个页面
+        pageXml.mianActivityQingdanBtn.transitionToEnd();
+        selectTab(0);//默认选中第一个Tab，即清单
+    }
 }

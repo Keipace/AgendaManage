@@ -2,9 +2,8 @@ package com.privateproject.agendamanage.module_viewSchedule.fragment;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,15 @@ import com.necer.enumeration.CheckModel;
 import com.necer.enumeration.DateChangeBehavior;
 import com.necer.listener.OnCalendarChangedListener;
 import com.privateproject.agendamanage.R;
+import com.privateproject.agendamanage.db.bean.PlanNode;
+import com.privateproject.agendamanage.db.bean.Target;
+import com.privateproject.agendamanage.db.bean.Task;
+import com.privateproject.agendamanage.db.dao.TargetDao;
+import com.privateproject.agendamanage.db.dao.TaskDao;
+import com.privateproject.agendamanage.module_viewSchedule.activity.ViewSchedulePlanNodeActivity;
+import com.privateproject.agendamanage.module_viewSchedule.activity.ViewScheduleTaskActivity;
 import com.privateproject.agendamanage.module_viewSchedule.adapter.ViewScheduleAdapter;
+import com.privateproject.agendamanage.module_viewSchedule.adapter.ViewSchedulePlanNodeAdapter;
 import com.privateproject.agendamanage.utils.FlipDialog;
 import com.privateproject.agendamanage.utils.Time;
 import com.privateproject.agendamanage.utils.ToastUtil;
@@ -36,15 +43,16 @@ import com.privateproject.agendamanage.utils.ToastUtil;
 import org.joda.time.LocalDate;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class ViewScheduleFragment extends Fragment {
     private ViewScheduleAdapter adapter;
     private RecyclerView recyclerView;
     private String dateStr;
-
-
+    private TextView messageNumber;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +76,11 @@ public class ViewScheduleFragment extends Fragment {
         Button todayBtn=view.findViewById(R.id.jumpTodayBtn);
         TextView tv_result=view.findViewById(R.id.tv_result);
 
-        adapter=new ViewScheduleAdapter(getActivity(),dateStr);
+
+        messageNumber = view.findViewById(R.id.viewSchedule_messageNumber_tv);
+        messageNumber.setText(initPlanNode()+"");
+
+        adapter=new ViewScheduleAdapter(getContext(),dateStr);
         recyclerView=view.findViewById(R.id.calendar_recycleView);
         recyclerView.setAdapter(adapter);
 
@@ -143,26 +155,11 @@ public class ViewScheduleFragment extends Fragment {
             }
         });
 
-        ImageView button=view.findViewById(R.id.edit_schedule);
-        FlipDialog flipDialog=new FlipDialog(getContext(),R.style.DayTargetDialog);
-        button.setOnClickListener(new View.OnClickListener() {
+        messageNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                flipDialog.setCancelBtn(new FlipDialog.IOnCancelListener() {
-                    @Override
-                    public void OnCancel(FlipDialog dialog) {
-                        flipDialog.dismiss();
-                    }
-                }).setConfirmBtn(new FlipDialog.IOnConfirmListener() {
-                    @Override
-                    public void OnConfirm(FlipDialog dialog, String taskName, String taskDesc, Time startTime, Time endTime) {
-                        if (startTime.before(endTime)){
-                            ToastUtil.newToast(getContext(),taskName+taskDesc+startTime.toString()+endTime.toString());
-                        }else{
-                            ToastUtil.newToast(getContext(),"结束时间不得晚于开始时间");
-                        }
-                    }
-                }).show();
+                Intent intent = new Intent(getContext(), ViewSchedulePlanNodeActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -174,6 +171,40 @@ public class ViewScheduleFragment extends Fragment {
         adapter.setDateStr(dateStr);
         adapter.setCourseAndTaskList(adapter.init());
         adapter.notifyDataSetChanged();
+        initPlanNode();
+    }
+
+
+    public int initPlanNode(){
+        TargetDao targetDao = new TargetDao(getContext());
+        List<PlanNode> monthPlanNodes = new ArrayList<PlanNode>();
+        //所有为true的target
+        List<Target> trueTargets = targetDao.selectAllTtue();
+        if(trueTargets!=null && trueTargets.size()!=0){
+            for (int i = 0; i < trueTargets.size(); i++) {
+                //该target下的所有叶子结点
+                List<PlanNode> targetPlanNodes = targetDao.selectLastPlanNode(trueTargets.get(i),getContext());
+                if(targetPlanNodes!=null && targetPlanNodes.size()!=0){
+                    for (int j = 0; j < targetPlanNodes.size(); j++) {
+                        if (ViewSchedulePlanNodeAdapter.isNumWitToday(targetPlanNodes.get(j).getStartTime(),30)){
+                            monthPlanNodes.add(targetPlanNodes.get(j));
+                        }
+                    }
+                }
+            }
+        }
+        return monthPlanNodes.size();
+    }
+    //PlanNode还需分配的时间
+    public int remianTime(PlanNode planNode){
+        TaskDao taskDao = new TaskDao(getContext());
+        List<Task> taskList = taskDao.selectByPlanNode(planNode);
+        int needMinutes = planNode.getTimeNeeded();
+        int remainMinutes = needMinutes;
+        for (int i = 0; i < taskList.size(); i++) {
+            remainMinutes -= taskList.get(i).getMintime();
+        }
+        return remainMinutes;
     }
 }
 

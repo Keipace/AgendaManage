@@ -1,10 +1,14 @@
 package com.privateproject.agendamanage;
 
+import com.privateproject.agendamanage.module_weekTime.server.EverydayTotalTimeServer;
+
 import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.privateproject.agendamanage.module_weekTime.server.EverydayTotalTimeServer.dayForWeek;
 import static com.privateproject.agendamanage.module_weekTime.server.EverydayTotalTimeServer.differentDays;
@@ -59,6 +63,13 @@ public class ExampleUnitTest {
 
 //        Map<Integer,Integer> emergMap = emergencyTime(date1,date2);
     }
-
+    @Test
+    public void dateListTest(){
+        List<String> strs = new ArrayList<String>();
+        strs.add("1");
+        strs.add("2");
+        strs.add("3");
+        System.out.println(strs.indexOf("1"));
+    }
 
 }

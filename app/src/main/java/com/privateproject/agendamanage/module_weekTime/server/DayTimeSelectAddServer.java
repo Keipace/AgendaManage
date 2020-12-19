@@ -73,21 +73,21 @@ public class DayTimeSelectAddServer {
     }
 
     private static boolean AppearConflict(List<DayTimeFragment> dayTimeFragmentList, String[] times){
-        int temp = dayTimeFragmentList.size();
         if (dayTimeFragmentList == null||dayTimeFragmentList.size() == 0)
             // 没有时间段的时候不可能有冲突
             return false;
         else {
-            //如果开始时间和结束时间均大于最晚时间段的最晚时间，则返回false，不发生冲突
-            if (Time.parseTime(times[0]).after(Time.parseTime(dayTimeFragmentList.get(temp-1).getEnd()))){
+            int temp = dayTimeFragmentList.size();
+            // 如果开始时间和结束时间均大于最晚时间段的最晚时间，则返回false，不发生冲突
+            if (!Time.parseTime(times[0]).before(Time.parseTime(dayTimeFragmentList.get(temp-1).getEnd()))){
                 return false;
             }
-            //冲0开始查找第一个大于用户输入的时间段的数据
+            // 冲0开始查找第一个大于用户输入的时间段的数据
             for (int i = 0; i<temp; i++){
-                //如果用户输入的开始时间和结束时间小于某一时间段的结束时间
+                // 如果用户输入的开始时间和结束时间小于某一时间段的结束时间
                 if (Time.parseTime(times[0]).before(Time.parseTime(dayTimeFragmentList.get(i).getEnd()))){
                     if (Time.parseTime(times[1]).before(Time.parseTime(dayTimeFragmentList.get(i).getEnd()))) {
-                        //那么它也需要小于这一时间段的开始时间才可以不发生冲突
+                        // 那么它也需要小于这一时间段的开始时间才可以不发生冲突
                         if ((Time.parseTime(times[0]).before(Time.parseTime(dayTimeFragmentList.get(i).getStart())) &&
                                 Time.parseTime(times[1]).before(Time.parseTime(dayTimeFragmentList.get(i).getStart())))) {
                             return false;

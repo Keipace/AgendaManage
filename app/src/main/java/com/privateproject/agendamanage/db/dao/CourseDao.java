@@ -93,8 +93,7 @@ public class CourseDao {
         List<Course> result = null;
         QueryBuilder<Course, Integer> queryBuilder = dao.queryBuilder();
         try {
-            queryBuilder.where().eq("row", row).
-                    and().eq("col", col);
+            queryBuilder.where().eq("row", row).and().eq("col", col);
             result = queryBuilder.query();
         } catch (SQLException e) {
             e.printStackTrace();

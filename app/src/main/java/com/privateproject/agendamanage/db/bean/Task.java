@@ -18,8 +18,11 @@ public class Task {
     private String plan;//描述
     @DatabaseField(canBeNull = false)
     private Date day;//所在日期
-    @DatabaseField(foreign = true,canBeNull = false)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private DayTimeFragment timeFragment;//所在时间段
+    @DatabaseField(canBeNull = false)
+    private Integer mintime;//所需分钟
+
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private PlanNode parent;
@@ -28,15 +31,16 @@ public class Task {
         super();
     }
 
-    public Task(String name, String day, DayTimeFragment timeFragment, PlanNode parent) {
-        this(name, DEFAULT_PLAN, day, timeFragment, parent);
+    public Task(String name, String day, DayTimeFragment timeFragment, int mintime,PlanNode parent) {
+        this(name, DEFAULT_PLAN, day, timeFragment, mintime, parent);
     }
 
-    public Task(String name, String plan, String day, DayTimeFragment timeFragment, PlanNode parent) {
+    public Task(String name, String plan, String day, DayTimeFragment timeFragment, int mintime, PlanNode parent) {
         this.name = name;
         this.plan = plan;
         this.day = TimeUtil.getDate(day);
         this.timeFragment = timeFragment;
+        this.mintime = mintime;
         this.parent = parent;
     }
 
@@ -82,5 +86,12 @@ public class Task {
 
     public PlanNode getParent() {
         return parent;
+    }
+    public Integer getMintime() {
+        return mintime;
+    }
+
+    public void setMintime(Integer mintime) {
+        this.mintime = mintime;
     }
 }

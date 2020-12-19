@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".module_weekTime.activity.TimeLineChartActivity"></activity>
+        <activity android:name=".module_viewSchedule.activity.ViewScheduleShowCellActivity"></activity>
+        <activity android:name=".module_viewSchedule.activity.ViewScheduleTaskActivity" />
+        <activity android:name=".module_viewSchedule.activity.ViewSchedulePlanNodeActivity" />
+        <activity android:name=".module_weekTime.activity.TimeLineChartActivity" />
         <activity
             android:name=".module_weekTime.activity.WeekTimeActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -17,7 +20,8 @@
         <activity android:name=".module_sourceList.activity.DayTargetInfoActivity" />
         <activity android:name=".module_sourceList.activity.TargetInfoActivity" />
         <activity android:name=".module_weekTime.activity.DayTimeSelectActivity" />
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>

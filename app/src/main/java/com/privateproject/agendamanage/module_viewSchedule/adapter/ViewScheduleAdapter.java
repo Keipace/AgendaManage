@@ -42,7 +42,6 @@ public class ViewScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.dao = new DayTimeFragmentDao(context);
         this.courseAndTaskList = init();
     }
-
     public List<Map<String, String>> getCourseAndTaskList() {
         return courseAndTaskList;
     }
@@ -91,6 +90,11 @@ public class ViewScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public int getItemViewType(int position) {
         return isTitle.get(position) ? 0 : 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 
     @Override

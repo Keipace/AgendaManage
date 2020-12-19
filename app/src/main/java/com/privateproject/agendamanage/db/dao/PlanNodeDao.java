@@ -165,4 +165,50 @@ public class PlanNodeDao {
         return parent;
     }
 
+    // 对 planNodes 进行按照日期进行归并排序
+    public static List<PlanNode> sortPlanNodeList(List<PlanNode> planNodes) {
+        if (planNodes.size()!=1) {
+            List<PlanNode> tmpPlanNodes = new ArrayList<PlanNode>(planNodes);
+            int n = 1;
+            while (n<planNodes.size()) {
+                mergePass(planNodes, tmpPlanNodes, n);
+                n*=2;
+                if (n<planNodes.size()) {
+                    mergePass(tmpPlanNodes, planNodes, n);
+                    n*=2;
+                } else {
+                    planNodes = tmpPlanNodes;
+                }
+            }
+        }
+        return planNodes;
+    }
+
+    // 归并排序：一趟归并
+    private static void mergePass(List<PlanNode> x, List<PlanNode> y, int n) {
+        for (int i = 0; i < x.size(); i+=2*n) {
+            merge(x, y, i, i+n, n);
+        }
+    }
+
+    // 归并排序：一次归并
+    private static void merge(List<PlanNode> x, List<PlanNode> y, int begin1, int begin2, int n) {
+        int i=begin1, j=begin2, k=begin1;
+        while (i<begin1+n && j<begin2+n && j<x.size()) {
+            if (x.get(i).compareTo(x.get(j))==-1) {
+                y.set(k++, x.get(i++));
+            } else {
+                y.set(k++, x.get(j++));
+            }
+        }
+        while (i<begin1+n && i<x.size()) {
+            y.set(k++, x.get(i++));
+        }
+        while (j<begin2+n && j<x.size()) {
+            y.set(k++, x.get(j++));
+        }
+    }
+
+
+
 }

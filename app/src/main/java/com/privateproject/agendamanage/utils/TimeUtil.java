@@ -69,6 +69,37 @@ public class TimeUtil {
         };
     }
 
+    public static void setOnDateTouchListener(Context context, EditText editText, boolean isShowCurrent) {
+        editText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // 点击时弹出日期选择框
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Calendar calendar = Calendar.getInstance();
+                    // 弹出框选择日期时从已经设定的时间开始
+                    if (isShowCurrent) {
+                        if (!editText.getText().toString().equals("")) {
+                            String[] tmp = editText.getText().toString().split("-");
+                            calendar.set(Integer.parseInt(tmp[0]),
+                                    Integer.parseInt(tmp[1])-1,
+                                    Integer.parseInt(tmp[2]));
+                        }
+                    }
+                    new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            String dateStr = year+"-"+(month+1)+"-"+dayOfMonth;
+                            editText.setText(dateStr);
+                        }
+                    }, calendar.get(Calendar.YEAR),
+                            calendar.get(Calendar.MONTH),
+                            calendar.get(Calendar.DAY_OF_MONTH)).show();
+                }
+                return true;
+            }
+        });
+    }
+
     public static void setDateStartToEnd(Context context, EditText startDateEditText, EditText endDateEditText, boolean isShowCurrent) {
         ComponentUtil.EditTextEnable(false, startDateEditText);
         ComponentUtil.EditTextEnable(false, endDateEditText);
@@ -175,13 +206,31 @@ public class TimeUtil {
         return result;
     }
 
-    // 计算end对应的日期距离start对应的日期
+    // 计算end对应的日期距离start对应的日期，如1号到3号有2天
     public static int subDate(Date start, Date end) {
-        long diff = start.getTime() - end.getTime();
+        long diff = end.getTime() - start.getTime();
         return (int)(diff/(1000*60*60*24));
     }
 
     public static String getDate(Date date) {
         return sdf.format(date);
+    }
+
+    // 在当前日期的基础上偏移n天（正数表示未来的几天，负数表示过去的几天）
+    public static Date getOffCurrentDate(int n) {
+        Date today = new Date();//获取今天的日期
+        Calendar c = Calendar.getInstance();
+        c.setTime(today);
+        c.add(Calendar.DAY_OF_MONTH, n);
+        Date result= c.getTime();//这是明天
+        return result;
+    }
+
+    // 在baseDate的基础上偏移n天（正数表示未来的几天，负数表示过去的几天）
+    public static Date getOffDate(Date baseDate, int off) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(baseDate);
+        c.add(Calendar.DAY_OF_MONTH, off);
+        return c.getTime();
     }
 }

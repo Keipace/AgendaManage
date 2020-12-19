@@ -4,7 +4,8 @@ import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.privateproject.agendamanage.db.bean.Course;
+import com.privateproject.agendamanage.db.bean.DayTimeFragment;
+import com.privateproject.agendamanage.db.bean.PlanNode;
 import com.privateproject.agendamanage.db.bean.Task;
 
 import java.sql.SQLException;
@@ -91,12 +92,50 @@ public class TaskDao {
         }
         return tasks;
     }
-    // 查询数据库中的所有记录，没有查询到时返回null
+    // 查询数据库中的所有当天任务，没有查询到时返回null
     public List<Task> selectDay(Date date) {
         List<Task> tasks = null;
         QueryBuilder<Task, Integer> queryBuilder = dao.queryBuilder();
         try {
             queryBuilder.where().eq("day", date);
+            tasks = queryBuilder.query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tasks;
+    }
+
+    //查询数据库当天某时间段的task
+    public List<Task> selectDayAndTime(Date date, DayTimeFragment dayTimeFragment) {
+        List<Task> tasks = null;
+        QueryBuilder<Task, Integer> queryBuilder = dao.queryBuilder();
+        try {
+            queryBuilder.where().eq("day", date).and().eq("timefragment_id",dayTimeFragment.getId());
+            tasks = queryBuilder.query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tasks;
+    }
+
+    //查询数据库父节点的所有task
+    public List<Task> selectByPlanNode(PlanNode planNode) {
+        List<Task> tasks = null;
+        QueryBuilder<Task, Integer> queryBuilder = dao.queryBuilder();
+        try {
+            queryBuilder.where().eq("parent_id",planNode.getId());
+            tasks = queryBuilder.query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tasks;
+    }
+
+    public List<Task> selectDuringDay(Date start, Date end) {
+        List<Task> tasks = null;
+        QueryBuilder<Task, Integer> queryBuilder = dao.queryBuilder();
+        try {
+            queryBuilder.where().between("day", start, end);
             tasks = queryBuilder.query();
         } catch (SQLException e) {
             e.printStackTrace();

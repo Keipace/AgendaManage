@@ -3,9 +3,13 @@ package com.privateproject.agendamanage.db.dao;
 import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.privateproject.agendamanage.db.bean.Course;
+import com.privateproject.agendamanage.db.bean.PlanNode;
 import com.privateproject.agendamanage.db.bean.Target;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TargetDao {
@@ -87,6 +91,43 @@ public class TargetDao {
             e.printStackTrace();
         }
         return targets;
+    }
+
+    //查询所有stateSave为true的target
+    public List<Target> selectAllTtue() {
+        List<Target> targets = null;
+        try {
+            QueryBuilder<Target, Integer> queryBuilder = dao.queryBuilder();
+            queryBuilder.where().eq("stateSave",true);
+            targets = queryBuilder.query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return targets;
+    }
+
+    // 利用 深度优先遍历 获取叶节点，返回的PlanNode是按照时间顺序排列的
+    public List<PlanNode> selectLastPlanNode(Target target, Context context) {
+        if (target.getPlanNodes()==null || target.getPlanNodes().size()==0) {
+            return null;
+        }
+        PlanNodeDao planNodeDao = new PlanNodeDao(context);
+        List<PlanNode> firstLevel = new ArrayList<>(target.getPlanNodes());
+        List<PlanNode> saved = new ArrayList<PlanNode>();
+        dfsOfSelectLast(firstLevel, saved, planNodeDao);
+        return saved;
+    }
+
+    private void dfsOfSelectLast(List<PlanNode> parents, List<PlanNode> saved, PlanNodeDao planNodeDao) {
+        parents = PlanNodeDao.sortPlanNodeList(parents);
+        for (int i = 0; i < parents.size(); i++) {
+            parents.set(i, planNodeDao.initPlanNode(parents.get(i)));
+            if (parents.get(i).isHasChildren()) {
+                dfsOfSelectLast(parents.get(i).getChildren(), saved, planNodeDao);
+            } else {
+                saved.add(parents.get(i));
+            }
+        }
     }
 
 }

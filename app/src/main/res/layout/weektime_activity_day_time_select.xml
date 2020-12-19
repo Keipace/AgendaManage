@@ -50,15 +50,15 @@
         app:layout_constraintBottom_toTopOf="@id/daytime_select_recyclelist"
         />
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/daytime_select_recyclelist"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mPieChart" />
+        app:layout_constraintTop_toBottomOf="@id/mPieChart"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <com.github.rubensousa.raiflatbutton.RaiflatButton
         android:id="@+id/daytime_select_back_botton"
