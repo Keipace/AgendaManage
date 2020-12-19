@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/item_taskSet_container_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--名称，描述，日期，时间段，分钟-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_taskSet_taskName_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/setTaskDialog_nameTitle_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_addtarget_title"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageButton
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/setTaskDialog_cancel_button"
+                android:background="@color/greenblue"
+                android:scaleType="fitXY"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/setTask_title_textView"
+                app:layout_constraintBottom_toBottomOf="@id/setTask_title_textView"
+                android:src="@drawable/back"
+                />
+            <TextView
+                android:id="@+id/setTask_title_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="任务"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <ImageButton
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/setTaskDialog_setTimeNeeded_button"
+                android:background="@color/greenblue"
+                android:scaleType="fitXY"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/setTask_title_textView"
+                app:layout_constraintBottom_toBottomOf="@id/setTask_title_textView"
+                android:src="@drawable/rightarrow"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/setTaskDialog_setTaskInfo_container"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/setTaskDialog_nameTitle_layout"
+            android:padding="@dimen/page_padding"
+            >
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/setTaskDialog_name_MaterialEditText"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:hint="名称"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="#09f"
+                android:maxLength="8"
+                app:met_maxCharacters="8"
+                app:met_minCharacters="1"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/setTaskDialog_decoration_textView"
+                android:text="描述"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/setTaskDialog_name_MaterialEditText"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="5dp"
+                android:textSize="@dimen/font_size"
+                android:textColor="#000"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/setTaskDialog_decoration_editText"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/setTaskDialog_decoration_textView"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:minLines="8"
+                android:maxLines="8"
+                android:scrollbars="vertical"
+                android:background="@drawable/edittext_decoration"
+                android:padding="5dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:id="@+id/setTaskDialog_setTime_constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/setTaskDialog_title_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_addtarget_title"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:id="@+id/setTaskDialog_back_button"
+                    android:background="@color/greenblue"
+                    android:scaleType="fitXY"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/setTaskDialog_setTime_textView"
+                    app:layout_constraintBottom_toBottomOf="@id/setTaskDialog_setTime_textView"
+                    android:src="@drawable/leftarrow"
+                    />
+                <TextView
+                    android:id="@+id/setTaskDialog_setTime_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="时间"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <ImageButton
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:id="@+id/setTaskDialog_confirm_button"
+                    android:background="@color/greenblue"
+                    android:scaleType="fitXY"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/setTaskDialog_setTime_textView"
+                    app:layout_constraintBottom_toBottomOf="@id/setTaskDialog_setTime_textView"
+                    android:src="@drawable/whiteright"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:layout_constraintTop_toBottomOf="@id/setTaskDialog_title_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:id="@+id/setTaskDialog_setTimeInfo_constraintLayout">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/setTaskDialog_split_textView"
+                    android:id="@+id/setTaskDialog_startTime_layout">
+                    <com.privateproject.agendamanage.utils.PickerView
+                        android:id="@+id/setTaskDialog_startHour_editText"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/hour_tv"
+                        app:layout_constraintTop_toTopOf="@id/setTaskDialog_startHour_editText"
+                        app:layout_constraintLeft_toRightOf="@id/setTaskDialog_startHour_editText"
+                        app:layout_constraintBottom_toBottomOf="@id/setTaskDialog_startHour_editText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="时"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                    <com.privateproject.agendamanage.utils.PickerView
+                        android:id="@+id/setTaskDialog_startMinute_editText"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@id/setTaskDialog_startHour_editText"
+                        app:layout_constraintLeft_toRightOf="@id/hour_tv"
+                        app:layout_constraintTop_toTopOf="@id/setTaskDialog_startHour_editText" />
+                    <TextView
+                        android:id="@+id/minute_tv"
+                        app:layout_constraintTop_toTopOf="@id/setTaskDialog_startHour_editText"
+                        app:layout_constraintLeft_toRightOf="@id/setTaskDialog_startMinute_editText"
+                        app:layout_constraintBottom_toBottomOf="@id/setTaskDialog_startHour_editText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="分"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/setTaskDialog_split_textView"
+                    app:layout_constraintLeft_toRightOf="@id/setTaskDialog_startTime_layout"
+                    app:layout_constraintRight_toLeftOf="@id/setTaskDialog_endTime_layout"
+                    app:layout_constraintTop_toTopOf="@id/setTaskDialog_startTime_layout"
+                    app:layout_constraintBottom_toBottomOf="@id/setTaskDialog_startTime_layout"
+                    android:text="—"
+                    android:textSize="20sp"
+                    android:textColor="#000"
+                    />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/setTaskDialog_split_textView"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:id="@+id/setTaskDialog_endTime_layout">
+                    <com.privateproject.agendamanage.utils.PickerView
+                        android:id="@+id/setTaskDialog_endHour_editText"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/endhour_tv"
+                        app:layout_constraintTop_toTopOf="@id/setTaskDialog_endHour_editText"
+                        app:layout_constraintLeft_toRightOf="@id/setTaskDialog_endHour_editText"
+                        app:layout_constraintBottom_toBottomOf="@id/setTaskDialog_endHour_editText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="时"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                    <com.privateproject.agendamanage.utils.PickerView
+                        android:id="@+id/setTaskDialog_endMinute_editText"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@id/setTaskDialog_endHour_editText"
+                        app:layout_constraintLeft_toRightOf="@id/endhour_tv"
+                        app:layout_constraintTop_toTopOf="@id/setTaskDialog_endHour_editText" />
+                    <TextView
+                        android:id="@+id/endminute_tv"
+                        app:layout_constraintTop_toTopOf="@id/setTaskDialog_endHour_editText"
+                        app:layout_constraintLeft_toRightOf="@id/setTaskDialog_endMinute_editText"
+                        app:layout_constraintBottom_toBottomOf="@id/setTaskDialog_endHour_editText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="分"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +29,9 @@ import com.necer.enumeration.DateChangeBehavior;
 import com.necer.listener.OnCalendarChangedListener;
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.module_viewSchedule.adapter.ViewScheduleAdapter;
+import com.privateproject.agendamanage.utils.FlipDialog;
+import com.privateproject.agendamanage.utils.Time;
+import com.privateproject.agendamanage.utils.ToastUtil;
 
 import org.joda.time.LocalDate;
 
@@ -63,7 +68,7 @@ public class ViewScheduleFragment extends Fragment {
         Button todayBtn=view.findViewById(R.id.jumpTodayBtn);
         TextView tv_result=view.findViewById(R.id.tv_result);
 
-        adapter=new ViewScheduleAdapter(getContext(),dateStr);
+        adapter=new ViewScheduleAdapter(getActivity(),dateStr);
         recyclerView=view.findViewById(R.id.calendar_recycleView);
         recyclerView.setAdapter(adapter);
 
@@ -135,6 +140,29 @@ public class ViewScheduleFragment extends Fragment {
                     miui10Calendar.toWeek();
                     foldBtn.setImageResource(R.drawable.up);
                 }
+            }
+        });
+
+        ImageView button=view.findViewById(R.id.edit_schedule);
+        FlipDialog flipDialog=new FlipDialog(getContext(),R.style.DayTargetDialog);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flipDialog.setCancelBtn(new FlipDialog.IOnCancelListener() {
+                    @Override
+                    public void OnCancel(FlipDialog dialog) {
+                        flipDialog.dismiss();
+                    }
+                }).setConfirmBtn(new FlipDialog.IOnConfirmListener() {
+                    @Override
+                    public void OnConfirm(FlipDialog dialog, String taskName, String taskDesc, Time startTime, Time endTime) {
+                        if (startTime.before(endTime)){
+                            ToastUtil.newToast(getContext(),taskName+taskDesc+startTime.toString()+endTime.toString());
+                        }else{
+                            ToastUtil.newToast(getContext(),"结束时间不得晚于开始时间");
+                        }
+                    }
+                }).show();
             }
         });
 

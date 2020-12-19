@@ -22,5 +22,13 @@
         <item name="android:background">@android:color/transparent</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+    <style name="Theme.TimePicker" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:editTextStyle">@style/Widget.AppCompat.EditText.Gray</item>
+    </style>
+
+    <style name="Widget.AppCompat.EditText.Gray">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#b3b3b3</item>
+    </style>
 
 </resources>

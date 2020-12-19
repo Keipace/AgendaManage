@@ -18,20 +18,13 @@ public class DayTimeSelectViewHolder {
         public TextView RecycleTextView;
         public ConstraintLayout daytimeSelectContainer;
         public RadioButton daytimeSelectCheckBox;
-        public PieChartView pieChartView;
-        public RaiflatButton deleteButton;
-        public RaiflatButton cancelButton;
-        public RaiflatButton addButton;
 
         public DayTimeSelectTextViewRecycleViewHolder(@NonNull View itemView) {
             super(itemView);
             RecycleTextView = itemView.findViewById(R.id.daytime_select_textview);
             daytimeSelectContainer = itemView.findViewById(R.id.daytime_select_container);
             daytimeSelectCheckBox = itemView.findViewById(R.id.daytime_select_checkbox);
-            pieChartView = itemView.findViewById(R.id.mPieChart);
-            deleteButton = itemView.findViewById(R.id.daytime_select_delete_botton);
-            cancelButton = itemView.findViewById(R.id.daytime_select_back_botton);
-            addButton = itemView.findViewById(R.id.daytime_select_add_botton);
+
 
         }
     }

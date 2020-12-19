@@ -13,7 +13,9 @@ import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.databinding.WeektimeActivityDayTimeSelectBinding;
 import com.privateproject.agendamanage.db.bean.DayTimeFragment;
 import com.privateproject.agendamanage.db.dao.DayTimeFragmentDao;
+import com.privateproject.agendamanage.module_weekTime.activity.DayTimeSelectActivity;
 import com.privateproject.agendamanage.module_weekTime.server.DayTimeSelectAddServer;
+import com.privateproject.agendamanage.module_weekTime.viewHolder.DayTimeViewHolder;
 import com.privateproject.agendamanage.utils.Time;
 import com.privateproject.agendamanage.module_weekTime.viewHolder.DayTimeSelectViewHolder;
 
@@ -25,19 +27,19 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
     private DayTimeFragmentDao dao;
     private List<DayTimeSelectViewHolder.DayTimeSelectTextViewRecycleViewHolder> items;
     private List<DayTimeFragment> dayTimeFragmentList;
-    private WeektimeActivityDayTimeSelectBinding binding;
+    private DayTimeSelectActivity.DayTimeViewHolder dayTimeViewHolder;
     private List<String> temp;
     //扇形图时间差和名称
     private List<Integer> timeLength;
     private List<String> timeName;
     private List<Boolean> timeIdentify;
 
-    public DayTimeSelectRecycleAdapter(Context context,WeektimeActivityDayTimeSelectBinding binding) {
+    public DayTimeSelectRecycleAdapter(Context context, DayTimeSelectActivity.DayTimeViewHolder dayTimeViewHolder) {
         this.context = context;
         this.dao = new DayTimeFragmentDao(context);
         this.dayTimeFragmentList = dao.selectAll();
         this.items = new ArrayList<DayTimeSelectViewHolder.DayTimeSelectTextViewRecycleViewHolder>();
-        this.binding = binding;
+        this.dayTimeViewHolder = dayTimeViewHolder;
         this.temp = new ArrayList<String>();
         this.timeName=new ArrayList<String>();
         this.timeLength=new ArrayList<Integer>();
@@ -100,7 +102,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
             }
         });
         //取消按钮监听器
-        binding.daytimeSelectBackBotton.setOnClickListener(new View.OnClickListener() {
+        dayTimeViewHolder.cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 for (int i = 0; i < items.size(); i++) {
@@ -116,7 +118,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
         });
 
         //删除按钮监听器
-        binding.daytimeSelectDeleteBotton.setOnClickListener(new View.OnClickListener() {
+        dayTimeViewHolder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 for (int i = 0; i < items.size(); i++) {
@@ -211,9 +213,9 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
         }
 
         //向扇形图填充数据
-        binding.mPieChart.setDatas(timeLength,timeIdentify);
-        binding.mPieChart.setTexts(timeName);
-        binding.mPieChart.invalidate();
+        dayTimeViewHolder.pieChart.setDatas(timeLength,timeIdentify);
+        dayTimeViewHolder.pieChart.setTexts(timeName);
+        dayTimeViewHolder.pieChart.invalidate();
 
 
     }
@@ -238,13 +240,13 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
     }
     public void isVisible(boolean isvisible){
         if (isvisible) {
-            binding.daytimeSelectAddBotton.setVisibility(View.GONE);
-            binding.daytimeSelectBackBotton.setVisibility(View.VISIBLE);
-            binding.daytimeSelectDeleteBotton.setVisibility(View.VISIBLE);
+            dayTimeViewHolder.addBtn.setVisibility(View.GONE);
+            dayTimeViewHolder.cancelBtn.setVisibility(View.VISIBLE);
+            dayTimeViewHolder.deleteBtn.setVisibility(View.VISIBLE);
         }else {
-            binding.daytimeSelectAddBotton.setVisibility(View.VISIBLE);
-            binding.daytimeSelectBackBotton.setVisibility(View.GONE);
-            binding.daytimeSelectDeleteBotton.setVisibility(View.GONE);
+            dayTimeViewHolder.addBtn.setVisibility(View.VISIBLE);
+            dayTimeViewHolder.cancelBtn.setVisibility(View.GONE);
+            dayTimeViewHolder.deleteBtn.setVisibility(View.GONE);
         }
 
     }
