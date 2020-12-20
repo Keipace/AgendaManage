@@ -6,4 +6,5 @@
     <dimen name="page_padding">20dp</dimen>
     <dimen name="editText_padding">5dp</dimen>
     <dimen name="plain_page_padding">12dp</dimen>
+    <dimen name="course_time_textsize">13sp</dimen>
 </resources>

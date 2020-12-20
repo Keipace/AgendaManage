@@ -5,18 +5,14 @@ import android.content.SharedPreferences;
 
 import com.privateproject.agendamanage.db.bean.Course;
 import com.privateproject.agendamanage.db.bean.DayTimeFragment;
-import com.privateproject.agendamanage.db.bean.PlanNode;
-import com.privateproject.agendamanage.db.bean.Target;
 import com.privateproject.agendamanage.db.bean.Task;
 import com.privateproject.agendamanage.db.dao.CourseDao;
 import com.privateproject.agendamanage.db.dao.DayTimeFragmentDao;
-import com.privateproject.agendamanage.db.dao.TargetDao;
 import com.privateproject.agendamanage.db.dao.TaskDao;
 import com.privateproject.agendamanage.utils.Time;
 import com.privateproject.agendamanage.utils.ToastUtil;
 import com.privateproject.agendamanage.utils.TimeUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -130,6 +126,7 @@ public class EverydayTotalTimeServer {
             e.printStackTrace();
         }
     }
+
     public int getTotalTimeOfDay(int offsetCount) {
         int weekDay = (this.weekDayStartIndex+offsetCount)%7;
         return this.totalTimes.get(weekDay);
@@ -343,7 +340,5 @@ public class EverydayTotalTimeServer {
         }
         return dayForWeek;
     }
-
-
 
 }
