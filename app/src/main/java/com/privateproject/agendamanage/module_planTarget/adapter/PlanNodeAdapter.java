@@ -232,7 +232,8 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
                             ToastUtil.newToast(context, "开始日期超出了上层计划的开始日期:"+TimeUtil.getDate(parent.getStartTime()));
                             return;
                         }
-                    } else if (i==planNodes.size()) {
+                    }
+                    if (i==planNodes.size()) {
                         // 如果插入的节点是最后一个节点，则最后一个节点的结束日期不能超出父亲节点的结束日期
                         if (end.after(parent.getEndTime())) {
                             ToastUtil.newToast(context, "结束日期超出了上层计划的结束日期:"+TimeUtil.getDate(parent.getEndTime()));

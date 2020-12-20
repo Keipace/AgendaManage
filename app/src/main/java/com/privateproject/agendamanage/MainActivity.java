@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static boolean isShowPlan = false;
+    public static boolean isReshowList = false;
     //进行选中Tab的处理
     private void selectTab(int i) {
         //获取FragmentTransaction对象
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                     transaction.show(planTargetFragment).commitAllowingStateLoss();
                     break;
                 }
-                if (goalListFragment == null) { //第一次显示第一个选项卡
+                if (goalListFragment == null || isReshowList) { //第一次显示第一个选项卡
                     goalListFragment = new GoalListFragment(new GoalListServer.OnItemClick() {
                         @Override
                         public void planTarget(Target topTarget) {
@@ -132,8 +133,15 @@ public class MainActivity extends AppCompatActivity {
                             }
                             isShowPlan = true;
                         }
+
+                        @Override
+                        public void onItemRemoved() {
+                            isReshowList = true;
+                            selectTab(0);
+                        }
                     });
                     transaction.add(R.id.mianActivity_container_contrainlayout, goalListFragment).commitAllowingStateLoss();
+                    isReshowList = false;
                 } else { //返回第一个选项卡
                     transaction.show(goalListFragment).commitAllowingStateLoss();
                 }

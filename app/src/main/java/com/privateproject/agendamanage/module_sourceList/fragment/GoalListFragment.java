@@ -47,8 +47,8 @@ public class GoalListFragment extends Fragment {
         // 加载expandingList
         expandingList=view.findViewById(R.id.fragmentGoalList_listContainer_expandingList);
         //创建两个item，分别显示目标区和打卡区
-        listServer=new GoalListServer(getContext());
-        listServer.createTargetItem(expandingList, onItemClick);
+        listServer=new GoalListServer(getContext(), onItemClick);
+        listServer.createTargetItem(expandingList);
         listServer.createDayTargetItem(expandingList);
         // 添加课程表 按钮
         ImageButton setCourseBtn = view.findViewById(R.id.fragmentGoalList_setCourse_btn);

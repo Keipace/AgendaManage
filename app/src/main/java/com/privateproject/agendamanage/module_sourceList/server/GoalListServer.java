@@ -25,20 +25,15 @@ import com.privateproject.agendamanage.module_sourceList.activity.TargetInfoActi
 import com.privateproject.agendamanage.db.bean.DayTarget;
 import com.privateproject.agendamanage.db.bean.PlanNode;
 import com.privateproject.agendamanage.db.bean.Target;
-import com.privateproject.agendamanage.module_weekTime.server.DayTimeSelectAddServer;
 import com.privateproject.agendamanage.module_weekTime.server.EverydayTotalTimeServer;
 import com.privateproject.agendamanage.utils.CenterDialog;
 import com.privateproject.agendamanage.db.dao.DayTargetDao;
 import com.privateproject.agendamanage.db.dao.PlanNodeDao;
 import com.privateproject.agendamanage.db.dao.TargetDao;
 import com.privateproject.agendamanage.utils.ComponentUtil;
-import com.privateproject.agendamanage.utils.TimeUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xujiaji.happybubble.BubbleDialog;
 
-import java.nio.file.StandardOpenOption;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,17 +46,19 @@ public class GoalListServer {
     private SourcelistItemMainAddtargetBinding targetBinding;
     private SourcelistItemMainAdddaytargetBinding daytargetBinding;
     private PlanNodeDao planNodeDao;
+    private OnItemClick onItemClick;
 
-    public GoalListServer(Context context) {
+    public GoalListServer(Context context, OnItemClick onItemClick) {
         this.targetDao = new TargetDao(context);
         this.dayTargetDao=new DayTargetDao(context);
         this.targets = targetDao.selectAll();
         this.dayTargets = dayTargetDao.selectAll();
         this.context=context;
         this.planNodeDao = new PlanNodeDao(context);
+        this.onItemClick = onItemClick;
     }
 
-    public void createTargetItem(ExpandingList expandingList, OnItemClick onItemClick) {
+    public void createTargetItem(ExpandingList expandingList) {
         ExpandingItem targetItem=expandingList.createNewItem(R.layout.sourcelist_expanding_layout);
         if (targetItem != null) {
             //为header设置头像和头像的颜色
@@ -73,7 +70,7 @@ public class GoalListServer {
             targetItem.createSubItems(this.targets.size());
             for (int i = 0; i < targetItem.getSubItemsCount(); i++) {
                 View view=targetItem.getSubItemView(i);
-                configureTargetItem(view, i, targetItem, onItemClick);
+                configureTargetItem(view, i, targetItem);
             }
             // 设置添加按钮的监听器
             targetItem.findViewById(R.id.itemMainHeader_add_imageView).setOnClickListener(new View.OnClickListener() {
@@ -84,7 +81,7 @@ public class GoalListServer {
                         @Override
                         public void itemCreated(String name, String decoration,int position) {
                             View newSubItem =targetItem.createSubItem();
-                            configureTargetItem(newSubItem, position, targetItem, onItemClick);
+                            configureTargetItem(newSubItem, position, targetItem);
                         }
                     });
                 }
@@ -92,7 +89,7 @@ public class GoalListServer {
         }
     }
 
-    private void configureTargetItem(View view, int position, ExpandingItem targetItem, OnItemClick onItemClick) {
+    private void configureTargetItem(View view, int position, ExpandingItem targetItem) {
         // 设置名称
         ((TextView)view.findViewById(R.id.itemMainContent_name_textView)).setText(targets.get(position).getName());
         // 设置删除按钮监听器
@@ -103,6 +100,7 @@ public class GoalListServer {
                 targetItem.removeSubItem(view);
                 // 删除数据
                 removeTarget(position);
+                onItemClick.onItemRemoved();
             }
         });
 
@@ -384,6 +382,7 @@ public class GoalListServer {
 
     public interface OnItemClick {
         void planTarget(Target topTarget);
+        void onItemRemoved();
     }
     //查询所有的最后一个PlanNode，并保存到列表中
     public void searchLastPlanNode(PlanNode planNode, List<PlanNode> lastPlanNodeList, List<PlanNode> lastPlanNodeNoSetTime){
