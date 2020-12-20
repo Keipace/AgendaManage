@@ -233,4 +233,8 @@ public class TimeUtil {
         c.add(Calendar.DAY_OF_MONTH, off);
         return c.getTime();
     }
+
+    public static boolean isSameDay(Date firstDay, Date secondDay) {
+        return sdf.format(firstDay).equals(sdf.format(secondDay));
+    }
 }

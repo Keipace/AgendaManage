@@ -225,12 +225,26 @@ public class PlanNode {
     }
 
     public int compareTo(PlanNode planNode) {
-        if (this.endTime.before(planNode.startTime)) {
-            return -1;
-        } else if (this.startTime.after(planNode.endTime)) {
-            return 1;
+        if (TimeUtil.isSameDay(this.startTime, this.endTime)) {
+            if (TimeUtil.isSameDay(planNode.startTime, planNode.endTime) && TimeUtil.isSameDay(this.startTime, planNode.startTime)) {
+                return 0;
+            } else {
+                if (!this.endTime.after(planNode.startTime)) {
+                    return -1;
+                } else if (!this.startTime.before(planNode.endTime)){
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
         } else {
-            return 0;
+            if (!this.endTime.after(planNode.startTime)) {
+                return -1;
+            } else if (!this.startTime.before(planNode.endTime)){
+                return 1;
+            } else {
+                return 0;
+            }
         }
     }
 
