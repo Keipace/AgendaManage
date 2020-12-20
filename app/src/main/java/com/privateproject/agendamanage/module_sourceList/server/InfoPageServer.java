@@ -125,27 +125,40 @@ public class InfoPageServer {
             }
         });
 
+
         targetPageBinding.targetInfoEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (save){
+                // 编辑状态下，点击完成时
+                    String planOver = targetPageBinding.targetInfoTimePlanOverEditText.getText().toString();
+                    String deadLine = targetPageBinding.targetInfoTimeDeadLineEditView.getText().toString();
+                    if (planOver.equals("") || deadLine.equals("")) {
+                        ToastUtil.newToast(targetContext, "请选择预期结束时间和最晚截止时间");
+                        return;
+                    }
+                    target.setTimePlanOver(TimeUtil.getDate(planOver));
+                    target.setTimeDeadLine(TimeUtil.getDate(deadLine));
+                    targetDao.updateTarget(target);
                     //改变属性值
                     save = false;
                     //组件不可以被点击
                     ischecked(false);
+                    targetPageBinding.targetInfoTimePlanOverEditText.setOnTouchListener(null);
+                    targetPageBinding.targetInfoTimeDeadLineEditView.setOnTouchListener(null);
                     //完成按钮的图片填充
                     targetPageBinding.targetInfoEditButton.setImageResource(R.drawable.edit);
                     //返回按钮的图片填充
                     targetPageBinding.targetInfoDeleteButton.setImageResource(R.drawable.delete);
 
                 }else {
+                // 默认状态下，点击编辑时
                     //改变属性值
                     save = true;
                     // 设置 编辑 按钮的监听器
                     //组件可以被点击
                     ischecked(true);
                     //为日期选择组件设置监听器
-                    TimeUtil.setDateStartToEnd(targetContext, targetPageBinding.targetInfoTimePreDoEditText, targetPageBinding.targetInfoTimePlanOverEditText, true);
                     TimeUtil.setDateStartToEnd(targetContext, targetPageBinding.targetInfoTimePlanOverEditText, targetPageBinding.targetInfoTimeDeadLineEditView, true);
                     ToastUtil.newToast(targetContext,"编辑");
                     targetPageBinding.targetInfoEditButton.setImageResource(R.drawable.target_info_save);
@@ -225,7 +238,6 @@ public class InfoPageServer {
     }
 
     public void ischecked(boolean ischecked){
-        ComponentUtil.EditTextEnable(ischecked, targetPageBinding.targetInfoTimePreDoEditText);
         ComponentUtil.EditTextEnable(ischecked, targetPageBinding.targetInfoTimePlanOverEditText);
         ComponentUtil.EditTextEnable(ischecked, targetPageBinding.targetInfoTimeDeadLineEditView);
     }

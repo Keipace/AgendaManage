@@ -16,6 +16,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class TimeUtil {
+    private static String startDateToast = "开始时间必须早于结束时间";
+    private static String endDateToast = "结束时间必须晚于开始时间";
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public static void setTimeStartToEnd(Context context, EditText startTimeEditText, EditText endTimeEditText, boolean isShowCurrent) {
@@ -41,7 +43,7 @@ public class TimeUtil {
                                     Time endTime = Time.parseTime(endEditText.getText().toString());
                                     //开始时间不能大于结束时间
                                     if(!time.before(endTime)) {
-                                        ToastUtil.newToast(context, "开始时间必须早于结束时间");
+                                        ToastUtil.newToast(context, startDateToast);
                                         return;
                                     }
                                 }
@@ -51,7 +53,7 @@ public class TimeUtil {
                                 if(!startEditText.getText().toString().equals("")) {
                                     Time startTime = Time.parseTime(startEditText.getText().toString());
                                     if(!time.after(startTime)) {
-                                        ToastUtil.newToast(context, "结束时间必须晚于开始时间");
+                                        ToastUtil.newToast(context, endDateToast);
                                         return;
                                     }
                                 }
@@ -67,6 +69,11 @@ public class TimeUtil {
                 return false;
             }
         };
+    }
+
+    public static void setDateToast(String startDateToast, String endDateToast) {
+        TimeUtil.startDateToast = startDateToast;
+        TimeUtil.endDateToast = endDateToast;
     }
 
     public static void setOnDateTouchListener(Context context, EditText editText, boolean isShowCurrent) {

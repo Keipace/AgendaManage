@@ -204,6 +204,12 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 0.首先判断target的预期结束时间和最晚截止时间
+                if (topParent.getTimeDeadLine()==null || topParent.getTimePlanOver()==null) {
+                    ToastUtil.newToast(context, "请先设置目标的最晚截止时间和预期结束时间");
+                    return;
+                }
+
                 // 1.获取页面信息
                 String name = nameEditText.getText().toString();
                 String startDateString = startDate.getText().toString();
@@ -227,7 +233,18 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
                     time = Integer.parseInt(timeNeed.getText().toString());
                 }
 
-                // 2.判断设置的开始日期和结束日期是否和已有的兄弟节点冲突
+                // 2.判断所需时间是否符合开始日期和结束日期的要求
+                if (setTimeNeeded.isChecked()) {
+                    Date start = TimeUtil.getDate(startDateString);
+                    Date end = TimeUtil.getDate(endDateString);
+                    int totalTime = (TimeUtil.subDate(start, end)+1)*24*60;
+                    if (time>totalTime) {
+                        ToastUtil.newToast(context, "所需时间量过长,"+startDateString+"~"+endDateString+"最多有"+totalTime+"分钟");
+                        return;
+                    }
+                }
+
+                // 3.判断设置的开始日期和结束日期是否和已有的兄弟节点冲突
                 Date start = TimeUtil.getDate(startDateString);
                 Date end = TimeUtil.getDate(endDateString);
                 int i;
@@ -242,7 +259,7 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
                     }
                 }
 
-                // 3.判断设置的开始日期和结束日期是否超出父亲节点的范围（第一层添加时不用考虑）
+                // 4.判断设置的开始日期和结束日期是否超出父亲节点的范围（第一层添加时不用考虑）
                 if (parent!=null) {
                     if (i==0) {
                         // 如果插入的节点是第一个节点，则第一个节点的开始日期不能超出父亲节点的开始日期
@@ -259,8 +276,28 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
                         }
                     }
                 }
+                if (parent==null) {
+                    if (i==0) {
+                        // 如果插入的节点是第一个节点，则第一个节点的开始日期不能超出父亲节点的开始日期
+                        if (start.before(TimeUtil.getOffCurrentDate(1))) {
+                            ToastUtil.newToast(context, "开始时间不能早于明天");
+                            return;
+                        }
+                    }
+                    if (i==planNodes.size()) {
+                        // 如果插入的节点是最后一个节点，则最后一个节点的结束日期超出target的预期结束时间时要提示
+                        if (end.after(topParent.getTimePlanOver())) {
+                            ToastUtil.newToast(context, "注意：结束日期超出了目标预期日期:"+TimeUtil.getDate(topParent.getTimePlanOver()));
+                        }
+                        // 如果插入的节点是最后一个节点，则最后一个节点的结束日期不能超出target的截止日期
+                        if (end.after(topParent.getTimeDeadLine())) {
+                            ToastUtil.newToast(context, "结束日期不能晚于目标截止日期:"+TimeUtil.getDate(topParent.getTimeDeadLine()));
+                            return;
+                        }
+                    }
+                }
 
-                // 4.创建相应状态的planNode并修改父节点
+                // 5.创建相应状态的planNode并修改父节点
                 PlanNode planNode;
                 // 用户设置的是所需时间量
                 if (parent==null) {
@@ -281,11 +318,11 @@ public class PlanNodeAdapter extends RecyclerView.Adapter<PlanNodeAdapter.PlanNo
                     dao.addChild(parent, planNode);
                 }
 
-                // 5.修改target的stateSave属性,并保存到数据库
+                // 6.修改target的stateSave属性,并保存到数据库
                 topParent.setStateSave(false);
                 targetDao.updateTarget(topParent);
 
-               // 6.刷新列表和页面
+                // 7.刷新列表和页面
                 refreshList();
                 dialog.dismiss();
             }
