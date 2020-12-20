@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:textAllCaps="false"
-        android:textSize="16sp"
+        android:textSize="@dimen/course_time_textsize"
         style="@null"
         android:background="@drawable/btn_target"
         android:layout_marginHorizontal="2dp"

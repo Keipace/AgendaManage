@@ -13,12 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.rubensousa.raiflatbutton.RaiflatButton;
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.databinding.WeektimeActivityDayTimeSelectBinding;
+import com.privateproject.agendamanage.db.bean.Course;
 import com.privateproject.agendamanage.db.bean.DayTimeFragment;
+import com.privateproject.agendamanage.db.bean.Task;
+import com.privateproject.agendamanage.db.dao.CourseDao;
 import com.privateproject.agendamanage.db.dao.DayTimeFragmentDao;
+import com.privateproject.agendamanage.db.dao.TaskDao;
 import com.privateproject.agendamanage.module_weekTime.server.DayTimeSelectAddServer;
 import com.privateproject.agendamanage.utils.PieChartView;
 import com.privateproject.agendamanage.utils.Time;
 import com.privateproject.agendamanage.module_weekTime.viewHolder.DayTimeSelectViewHolder;
+import com.privateproject.agendamanage.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,11 +129,14 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
             @Override
             public void onClick(View v) {
                 isVisible(false);
+
                 //删除dayTimeFragmentList中对应下标的数据
                 for (int i = 0; i<temp.size(); i++){
                     for (int j = 0; j<dayTimeFragmentList.size(); j++){
                         if (dayTimeFragmentList.get(j).toString().equals(temp.get(i))){
-                            dayTimeFragmentList.remove(j);
+                            if(!isDayFragmentUsed(dayTimeFragmentList.get(j))){
+                                dayTimeFragmentList.remove(j);
+                            }
                         }
                     }
                 }
@@ -250,7 +258,28 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
             buttons.get(1).setVisibility(View.GONE);
             buttons.get(2).setVisibility(View.GONE);
         }
+    }
 
+    public boolean isDayFragmentUsed(DayTimeFragment dayTimeFragment){
+        TaskDao taskDao = new TaskDao(context);
+        CourseDao courseDao = new CourseDao(context);
+        List<Task> taskList = taskDao.selectAll();
+        List<Course> courseList = courseDao.selectAll();
+        for (int i = 0; i < taskList.size(); i++) {
+            Task task = taskList.get(i);
+            if(task.getTimeFragment().equals(dayTimeFragment)){
+                ToastUtil.newToast(context,"此段时间有任务哦");
+                return true;
+            }
+        }
+        for (int i = 0; i < courseList.size(); i++) {
+            Course course = courseList.get(i);
+            if(dayTimeFragmentList.get(course.getRow()-1)!=null){
+                ToastUtil.newToast(context,"此段时间有课程哦");
+                return true;
+            }
+        }
+        return false;
     }
 
 }

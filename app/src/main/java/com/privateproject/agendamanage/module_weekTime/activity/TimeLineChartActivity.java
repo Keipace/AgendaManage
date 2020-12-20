@@ -2,6 +2,8 @@ package com.privateproject.agendamanage.module_weekTime.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +13,10 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.db.bean.BarChartBean;
+import com.privateproject.agendamanage.db.bean.DayTimeFragment;
 import com.privateproject.agendamanage.db.bean.LineChartBean;
+import com.privateproject.agendamanage.db.dao.DayTimeFragmentDao;
+import com.privateproject.agendamanage.module_viewSchedule.activity.ViewScheduleTaskActivity;
 import com.privateproject.agendamanage.module_weekTime.server.EverydayTotalTimeServer;
 import com.privateproject.agendamanage.utils.TimeUtil;
 import com.privateproject.agendamanage.utils.ToastUtil;
@@ -24,6 +29,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.privateproject.agendamanage.module_weekTime.server.EverydayTotalTimeServer.FILENAME_PREFERENCE;
+import static com.privateproject.agendamanage.module_weekTime.server.EverydayTotalTimeServer.KEY_EMERGENCY_START;
 
 public class TimeLineChartActivity extends AppCompatActivity {
     private MaterialEditText startDate,endDate,emergencyDate;
@@ -51,13 +59,19 @@ public class TimeLineChartActivity extends AppCompatActivity {
         lineChartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //获得者线图的开始日期和结束日期
                 try {
                     if (startDate.getText().toString().equals("") || endDate.getText().toString().equals("")) {
                         ToastUtil.newToast(TimeLineChartActivity.this, "请选择日期！");
                     }
+
                     Date surplusStartDate = simpleDateFormat.parse(startDate.getText().toString());
                     Date surplusEndDate = simpleDateFormat.parse(endDate.getText().toString());
+                    if(getEmergencyStartDate().after(surplusStartDate)){
+                        ToastUtil.newToast(TimeLineChartActivity.this,"开始日期早于应急时间开始日期了");
+                        return;
+                    }
                     List<Integer> surplusTimeList = everydayTotalTimeServer.surplusTime(surplusStartDate,surplusEndDate);
                     List<Date> dateList = everydayTotalTimeServer.dateList(surplusStartDate,surplusEndDate);
                     //判断map集合是否为空
@@ -67,7 +81,8 @@ public class TimeLineChartActivity extends AppCompatActivity {
                         LineChart lineChart = findViewById(R.id.surplustime_line_chart);
                         lineChart.setVisibility(View.VISIBLE);
                         LineChartBean lineChartBean = new LineChartBean(lineChart,"剩余时间总量", Color.GREEN,surplusTimeList,dateList);
-                        lineChartBean.setYAxis(1000,0,10);
+                        float maxminute = maxMinutes();
+                        lineChartBean.setYAxis(maxminute,0,10);
                         lineChartBean.addEntry();
                     }
 
@@ -87,6 +102,10 @@ public class TimeLineChartActivity extends AppCompatActivity {
                     }
                     Date surplusStartDate = simpleDateFormat.parse(startDate.getText().toString());
                     Date surplusEndDate = simpleDateFormat.parse(endDate.getText().toString());
+                    if(getEmergencyStartDate().after(surplusStartDate)){
+                        ToastUtil.newToast(TimeLineChartActivity.this,"开始日期早于应急时间开始日期了");
+                        return;
+                    }
                     List<Integer> surplusTimeList = everydayTotalTimeServer.surplusTime(surplusStartDate,surplusEndDate);
                     List<Date> dateList = everydayTotalTimeServer.dateList(surplusStartDate,surplusEndDate);
                     //判断map集合是否为空
@@ -129,4 +148,21 @@ public class TimeLineChartActivity extends AppCompatActivity {
         }
         return dateStrList;
     }
+
+    public Date getEmergencyStartDate() {
+        SharedPreferences sharedPreferences = TimeLineChartActivity.this.getSharedPreferences(FILENAME_PREFERENCE, Context.MODE_PRIVATE);
+        return TimeUtil.getDate(sharedPreferences.getString(KEY_EMERGENCY_START, null));
+    }
+
+    public float maxMinutes(){
+        DayTimeFragmentDao dayTimeFragmentDao = new DayTimeFragmentDao(TimeLineChartActivity.this);
+        List<DayTimeFragment> dayTimeFragmentList = dayTimeFragmentDao.selectAll();
+        int maxMinutes = 0;
+        for (int i = 0; i < dayTimeFragmentList.size(); i++) {
+            DayTimeFragment dayTimeFragment = dayTimeFragmentList.get(i);
+            maxMinutes += ViewScheduleTaskActivity.timeMinutes(dayTimeFragment.getStart(),dayTimeFragment.getEnd());
+        }
+        return (float) maxMinutes+100;
+    }
+
 }
