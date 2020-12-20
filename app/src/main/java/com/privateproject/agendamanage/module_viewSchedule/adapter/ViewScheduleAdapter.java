@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.db.bean.Course;
 import com.privateproject.agendamanage.db.bean.DayTimeFragment;
+import com.privateproject.agendamanage.db.bean.Task;
 import com.privateproject.agendamanage.db.dao.CourseDao;
 import com.privateproject.agendamanage.db.dao.DayTimeFragmentDao;
 import com.privateproject.agendamanage.db.dao.TaskDao;
@@ -119,7 +120,7 @@ public class ViewScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public List<Map<String,String>> init(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date;
+        Date date = new Date();
         int weekDay = 1;
         try {
             date = sdf.parse(dateStr);
@@ -129,9 +130,9 @@ public class ViewScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         List<Course> courseList = courseDao.selectByWeekDay(weekDay);
-//        List<Task> taskList = taskDao.selectDay(date);
+        List<Task> taskList = taskDao.selectDay(date);
         List<Map<String,String>> courseAndTaskList = new ArrayList<Map<String, String>>();
-        if(courseList!=null&&courseList.size()!=0){
+       /* if(courseList!=null&&courseList.size()!=0){
             for (int i = 0; i < courseList.size(); i++) {
                 Course course = courseList.get(i);
                 Map<String,String> courseMap = new HashMap<String, String>();
@@ -141,31 +142,52 @@ public class ViewScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         }
 
+        if(taskList!=null&&taskList.size()!=0){
+            for (int i = 0; i < taskList.size(); i++) {
+                Task task = taskList.get(i);
+                Map<String,String> taskMap = new HashMap<String, String>();
+                taskMap.put("name",task.getName());
+                taskMap.put("des",task.getTimeFragment().toString());
+                courseAndTaskList.add(taskMap);
+                task.getTimeFragment();
+            }
+        }*/
+
         //给时间段和日程加boolean标识
         isTitle=new ArrayList<Boolean>();
         dayTimeFragmentList=dao.selectAll();
         if(dayTimeFragmentList!=null&&dayTimeFragmentList.size()!=0) {
             for (int i = 0; i < dayTimeFragmentList.size(); i++) {
                 isTitle.add(true);
-                for (int j = 0; j < courseList.size(); j++) {
-                    Course course = courseList.get(j);
-                    if (course.getRow()-1 == i) {
-                        isTitle.add(false);
+                if(courseList!=null&&courseList.size()!=0){
+                    for (int j = 0; j < courseList.size(); j++) {
+                        Course course = courseList.get(j);
+                        if (course.getRow()-1 == i) {
+                            Map<String,String> courseMap = new HashMap<String, String>();
+                            courseMap.put("name",course.getClassname());
+                            courseMap.put("des",course.getAddress());
+                            courseAndTaskList.add(courseMap);
+                            isTitle.add(false);
+                        }
                     }
-
                 }
+
+                if(taskList!=null&&taskList.size()!=0){
+                    for (int k = 0; k < taskList.size(); k++) {
+                        Task task = taskList.get(k);
+                        if (task.getTimeFragment().getId() == dayTimeFragmentList.get(i).getId()){
+                            Map<String,String> taskMap = new HashMap<String, String>();
+                            taskMap.put("name",task.getName());
+                            taskMap.put("des",task.getTimeFragment().toString());
+                            courseAndTaskList.add(taskMap);
+                            isTitle.add(false);
+                        }
+                    }
+                }
+
             }
         }
 
-//        if(taskList!=null&&taskList.size()!=0){
-//            for (int i = 0; i < taskList.size(); i++) {
-//                Task task = taskList.get(i);
-//                Map<String,String> taskMap = new HashMap<String, String>();
-//                taskMap.put("name",task.getName());
-//                taskMap.put("des",task.getTimeFragment().toString());
-//                courseAndTaskList.add(taskMap);
-//            }
-//        }
         return courseAndTaskList;
 
     }
@@ -183,17 +205,5 @@ public class ViewScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return dayForWeek;
     }
 
-    //获得时间段与日程的boolean数组
-   /* public List<Boolean> isTitleOrSchedule(){
-        isTitle=new ArrayList<Boolean>();
 
-        List<Course> courseList = courseDao.selectByWeekDay(weekDay);
-        for (int i=0;i<=dayTimeFragmentList.size();i++){
-            isTitle.add(true);
-            for (int j=0;j<courseList.size();i++){
-
-            }
-        }
-        return null;
-    }*/
 }
