@@ -4,16 +4,19 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.rubensousa.raiflatbutton.RaiflatButton;
 import com.privateproject.agendamanage.R;
 import com.privateproject.agendamanage.databinding.WeektimeActivityDayTimeSelectBinding;
 import com.privateproject.agendamanage.db.bean.DayTimeFragment;
 import com.privateproject.agendamanage.db.dao.DayTimeFragmentDao;
 import com.privateproject.agendamanage.module_weekTime.server.DayTimeSelectAddServer;
+import com.privateproject.agendamanage.utils.PieChartView;
 import com.privateproject.agendamanage.utils.Time;
 import com.privateproject.agendamanage.module_weekTime.viewHolder.DayTimeSelectViewHolder;
 
@@ -25,23 +28,25 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
     private DayTimeFragmentDao dao;
     private List<DayTimeSelectViewHolder.DayTimeSelectTextViewRecycleViewHolder> items;
     private List<DayTimeFragment> dayTimeFragmentList;
-    private WeektimeActivityDayTimeSelectBinding binding;
     private List<String> temp;
     //扇形图时间差和名称
     private List<Integer> timeLength;
     private List<String> timeName;
     private List<Boolean> timeIdentify;
+    private List<RaiflatButton> buttons;
+    private PieChartView mPieChart;
 
-    public DayTimeSelectRecycleAdapter(Context context,WeektimeActivityDayTimeSelectBinding binding) {
+    public DayTimeSelectRecycleAdapter(Context context, List<RaiflatButton> buttons, PieChartView mPieChart) {
         this.context = context;
         this.dao = new DayTimeFragmentDao(context);
         this.dayTimeFragmentList = dao.selectAll();
         this.items = new ArrayList<DayTimeSelectViewHolder.DayTimeSelectTextViewRecycleViewHolder>();
-        this.binding = binding;
         this.temp = new ArrayList<String>();
         this.timeName=new ArrayList<String>();
         this.timeLength=new ArrayList<Integer>();
         this.timeIdentify=new ArrayList<Boolean>();
+        this.buttons = buttons;
+        this.mPieChart = mPieChart;
     }
 
 
@@ -75,7 +80,6 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
         holder.daytimeSelectContainer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                temp.clear();
                 for (int i = 0; i < items.size(); i++) {
                     //为所有TextView设置不可选，CheckBox可见
                     items.get(i).RecycleTextView.setEnabled(false);
@@ -100,7 +104,7 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
             }
         });
         //取消按钮监听器
-        binding.daytimeSelectBackBotton.setOnClickListener(new View.OnClickListener() {
+        buttons.get(1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 for (int i = 0; i < items.size(); i++) {
@@ -111,20 +115,14 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
                 }
                 //隐藏有关的组件
                 isVisible(false);
-                DayTimeSelectRecycleAdapter.this.temp.clear();
+                temp.clear();
             }
         });
 
         //删除按钮监听器
-        binding.daytimeSelectDeleteBotton.setOnClickListener(new View.OnClickListener() {
+        buttons.get(2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < items.size(); i++) {
-                    //为所有TextView设置可选，CheckBox不可见
-                    items.get(i).RecycleTextView.setEnabled(true);
-                    items.get(i).daytimeSelectCheckBox.setChecked(false);
-                    items.get(i).daytimeSelectCheckBox.setVisibility(View.GONE);
-                }
                 isVisible(false);
                 //删除dayTimeFragmentList中对应下标的数据
                 for (int i = 0; i<temp.size(); i++){
@@ -134,7 +132,13 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
                         }
                     }
                 }
-                DayTimeSelectRecycleAdapter.this.temp.clear();
+                for (int i = 0; i < items.size(); i++) {
+                    //为所有TextView设置可选，CheckBox不可见
+                    items.get(i).RecycleTextView.setEnabled(true);
+                    items.get(i).daytimeSelectCheckBox.setChecked(false);
+                    items.get(i).daytimeSelectCheckBox.setVisibility(View.GONE);
+                }
+                temp.clear();
                 //清空数据库
                 dao.clearTable();
                 //把数据存入数据库
@@ -211,9 +215,9 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
         }
 
         //向扇形图填充数据
-        binding.mPieChart.setDatas(timeLength,timeIdentify);
-        binding.mPieChart.setTexts(timeName);
-        binding.mPieChart.invalidate();
+        mPieChart.setDatas(timeLength,timeIdentify);
+        mPieChart.setTexts(timeName);
+        mPieChart.invalidate();
 
 
     }
@@ -238,13 +242,13 @@ public class DayTimeSelectRecycleAdapter extends RecyclerView.Adapter<DayTimeSel
     }
     public void isVisible(boolean isvisible){
         if (isvisible) {
-            binding.daytimeSelectAddBotton.setVisibility(View.GONE);
-            binding.daytimeSelectBackBotton.setVisibility(View.VISIBLE);
-            binding.daytimeSelectDeleteBotton.setVisibility(View.VISIBLE);
+            buttons.get(0).setVisibility(View.GONE);
+            buttons.get(1).setVisibility(View.VISIBLE);
+            buttons.get(2).setVisibility(View.VISIBLE);
         }else {
-            binding.daytimeSelectAddBotton.setVisibility(View.VISIBLE);
-            binding.daytimeSelectBackBotton.setVisibility(View.GONE);
-            binding.daytimeSelectDeleteBotton.setVisibility(View.GONE);
+            buttons.get(0).setVisibility(View.VISIBLE);
+            buttons.get(1).setVisibility(View.GONE);
+            buttons.get(2).setVisibility(View.GONE);
         }
 
     }

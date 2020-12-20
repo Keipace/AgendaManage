@@ -36,6 +36,7 @@
         app:layout_constraintBottom_toTopOf="@+id/weekbar"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <com.github.rubensousa.raiflatbutton.RaiflatButton
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -92,7 +93,6 @@
                     android:id="@+id/calendar_recycleView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     />
 

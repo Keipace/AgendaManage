@@ -31,6 +31,18 @@
         android:visibility="gone"
         android:background="@drawable/feedback"/>
 
+    <Button
+        android:id="@+id/itemMainContent_saveAllRecommended_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="使用推荐方案"
+        android:textSize="12sp"
+        android:layout_toLeftOf="@id/itemMainContent_plan_textView"
+        android:background="@drawable/btn_save_recommend"
+        android:visibility="gone"/>
+
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

@@ -29,7 +29,6 @@ import java.util.List;
 public class ViewSchedulePlanNodeAdapter extends RecyclerView.Adapter<ViewSchedulePlanNodeAdapter.SchedulePlanNodeHolder> {
     private Context context;
     private int sectionNumber;
-    private int remianTime;
     //所有父target为true的叶子PlanNode
     List<PlanNode> allPlanNodes = new ArrayList<PlanNode>();
     List<PlanNode> dayPlanNodes = new ArrayList<PlanNode>();
@@ -101,6 +100,11 @@ public class ViewSchedulePlanNodeAdapter extends RecyclerView.Adapter<ViewSchedu
     }
 
     public void init(){
+        allPlanNodes = new ArrayList<PlanNode>();
+        dayPlanNodes = new ArrayList<PlanNode>();
+        weekPlanNodes = new ArrayList<PlanNode>();
+        monthPlanNodes = new ArrayList<PlanNode>();
+        nowPlanNodes = new ArrayList<PlanNode>();
         TargetDao targetDao = new TargetDao(context);
         //所有为true的target
         List<Target> trueTargets = targetDao.selectAllTtue();
@@ -157,6 +161,11 @@ public class ViewSchedulePlanNodeAdapter extends RecyclerView.Adapter<ViewSchedu
             remainMinutes -= taskList.get(i).getMintime();
         }
         return remainMinutes;
+    }
+
+    public void refreshPlanNodeAdapter(){
+        init();
+        notifyDataSetChanged();
     }
 
 }

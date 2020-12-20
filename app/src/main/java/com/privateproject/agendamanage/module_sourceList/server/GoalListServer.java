@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -197,11 +198,29 @@ public class GoalListServer {
                                     .setNegativeButton("确定",null)
                                     .create().show();
                         }
-
                     }
                 });
             }
         });
+        //直接保存所有的推荐方案
+        Button button = view.findViewById(R.id.itemMainContent_saveAllRecommended_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //获取所有的叶节点
+                List<PlanNode> lastPlanNodeList = targetDao.selectLastPlanNode(targets.get(position),context);
+                //找出被推荐的叶节点
+                for (int i = 0; i < lastPlanNodeList.size(); i++) {
+                    if (lastPlanNodeList.get(i).isRecommended()){
+                        //执行推荐方法
+                        lastPlanNodeList.get(i).saveRecommended();
+                        //修改数据库
+                        planNodeDao.updatePlanNode(lastPlanNodeList.get(i));
+                    }
+                }
+            }
+        });
+
         // 点击 安排计划 时
         view.findViewById(R.id.itemMainContent_plan_textView).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -125,25 +125,23 @@ public class InfoPageServer {
             }
         });
 
-        if (this.save){
-            //改变常量属性值
-            this.save = false;
-            //设置 保存 按钮监听器
-            targetPageBinding.targetInfoEditButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        targetPageBinding.targetInfoEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (save){
+                    //改变属性值
+                    save = false;
                     //组件不可以被点击
                     ischecked(false);
+                    //完成按钮的图片填充
                     targetPageBinding.targetInfoEditButton.setImageResource(R.drawable.edit);
-                }
-            });
-        }else {
-            //改变常量属性值
-            this.save = true;
-            // 设置 编辑 按钮的监听器
-            targetPageBinding.targetInfoEditButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                    //返回按钮的图片填充
+                    targetPageBinding.targetInfoDeleteButton.setImageResource(R.drawable.delete);
+
+                }else {
+                    //改变属性值
+                    save = true;
+                    // 设置 编辑 按钮的监听器
                     //组件可以被点击
                     ischecked(true);
                     //为日期选择组件设置监听器
@@ -151,10 +149,28 @@ public class InfoPageServer {
                     TimeUtil.setDateStartToEnd(targetContext, targetPageBinding.targetInfoTimePlanOverEditText, targetPageBinding.targetInfoTimeDeadLineEditView, true);
                     ToastUtil.newToast(targetContext,"编辑");
                     targetPageBinding.targetInfoEditButton.setImageResource(R.drawable.target_info_save);
-
+                    targetPageBinding.targetInfoDeleteButton.setImageResource(R.drawable.target_info_back);
                 }
-            });
-        }
+            }
+        });
+        targetPageBinding.targetInfoDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (save){
+                    //改变属性值
+                    save = false;
+                    //组件不可以被点击
+                    ischecked(false);
+                    //完成按钮的图片填充
+                    targetPageBinding.targetInfoEditButton.setImageResource(R.drawable.edit);
+                    //返回按钮的图片填充
+                    targetPageBinding.targetInfoDeleteButton.setImageResource(R.drawable.delete);
+                }else {
+                    //删除详细信息
+                }
+            }
+        });
+
     }
 
     //显示出target的信息（用作还未存到数据库时）
