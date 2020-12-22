@@ -15,6 +15,7 @@ import com.privateproject.agendamanage.module_sourceList.fragment.GoalListFragme
 import com.privateproject.agendamanage.module_planTarget.fragment.PlanTargetFragment;
 import com.privateproject.agendamanage.module_sourceList.server.GoalListServer;
 import com.privateproject.agendamanage.module_viewSchedule.fragment.ViewScheduleFragment;
+import com.privateproject.agendamanage.utils.ToastUtil;
 
 public class MainActivity extends AppCompatActivity {
     private MainBinding pageXml;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 //        // 默认打开时显示第一个页面
 //        pageXml.mianActivityQingdanBtn.transitionToEnd();
 //        selectTab(0);//默认选中第一个Tab，即清单
+        ToastUtil.newToast(this, "debug版本\n开发团队：李纪龙、张世洋、刘克寒、李浩铭");
     }
 
     private void setListener() {

@@ -10,13 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.privateproject.agendamanage.R;
+
 public class FragmentTest extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        TextView textView = new TextView(getContext());
-        textView.setText("test");
-        return textView;
+        View root = inflater.inflate(R.layout.sourcelist_fragment_test, container, false);
+        return root;
     }
 }
